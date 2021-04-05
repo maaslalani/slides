@@ -1,12 +1,17 @@
 package model
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	"github.com/charmbracelet/bubbles/viewport"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/glamour"
+)
 
 type Model struct {
-	Slides []string
-	Page   int
-	Author string
-	Date   string
+	Slides   []string
+	Page     int
+	Author   string
+	Date     string
+	viewport viewport.Model
 }
 
 func (m Model) Init() tea.Cmd {
@@ -15,6 +20,9 @@ func (m Model) Init() tea.Cmd {
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.viewport.Width = msg.Width
+		return m, nil
 
 	case tea.KeyMsg:
 		switch msg.String() {
@@ -35,5 +43,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	return m.Slides[m.Page]
+	g, err := glamour.NewTermRenderer(
+		glamour.WithWordWrap(m.viewport.Width),
+		glamour.WithAutoStyle(),
+	)
+	out, err := g.Render(m.Slides[m.Page])
+
+	if err != nil {
+		return `Error: Invalid Markdown!`
+	}
+
+	return out
 }
