@@ -8,6 +8,14 @@ In fact this entire presentation is a markdown file
 
 ~~~
 
+# h1
+## h2
+### h3
+#### h4
+##### h5
+###### h6
+
+
 # Markdown components
 You can use everything in markdown!
 * Like bulleted list
