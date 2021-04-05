@@ -19,11 +19,20 @@ var (
 	Status = NewStyle().Padding(1)
 )
 
-func SpreadHorizontal(left, right string, width int) string {
+func JoinHorizontal(left, right string, width int) string {
 	length := lipgloss.Width(left + right)
 	if width < length {
-		return ""
+		return left + " " + right
 	}
 	padding := strings.Repeat(" ", width-length)
 	return left + padding + right
+}
+
+func JoinVertical(top, bottom string, height int) string {
+	h := lipgloss.Height(top) + lipgloss.Height(bottom)
+	if height < h {
+		return top + "\n" + bottom
+	}
+	fill := strings.Repeat("\n", height-h)
+	return top + fill + bottom
 }

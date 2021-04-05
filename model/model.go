@@ -2,12 +2,10 @@ package model
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/maaslalani/slides/styles"
 )
 
@@ -54,16 +52,6 @@ func (m Model) View() string {
 
 	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
 	right := styles.Page.Render(fmt.Sprintf("Slide %d / %d", m.Page, len(m.Slides)-1))
-	status := styles.Status.Render(styles.SpreadHorizontal(left, right, m.viewport.Width))
-
-	padding := strings.Repeat("\n", max(m.viewport.Height-lipgloss.Height(slide)-lipgloss.Height(status), 0))
-
-	return slide + padding + status
-}
-
-func max(x, y int) int {
-	if x < y {
-		return y
-	}
-	return x
+	status := styles.Status.Render(styles.JoinHorizontal(left, right, m.viewport.Width))
+	return styles.JoinVertical(slide, status, m.viewport.Height)
 }
