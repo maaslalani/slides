@@ -1,9 +1,12 @@
 package model
 
 import (
+	"fmt"
+
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type Model struct {
@@ -22,6 +25,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.viewport.Width = msg.Width
+		m.viewport.Height = msg.Height
 		return m, nil
 
 	case tea.KeyMsg:
@@ -43,15 +47,34 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	g, err := glamour.NewTermRenderer(
-		glamour.WithWordWrap(m.viewport.Width),
-		glamour.WithAutoStyle(),
+	out, _ := glamour.Render(m.Slides[m.Page], "dark")
+
+	slideStyle := lipgloss.NewStyle().
+		Width(m.viewport.Width).
+		Height(m.viewport.Height - 1).
+		Align(lipgloss.Left)
+
+	authorStyle := lipgloss.NewStyle().
+		Height(1).
+		Foreground(lipgloss.Color("#E8B4BC")).
+		Align(lipgloss.Left)
+
+	dateStyle := lipgloss.NewStyle().
+		Height(1).
+		Faint(true).
+		Align(lipgloss.Left)
+
+	pageStyle := lipgloss.NewStyle().
+		Height(1).
+		Foreground(lipgloss.Color("#E8B4BC")).
+		Align(lipgloss.Right)
+
+	return lipgloss.JoinVertical(lipgloss.Left,
+		slideStyle.Render(out),
+		lipgloss.JoinHorizontal(lipgloss.Center,
+			authorStyle.Render(m.Author),
+			dateStyle.Render(m.Date),
+			pageStyle.Render(fmt.Sprintf("Slide %d / %d", m.Page, len(m.Slides)-1)),
+		),
 	)
-	out, err := g.Render(m.Slides[m.Page])
-
-	if err != nil {
-		return `Error: Invalid Markdown!`
-	}
-
-	return out
 }
