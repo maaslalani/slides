@@ -2,11 +2,13 @@ package model
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/maaslalani/slides/styles"
 )
 
 type Model struct {
@@ -47,34 +49,21 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	out, _ := glamour.Render(m.Slides[m.Page], "dark")
+	slide, _ := glamour.Render(m.Slides[m.Page], "dark")
+	slide = styles.Slide.Render(slide)
 
-	slideStyle := lipgloss.NewStyle().
-		Width(m.viewport.Width).
-		Height(m.viewport.Height - 1).
-		Align(lipgloss.Left)
+	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
+	right := styles.Page.Render(fmt.Sprintf("Slide %d / %d", m.Page, len(m.Slides)-1))
+	status := styles.Status.Render(styles.SpreadHorizontal(left, right, m.viewport.Width))
 
-	authorStyle := lipgloss.NewStyle().
-		Height(1).
-		Foreground(lipgloss.Color("#E8B4BC")).
-		Align(lipgloss.Left)
+	padding := strings.Repeat("\n", max(m.viewport.Height-lipgloss.Height(slide)-lipgloss.Height(status), 0))
 
-	dateStyle := lipgloss.NewStyle().
-		Height(1).
-		Faint(true).
-		Align(lipgloss.Left)
+	return slide + padding + status
+}
 
-	pageStyle := lipgloss.NewStyle().
-		Height(1).
-		Foreground(lipgloss.Color("#E8B4BC")).
-		Align(lipgloss.Right)
-
-	return lipgloss.JoinVertical(lipgloss.Left,
-		slideStyle.Render(out),
-		lipgloss.JoinHorizontal(lipgloss.Center,
-			authorStyle.Render(m.Author),
-			dateStyle.Render(m.Date),
-			pageStyle.Render(fmt.Sprintf("Slide %d / %d", m.Page, len(m.Slides)-1)),
-		),
-	)
+func max(x, y int) int {
+	if x < y {
+		return y
+	}
+	return x
 }
