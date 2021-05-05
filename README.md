@@ -2,6 +2,9 @@
 
 Slides in your terminal
 
+### Demo
+![slides](../assets/slides.gif?raw=true)
+
 ### Installation
 ```
 go get github.com/maaslalani/slides
@@ -47,9 +50,6 @@ Go to the previous slide with any of the following keys:
 * <kbd>p</kbd>
 * <kbd>h</kbd>
 * <kbd>j</kbd>
-
-### Demo
-![slides](../assets/slides.gif?raw=true)
 
 ### Development
 ```
