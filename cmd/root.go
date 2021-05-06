@@ -1,9 +1,11 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/user"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -19,14 +21,25 @@ var root = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
 		f := args[0]
+
+		s, err := os.Stat(f)
+		if s.IsDir() {
+			return errors.New("must pass a file")
+		}
+
 		b, err := ioutil.ReadFile(f)
 		slides := strings.Split(string(b), delimiter)
+
+		user, err := user.Current()
+		if err != nil {
+			return errors.New("could not get current user")
+		}
 
 		p := tea.NewProgram(model.Model{
 			Slides: slides,
 			Page:   0,
-			Author: "Maas Lalani",
-			Date:   "2021-04-04",
+			Author: user.Name,
+			Date:   s.ModTime().Format("2006-01-03"),
 		})
 
 		p.EnterAltScreen()
