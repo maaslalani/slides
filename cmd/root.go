@@ -28,6 +28,10 @@ var root = &cobra.Command{
 		}
 
 		b, err := ioutil.ReadFile(f)
+		if err != nil {
+			return errors.New("could not read file")
+		}
+
 		slides := strings.Split(string(b), delimiter)
 
 		user, err := user.Current()
