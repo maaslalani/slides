@@ -23,6 +23,9 @@ var root = &cobra.Command{
 		f := args[0]
 
 		s, err := os.Stat(f)
+		if err != nil {
+			return errors.New("could not read file")
+		}
 		if s.IsDir() {
 			return errors.New("must pass a file")
 		}
