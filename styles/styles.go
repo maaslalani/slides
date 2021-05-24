@@ -3,7 +3,6 @@ package styles
 import (
 	"strings"
 
-	"github.com/charmbracelet/lipgloss"
 	. "github.com/charmbracelet/lipgloss"
 )
 
@@ -20,7 +19,7 @@ var (
 )
 
 func JoinHorizontal(left, right string, width int) string {
-	length := lipgloss.Width(left + right)
+	length := Width(left + right)
 	if width < length {
 		return left + " " + right
 	}
@@ -29,7 +28,7 @@ func JoinHorizontal(left, right string, width int) string {
 }
 
 func JoinVertical(top, bottom string, height int) string {
-	h := lipgloss.Height(top) + lipgloss.Height(bottom)
+	h := Height(top) + Height(bottom)
 	if height < h {
 		return top + "\n" + bottom
 	}
