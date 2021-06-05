@@ -41,8 +41,9 @@ slides presentation.md
 ```
 
 Go to the next slide with any of the following keys:
+* <kbd>space</kbd>
 * <kbd>right</kbd>
-* <kbd>up</kbd>
+* <kbd>down</kbd>
 * <kbd>enter</kbd>
 * <kbd>n</kbd>
 * <kbd>k</kbd>
@@ -50,7 +51,7 @@ Go to the next slide with any of the following keys:
 
 Go to the previous slide with any of the following keys:
 * <kbd>left</kbd>
-* <kbd>down</kbd>
+* <kbd>up</kbd>
 * <kbd>p</kbd>
 * <kbd>h</kbd>
 * <kbd>j</kbd>
