@@ -58,5 +58,6 @@ Go to the previous slide with any of the following keys:
 
 ### Development
 ```
-make
+go build
+./slides
 ```
