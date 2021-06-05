@@ -1,6 +1,10 @@
 # Slides
 
-Slides in your terminal
+Slides in your terminal.
+
+##### Credits
+This project is heavily inspired by [`lookatme`](https://github.com/d0c-s4vage/lookatme).
+`slides` is a more minimal version of [`lookatme`](https://github.com/d0c-s4vage/lookatme) and written in Go.
 
 ### Demo
 ![slides](../assets/slides.gif?raw=true)
