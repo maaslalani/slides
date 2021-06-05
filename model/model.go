@@ -3,7 +3,6 @@ package model
 import (
 	"fmt"
 
-	_ "embed"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
@@ -47,16 +46,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-//go:embed theme.json
-var theme []byte
-
 func (m Model) View() string {
-	var slide string
-	r, err := glamour.NewTermRenderer(glamour.WithStylesFromJSONBytes(theme))
-	if err != nil {
-		return fmt.Sprintf("Error: Could not render markdown! (%v)", err)
-	}
-	slide, err = r.Render(m.Slides[m.Page])
+	slide, err := glamour.Render(m.Slides[m.Page], "styles/theme.json")
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
 	}
