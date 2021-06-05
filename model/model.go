@@ -47,7 +47,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	slide, err := glamour.Render(m.Slides[m.Page], "styles/theme.json")
+	r, _ := glamour.NewTermRenderer(glamour.WithStylesFromJSONBytes(styles.Theme))
+	slide, err := r.Render(m.Slides[m.Page])
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
 	}

@@ -3,6 +3,7 @@ package styles
 import (
 	"strings"
 
+	_ "embed"
 	. "github.com/charmbracelet/lipgloss"
 )
 
@@ -35,3 +36,6 @@ func JoinVertical(top, bottom string, height int) string {
 	fill := strings.Repeat("\n", height-h)
 	return top + fill + bottom
 }
+
+//go:embed theme.json
+var Theme []byte
