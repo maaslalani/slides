@@ -1,12 +1,12 @@
 # Welcome to Slides
 A terminal based presentation tool
 
-~~~
+---
 
 ## Everything is markdown
 In fact this entire presentation is a markdown file
 
-~~~
+---
 
 # h1
 ## h2
@@ -27,15 +27,15 @@ You can use everything in markdown!
 | ------ | ------ |
 | Even   | Tables |
 
-~~~
+---
 
-All you need to do is separate slides with triple tildes `\~\~\~`,
-Like so:
+All you need to do is separate slides with triple dashes `---` on a separate line,
+like so:
 
 ```markdown
 Slide 1
 
-\~\~\~
+--- 
 
 Slide 2
 ```
