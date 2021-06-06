@@ -55,7 +55,7 @@ func (m Model) View() string {
 	slide = styles.Slide.Render(slide)
 
 	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
-	right := styles.Page.Render(fmt.Sprintf("Slide %d / %d", m.Page, len(m.Slides)-1))
+	right := styles.Page.Render(fmt.Sprintf("Slide %d / %d", m.Page+1, len(m.Slides)))
 	status := styles.Status.Render(styles.JoinHorizontal(left, right, m.viewport.Width))
 	return styles.JoinVertical(slide, status, m.viewport.Height)
 }
