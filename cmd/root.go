@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/maaslalani/slides/model"
+	"github.com/maaslalani/slides/internal/model"
 	"github.com/spf13/cobra"
 )
 
