@@ -13,7 +13,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const delimiter = "~~~"
+const (
+	delimiter    = "\n---\n"
+	altDelimiter = "\n~~~\n"
+)
 
 var root = &cobra.Command{
 	Use:   "slides <file.md>",
@@ -35,7 +38,9 @@ var root = &cobra.Command{
 			return errors.New("could not read file")
 		}
 
-		slides := strings.Split(string(b), delimiter)
+		content := string(b)
+		content = strings.ReplaceAll(content, altDelimiter, delimiter)
+		slides := strings.Split(content, delimiter)
 
 		user, err := user.Current()
 		if err != nil {
