@@ -52,9 +52,8 @@ var root = &cobra.Command{
 			Page:   0,
 			Author: user.Name,
 			Date:   s.ModTime().Format("2006-01-03"),
-		})
+		}, tea.WithAltScreen())
 
-		p.EnterAltScreen()
 		err = p.Start()
 		return err
 	},
