@@ -51,7 +51,7 @@ var root = &cobra.Command{
 			Slides: slides,
 			Page:   0,
 			Author: user.Name,
-			Date:   s.ModTime().Format("2006-01-03"),
+			Date:   s.ModTime().Format("2006-01-02"),
 		}, tea.WithAltScreen())
 
 		err = p.Start()
