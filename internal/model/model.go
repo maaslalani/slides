@@ -14,6 +14,7 @@ type Model struct {
 	Page     int
 	Author   string
 	Date     string
+	Theme    []byte
 	viewport viewport.Model
 }
 
@@ -47,7 +48,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	r, _ := glamour.NewTermRenderer(glamour.WithStylesFromJSONBytes(styles.Theme))
+	r, _ := glamour.NewTermRenderer(glamour.WithStylesFromJSONBytes(m.Theme))
 	slide, err := r.Render(m.Slides[m.Page])
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)

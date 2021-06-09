@@ -10,7 +10,9 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/maaslalani/slides/internal/model"
+	"github.com/maaslalani/slides/styles"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 const (
@@ -47,16 +49,31 @@ var root = &cobra.Command{
 			return errors.New("could not get current user")
 		}
 
+		theme := styles.Theme
+		if viper.GetString("theme") != "" {
+			customTheme, err := styles.CustomTheme(viper.GetString("theme"))
+			if err != nil {
+				return err
+			}
+			theme = customTheme
+		}
+
 		p := tea.NewProgram(model.Model{
 			Slides: slides,
 			Page:   0,
 			Author: user.Name,
 			Date:   s.ModTime().Format("2006-01-02"),
+			Theme:  theme,
 		}, tea.WithAltScreen())
 
 		err = p.Start()
 		return err
 	},
+}
+
+func init() {
+	root.PersistentFlags().StringP("theme", "t", "", "custom theme.json")
+	_ = viper.BindPFlag("theme", root.PersistentFlags().Lookup("theme"))
 }
 
 func Execute() {
