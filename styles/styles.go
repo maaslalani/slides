@@ -6,23 +6,23 @@ import (
 	"os"
 	"strings"
 
-	lg "github.com/charmbracelet/lipgloss"
+	. "github.com/charmbracelet/lipgloss"
 )
 
 const (
-	salmon = lg.Color("#E8B4BC")
+	salmon = Color("#E8B4BC")
 )
 
 var (
-	Author = lg.NewStyle().Foreground(salmon).Align(lg.Left).MarginLeft(2)
-	Date   = lg.NewStyle().Faint(true).Align(lg.Left).Margin(0, 1)
-	Page   = lg.NewStyle().Foreground(salmon).Align(lg.Right).MarginRight(3)
-	Slide  = lg.NewStyle().Padding(1)
-	Status = lg.NewStyle().Padding(1)
+	Author = NewStyle().Foreground(salmon).Align(Left).MarginLeft(2)
+	Date   = NewStyle().Faint(true).Align(Left).Margin(0, 1)
+	Page   = NewStyle().Foreground(salmon).Align(Right).MarginRight(3)
+	Slide  = NewStyle().Padding(1)
+	Status = NewStyle().Padding(1)
 )
 
 func JoinHorizontal(left, right string, width int) string {
-	length := lg.Width(left + right)
+	length := Width(left + right)
 	if width < length {
 		return left + " " + right
 	}
@@ -31,7 +31,7 @@ func JoinHorizontal(left, right string, width int) string {
 }
 
 func JoinVertical(top, bottom string, height int) string {
-	h := lg.Height(top) + lg.Height(bottom)
+	h := Height(top) + Height(bottom)
 	if height < h {
 		return top + "\n" + bottom
 	}
