@@ -43,16 +43,8 @@ var root = &cobra.Command{
 		content := string(b)
 		content = strings.ReplaceAll(content, altDelimiter, delimiter)
 		slides := strings.Split(content, delimiter)
-		m, err := meta.New().ParseHeader(slides[0])
-		if err != nil {
-			return errors.New("could not parse theme from header")
-		}
 
-		theme, err := styles.SelectTheme(m.Theme)
-		if err != nil {
-			return err
-		}
-
+		m, _ := meta.New().ParseHeader(slides[0])
 		user, err := user.Current()
 		if err != nil {
 			return errors.New("could not get current user")
@@ -62,7 +54,7 @@ var root = &cobra.Command{
 			Page:   0,
 			Author: user.Name,
 			Date:   s.ModTime().Format("2006-01-02"),
-			Theme:  theme,
+			Theme:  styles.SelectTheme(m.Theme),
 		}, tea.WithAltScreen())
 
 		err = p.Start()

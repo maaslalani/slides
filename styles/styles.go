@@ -2,11 +2,10 @@ package styles
 
 import (
 	_ "embed"
-	"errors"
-	"io/ioutil"
-	"os"
 	"strings"
 
+	"github.com/charmbracelet/glamour"
+	"github.com/charmbracelet/glamour/ansi"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -23,14 +22,8 @@ var (
 )
 
 var (
-	//go:embed theme.json
+	// go:embed theme.json
 	DefaultTheme []byte
-
-	//go:embed theme_dark.json
-	DarkTheme []byte
-
-	//go:embed theme_light.json
-	LightTheme []byte
 )
 
 func JoinHorizontal(left, right string, width int) string {
@@ -51,36 +44,17 @@ func JoinVertical(top, bottom string, height int) string {
 	return top + fill + bottom
 }
 
-// CustomTheme reads a json theme file from the entered
-// path and returns the bytes
-func CustomTheme(filename string) ([]byte, error) {
-	if fileExists(filename) {
-		b, err := ioutil.ReadFile(filename)
-		if err != nil {
-			return nil, err
-		}
-		return b, err
-	}
-	return nil, nil
-}
-
-func SelectTheme(theme string) ([]byte, error) {
+// SelectTheme picks a glamour style config based
+// on the theme provided in the markdown header
+func SelectTheme(theme string) ansi.StyleConfig {
 	switch theme {
-	case "default":
-		return DefaultTheme, nil
-	case "dark":
-		return DarkTheme, nil
+	case "ascii":
+		return glamour.ASCIIStyleConfig
 	case "light":
-		return LightTheme, nil
+		return glamour.LightStyleConfig
+	case "notty":
+		return glamour.NoTTYStyleConfig
 	default:
-		return nil, errors.New("could not apply custom theme")
+		return glamour.DarkStyleConfig
 	}
-}
-
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
 }
