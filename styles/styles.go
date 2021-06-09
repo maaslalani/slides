@@ -20,6 +20,7 @@ var (
 	Page   = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
 	Slide  = lipgloss.NewStyle().Padding(1)
 	Status = lipgloss.NewStyle().Padding(1)
+<<<<<<< HEAD
 )
 
 var (
@@ -31,6 +32,8 @@ var (
 
 	//go:embed theme_light.json
 	LightTheme []byte
+=======
+>>>>>>> b597e31db2f64a4cc591c7c29d0a0078eb65bbde
 )
 
 func JoinHorizontal(left, right string, width int) string {
