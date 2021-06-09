@@ -4,23 +4,23 @@ import (
 	"strings"
 
 	_ "embed"
-	. "github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss"
 )
 
 const (
-	salmon = Color("#E8B4BC")
+	salmon = lipgloss.Color("#E8B4BC")
 )
 
 var (
-	Author = NewStyle().Foreground(salmon).Align(Left).MarginLeft(2)
-	Date   = NewStyle().Faint(true).Align(Left).Margin(0, 1)
-	Page   = NewStyle().Foreground(salmon).Align(Right).MarginRight(3)
-	Slide  = NewStyle().Padding(1)
-	Status = NewStyle().Padding(1)
+	Author = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Left).MarginLeft(2)
+	Date   = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).Margin(0, 1)
+	Page   = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
+	Slide  = lipgloss.NewStyle().Padding(1)
+	Status = lipgloss.NewStyle().Padding(1)
 )
 
 func JoinHorizontal(left, right string, width int) string {
-	length := Width(left + right)
+	length := lipgloss.Width(left + right)
 	if width < length {
 		return left + " " + right
 	}
@@ -29,7 +29,7 @@ func JoinHorizontal(left, right string, width int) string {
 }
 
 func JoinVertical(top, bottom string, height int) string {
-	h := Height(top) + Height(bottom)
+	h := lipgloss.Height(top) + lipgloss.Height(bottom)
 	if height < h {
 		return top + "\n" + bottom
 	}
