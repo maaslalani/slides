@@ -1,3 +1,7 @@
+---
+theme: "default"
+---
+
 # Welcome to Slides
 A terminal based presentation tool
 

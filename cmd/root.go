@@ -9,10 +9,10 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/maaslalani/slides/internal/meta"
 	"github.com/maaslalani/slides/internal/model"
 	"github.com/maaslalani/slides/styles"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -43,23 +43,22 @@ var root = &cobra.Command{
 		content := string(b)
 		content = strings.ReplaceAll(content, altDelimiter, delimiter)
 		slides := strings.Split(content, delimiter)
+		m, err := meta.New().ParseHeader(slides[0])
+		if err != nil {
+			return errors.New("could not parse theme from header")
+		}
+
+		theme, err := styles.SelectTheme(m.Theme)
+		if err != nil {
+			return err
+		}
 
 		user, err := user.Current()
 		if err != nil {
 			return errors.New("could not get current user")
 		}
-
-		theme := styles.Theme
-		if viper.GetString("theme") != "" {
-			customTheme, err := styles.CustomTheme(viper.GetString("theme"))
-			if err != nil {
-				return err
-			}
-			theme = customTheme
-		}
-
 		p := tea.NewProgram(model.Model{
-			Slides: slides,
+			Slides: slides[1:],
 			Page:   0,
 			Author: user.Name,
 			Date:   s.ModTime().Format("2006-01-02"),
@@ -69,11 +68,6 @@ var root = &cobra.Command{
 		err = p.Start()
 		return err
 	},
-}
-
-func init() {
-	root.PersistentFlags().StringP("theme", "t", "", "custom theme.json")
-	_ = viper.BindPFlag("theme", root.PersistentFlags().Lookup("theme"))
 }
 
 func Execute() {

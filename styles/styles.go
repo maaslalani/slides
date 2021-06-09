@@ -2,27 +2,39 @@ package styles
 
 import (
 	_ "embed"
+	"errors"
 	"io/ioutil"
 	"os"
 	"strings"
 
-	. "github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss"
 )
 
 const (
-	salmon = Color("#E8B4BC")
+	salmon = lipgloss.Color("#E8B4BC")
 )
 
 var (
-	Author = NewStyle().Foreground(salmon).Align(Left).MarginLeft(2)
-	Date   = NewStyle().Faint(true).Align(Left).Margin(0, 1)
-	Page   = NewStyle().Foreground(salmon).Align(Right).MarginRight(3)
-	Slide  = NewStyle().Padding(1)
-	Status = NewStyle().Padding(1)
+	Author = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Left).MarginLeft(2)
+	Date   = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).Margin(0, 1)
+	Page   = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
+	Slide  = lipgloss.NewStyle().Padding(1)
+	Status = lipgloss.NewStyle().Padding(1)
+)
+
+var (
+	//go:embed theme.json
+	DefaultTheme []byte
+
+	//go:embed theme_dark.json
+	DarkTheme []byte
+
+	//go:embed theme_light.json
+	LightTheme []byte
 )
 
 func JoinHorizontal(left, right string, width int) string {
-	length := Width(left + right)
+	length := lipgloss.Width(left + right)
 	if width < length {
 		return left + " " + right
 	}
@@ -31,7 +43,7 @@ func JoinHorizontal(left, right string, width int) string {
 }
 
 func JoinVertical(top, bottom string, height int) string {
-	h := Height(top) + Height(bottom)
+	h := lipgloss.Height(top) + lipgloss.Height(bottom)
 	if height < h {
 		return top + "\n" + bottom
 	}
@@ -52,6 +64,19 @@ func CustomTheme(filename string) ([]byte, error) {
 	return nil, nil
 }
 
+func SelectTheme(theme string) ([]byte, error) {
+	switch theme {
+	case "default":
+		return DefaultTheme, nil
+	case "dark":
+		return DarkTheme, nil
+	case "light":
+		return LightTheme, nil
+	default:
+		return nil, errors.New("could not apply custom theme")
+	}
+}
+
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
@@ -59,6 +84,3 @@ func fileExists(filename string) bool {
 	}
 	return !info.IsDir()
 }
-
-//go:embed theme.json
-var Theme []byte
