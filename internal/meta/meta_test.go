@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/alecthomas/assert"
 	"github.com/maaslalani/slides/internal/meta"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMeta_ParseHeader(t *testing.T) {
