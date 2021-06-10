@@ -11,12 +11,13 @@ import (
 )
 
 type Model struct {
-	Slides   []string
-	Page     int
-	Author   string
-	Date     string
-	Theme    ansi.StyleConfig
-	viewport viewport.Model
+	Slides      []string
+	Page        int
+	Author      string
+	Date        string
+	CustomTheme glamour.TermRendererOption
+	Theme       ansi.StyleConfig
+	viewport    viewport.Model
 }
 
 func (m Model) Init() tea.Cmd {
@@ -44,12 +45,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		}
 	}
-
 	return m, nil
 }
 
 func (m Model) View() string {
-	r, _ := glamour.NewTermRenderer(glamour.WithStyles(m.Theme))
+	style := glamour.WithStyles(m.Theme)
+	if m.CustomTheme != nil {
+		style = m.CustomTheme
+	}
+
+	r, _ := glamour.NewTermRenderer(style)
 	slide, err := r.Render(m.Slides[m.Page])
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)

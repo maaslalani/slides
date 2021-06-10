@@ -2,6 +2,7 @@ package styles
 
 import (
 	_ "embed"
+	"os"
 	"strings"
 
 	"github.com/charmbracelet/glamour"
@@ -22,7 +23,7 @@ var (
 )
 
 var (
-	// go:embed theme.json
+	//go:embed theme.json
 	DefaultTheme []byte
 )
 
@@ -44,6 +45,18 @@ func JoinVertical(top, bottom string, height int) string {
 	return top + fill + bottom
 }
 
+// CustomTheme reads in a custom glamour theme configuration
+// from a filepath
+func CustomTheme(filepath string) glamour.TermRendererOption {
+	if fileExists(filepath) {
+		return glamour.WithStylesFromJSONFile(filepath)
+	}
+	if filepath == "default" {
+		return glamour.WithStylesFromJSONBytes(DefaultTheme)
+	}
+	return nil
+}
+
 // SelectTheme picks a glamour style config based
 // on the theme provided in the markdown header
 func SelectTheme(theme string) ansi.StyleConfig {
@@ -57,4 +70,15 @@ func SelectTheme(theme string) ansi.StyleConfig {
 	default:
 		return glamour.DarkStyleConfig
 	}
+}
+
+// fileExists is a helper to verify
+// that the provided filepath exists
+// on the system
+func fileExists(filepath string) bool {
+	info, err := os.Stat(filepath)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }

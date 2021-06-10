@@ -1,5 +1,5 @@
 ---
-theme: "dark"
+theme: "default"
 ---
 
 # Welcome to Slides

@@ -49,12 +49,14 @@ var root = &cobra.Command{
 		if err != nil {
 			return errors.New("could not get current user")
 		}
+
 		p := tea.NewProgram(model.Model{
-			Slides: slides[1:],
-			Page:   0,
-			Author: user.Name,
-			Date:   s.ModTime().Format("2006-01-02"),
-			Theme:  styles.SelectTheme(m.Theme),
+			Slides:      slides[1:],
+			Page:        0,
+			Author:      user.Name,
+			Date:        s.ModTime().Format("2006-01-02"),
+			Theme:       styles.SelectTheme(m.Theme),
+			CustomTheme: styles.CustomTheme(m.Theme),
 		}, tea.WithAltScreen())
 
 		err = p.Start()
