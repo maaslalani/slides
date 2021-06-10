@@ -1,12 +1,15 @@
 package cmd
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"os/user"
 	"strings"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/maaslalani/slides/internal/meta"
@@ -23,38 +26,34 @@ const (
 var root = &cobra.Command{
 	Use:   "slides <file.md>",
 	Short: "Slides is a terminal based presentation tool",
-	Args:  cobra.ExactArgs(1),
+	Args:  cobra.MaximumNArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
-		f := args[0]
+		var content string
+		var err error
 
-		s, err := os.Stat(f)
+		if len(args) > 0 {
+			content, err = readFile(args[0])
+		} else {
+			content, err = readStdin()
+		}
+
 		if err != nil {
-			return errors.New("could not read file")
-		}
-		if s.IsDir() {
-			return errors.New("must pass a file")
+			return err
 		}
 
-		b, err := ioutil.ReadFile(f)
-		if err != nil {
-			return errors.New("could not read file")
-		}
-
-		content := string(b)
 		content = strings.ReplaceAll(content, altDelimiter, delimiter)
 		slides := strings.Split(content, delimiter)
 
-		m, _ := meta.New().ParseHeader(slides[0])
 		user, err := user.Current()
 		if err != nil {
 			return errors.New("could not get current user")
 		}
-
+		m, _ := meta.New().ParseHeader(slides[0])
 		p := tea.NewProgram(model.Model{
 			Slides:      slides[1:],
 			Page:        0,
 			Author:      user.Name,
-			Date:        s.ModTime().Format("2006-01-02"),
+			Date:        time.Now().Format("2006-01-02"),
 			Theme:       styles.SelectTheme(m.Theme),
 			CustomTheme: styles.CustomTheme(m.Theme),
 		}, tea.WithAltScreen())
@@ -70,4 +69,46 @@ func Execute() {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func readFile(path string) (string, error) {
+	s, err := os.Stat(path)
+	if err != nil {
+		return "", errors.New("could not read file")
+	}
+	if s.IsDir() {
+		return "", errors.New("can not read directory")
+	}
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	return string(b), err
+}
+
+func readStdin() (string, error) {
+	stat, err := os.Stdin.Stat()
+	if err != nil {
+		return "", err
+	}
+
+	if stat.Mode()&os.ModeNamedPipe == 0 && stat.Size() == 0 {
+		return "", errors.New("no slides provided")
+	}
+
+	reader := bufio.NewReader(os.Stdin)
+	var b strings.Builder
+
+	for {
+		r, _, err := reader.ReadRune()
+		if err != nil && err == io.EOF {
+			break
+		}
+		_, err = b.WriteRune(r)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return b.String(), nil
 }
