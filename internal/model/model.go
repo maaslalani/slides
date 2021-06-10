@@ -1,12 +1,24 @@
 package model
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
-
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
+	"github.com/maaslalani/slides/internal/meta"
 	"github.com/maaslalani/slides/styles"
+	"io"
+	"io/ioutil"
+	"os"
+	"strings"
+	"time"
+)
+
+const (
+	delimiter    = "\n---\n"
+	altDelimiter = "\n~~~\n"
 )
 
 type Model struct {
@@ -15,10 +27,57 @@ type Model struct {
 	Author   string
 	Date     string
 	Theme    glamour.TermRendererOption
+	FileName string
 	viewport viewport.Model
 }
 
+type fileWatchMsg struct{}
+
+var fileInfo os.FileInfo
+
 func (m Model) Init() tea.Cmd {
+	if m.FileName == "" {
+		return nil
+	}
+	fileInfo, _ = os.Stat(m.FileName)
+	return fileWatchCmd()
+}
+
+func fileWatchCmd() tea.Cmd {
+	return tea.Every(time.Second, func(t time.Time) tea.Msg {
+		return fileWatchMsg{}
+	})
+}
+
+func (m *Model) Load() error {
+	var content string
+	var err error
+
+	if m.FileName != "" {
+		content, err = readFile(m.FileName)
+	} else {
+		content, err = readStdin()
+	}
+
+	if err != nil {
+		return err
+	}
+
+	content = strings.ReplaceAll(content, altDelimiter, delimiter)
+	slides := strings.Split(content, delimiter)
+
+	metaData, exists := meta.New().ParseHeader(slides[0])
+	// If the user specifies a custom configuration options
+	// skip the first "slide" since this is all configuration
+	if exists {
+		slides = slides[1:]
+	}
+
+	m.Slides = slides
+	if m.Theme == nil {
+		m.Theme = styles.SelectTheme(metaData.Theme)
+	}
+
 	return nil
 }
 
@@ -42,6 +101,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.Page--
 			}
 		}
+
+	case fileWatchMsg:
+		newFileInfo, err := os.Stat(m.FileName)
+		if err == nil && newFileInfo.ModTime() != fileInfo.ModTime() {
+			fileInfo = newFileInfo
+			_ = m.Load()
+			if m.Page >= len(m.Slides) {
+				m.Page = len(m.Slides) - 1
+			}
+		}
+		return m, fileWatchCmd()
 	}
 	return m, nil
 }
@@ -58,4 +128,46 @@ func (m Model) View() string {
 	right := styles.Page.Render(fmt.Sprintf("Slide %d / %d", m.Page+1, len(m.Slides)))
 	status := styles.Status.Render(styles.JoinHorizontal(left, right, m.viewport.Width))
 	return styles.JoinVertical(slide, status, m.viewport.Height)
+}
+
+func readFile(path string) (string, error) {
+	s, err := os.Stat(path)
+	if err != nil {
+		return "", errors.New("could not read file")
+	}
+	if s.IsDir() {
+		return "", errors.New("can not read directory")
+	}
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	return string(b), err
+}
+
+func readStdin() (string, error) {
+	stat, err := os.Stdin.Stat()
+	if err != nil {
+		return "", err
+	}
+
+	if stat.Mode()&os.ModeNamedPipe == 0 && stat.Size() == 0 {
+		return "", errors.New("no slides provided")
+	}
+
+	reader := bufio.NewReader(os.Stdin)
+	var b strings.Builder
+
+	for {
+		r, _, err := reader.ReadRune()
+		if err != nil && err == io.EOF {
+			break
+		}
+		_, err = b.WriteRune(r)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return b.String(), nil
 }

@@ -70,6 +70,8 @@ Then, to present, run:
 slides presentation.md
 ```
 
+Live reload is supported by default. It means no need to restart the presentation while continue editing the slides.
+
 `slides` also accepts input through `stdin`:
 ```
 curl http://example.com/slides.md | slides
