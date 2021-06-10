@@ -2,6 +2,8 @@ package model
 
 import (
 	"fmt"
+	"os/exec"
+	"regexp"
 
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
@@ -16,10 +18,27 @@ type Model struct {
 	Date     string
 	Theme    glamour.TermRendererOption
 	viewport viewport.Model
+
+	Code struct {
+		Language string
+		Block    string
+		Result   string
+		Display  bool
+	}
 }
 
 func (m Model) Init() tea.Cmd {
 	return nil
+}
+
+var LanguageCommands = map[string]struct {
+	Command string
+	Args    []string
+}{
+	"ruby": {
+		Command: "ruby",
+		Args:    []string{"-e"},
+	},
 }
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -30,6 +49,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, nil
 
 	case tea.KeyMsg:
+		m.Code.Display = false
 		switch msg.String() {
 		case "ctrl+c", "q":
 			return m, tea.Quit
@@ -41,6 +61,33 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.Page > 0 {
 				m.Page--
 			}
+		case "e":
+			// Executing arbitrary code blocks and displaying
+			// the output of the program
+			m.Code.Language = "ruby"
+			re := regexp.MustCompile("```.*\n(.*)\n```")
+			slide := m.Slides[m.Page]
+			match := re.FindStringSubmatch(slide)
+
+			// There is no code block on the screen
+			// skipping...
+			if len(match) < 2 {
+				return m, nil
+			}
+
+			m.Code.Block = match[1]
+			lang := LanguageCommands[m.Code.Language]
+			args := append(lang.Args, m.Code.Block)
+			cmd := exec.Command(lang.Command, args...)
+			out, err := cmd.Output()
+
+			if err != nil {
+				m.Code.Result = "Error: failed to execute code block"
+			} else {
+				m.Code.Result = string(out)
+			}
+
+			m.Code.Display = true
 		}
 	}
 	return m, nil
@@ -48,7 +95,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m Model) View() string {
 	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(0))
-	slide, err := r.Render(m.Slides[m.Page])
+	slide := m.Slides[m.Page]
+	if m.Code.Display {
+		slide += "\n```\nResult: " + m.Code.Result + "\n```"
+	}
+	slide, err := r.Render(slide)
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
 	}

@@ -1,15 +1,10 @@
 # Welcome to Slides
 A terminal based presentation tool
 
-```go
-package main
-
-import "fmt"
-
-func main() {
-  fmt.Println("Written in Go!")
-}
+```ruby
+puts "Hello, world!"
 ```
+Should result in Hello, world!
 
 ---
 
