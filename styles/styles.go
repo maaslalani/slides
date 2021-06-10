@@ -1,3 +1,4 @@
+// Package styles implements the theming logic for slides
 package styles
 
 import (

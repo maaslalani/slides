@@ -1,3 +1,5 @@
+// Package meta implements markdown frontmatter parsing for simple
+// slides configuration
 package meta
 
 import (
@@ -7,12 +9,14 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Meta contains all of the data to be parsed
+// out of a markdown file's header section
 type Meta struct {
 	Theme string `yaml:"theme"`
 }
 
 // New creates a new instance of the
-// slideshow meta object
+// slideshow meta header object
 func New() *Meta {
 	return &Meta{}
 }
