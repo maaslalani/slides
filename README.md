@@ -40,6 +40,11 @@ Then, to present, run:
 slides presentation.md
 ```
 
+You are also able to pass in slides through `stdin`, this allows you to `curl` and present remote files:
+```
+curl https://example.com/slides.md | slides
+```
+
 Go to the next slide with any of the following keys:
 * <kbd>space</kbd>
 * <kbd>right</kbd>
