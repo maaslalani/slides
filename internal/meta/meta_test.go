@@ -9,41 +9,39 @@ import (
 )
 
 func TestMeta_ParseHeader(t *testing.T) {
-	type fields struct {
-		Theme string
-	}
-	type args struct {
-		header string
-	}
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		want    *meta.Meta
-		wantErr bool
+		name      string
+		slideshow string
+		want      *meta.Meta
+		wantErr   bool
 	}{
 		{
-			name: "Parse theme from header",
-			fields: fields{
-				Theme: "dark",
-			},
-			args: args{
-				header: fmt.Sprintf("---\ntheme: %q\n", "dark"),
-			},
+			name:      "Parse theme from header",
+			slideshow: fmt.Sprintf("---\ntheme: %q\n", "dark"),
+			wantErr:   false,
 			want: &meta.Meta{
 				Theme: "dark",
+			},
+		},
+		{
+			name:      "Fallback to default if no theme provided",
+			slideshow: "\n# Header Slide\n > Subtitle\n",
+			wantErr:   false,
+			want: &meta.Meta{
+				Theme: "default",
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			m := &meta.Meta{}
-			got, err := m.ParseHeader(tt.args.header)
+			got, err := m.ParseHeader(tt.slideshow)
 			if tt.wantErr {
 				assert.Error(t, err)
+				return
 			}
-			assert.Nil(t, err)
-			assert.Equal(t, got, tt.want)
+
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

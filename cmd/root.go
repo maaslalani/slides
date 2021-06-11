@@ -48,9 +48,14 @@ var root = &cobra.Command{
 		if err != nil {
 			return errors.New("could not get current user")
 		}
-		m, _ := meta.New().ParseHeader(slides[0])
+
+		m, err := meta.New().ParseHeader(slides[0])
+		if err == nil {
+			slides = slides[1:]
+		}
+
 		p := tea.NewProgram(model.Model{
-			Slides:      slides[1:],
+			Slides:      slides,
 			Page:        0,
 			Author:      user.Name,
 			Date:        time.Now().Format("2006-01-02"),

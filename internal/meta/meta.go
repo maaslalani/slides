@@ -23,15 +23,18 @@ func New() *Meta {
 
 // ParseHeader parses metadata from a slideshows header slide
 // including theme information
+//
+// If no front matter is provided, it will fallback to the default theme
 func (m *Meta) ParseHeader(header string) (*Meta, error) {
+	fallback := &Meta{Theme: "default"}
 	bytes, err := frontmatter.Parse(strings.NewReader(header), &m)
 	if err != nil {
-		return nil, err
+		return fallback, nil
 	}
 
 	err = yaml.Unmarshal(bytes, &m)
 	if err != nil {
-		return nil, err
+		return fallback, err
 	}
 
 	return m, nil

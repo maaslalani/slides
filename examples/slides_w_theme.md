@@ -1,3 +1,7 @@
+---
+theme: "ascii"
+---
+
 # Welcome to Slides
 A terminal based presentation tool
 
