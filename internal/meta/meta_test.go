@@ -13,12 +13,10 @@ func TestMeta_ParseHeader(t *testing.T) {
 		name      string
 		slideshow string
 		want      *meta.Meta
-		wantErr   bool
 	}{
 		{
 			name:      "Parse theme from header",
 			slideshow: fmt.Sprintf("---\ntheme: %q\n", "dark"),
-			wantErr:   false,
 			want: &meta.Meta{
 				Theme: "dark",
 			},
@@ -26,7 +24,6 @@ func TestMeta_ParseHeader(t *testing.T) {
 		{
 			name:      "Fallback to default if no theme provided",
 			slideshow: "\n# Header Slide\n > Subtitle\n",
-			wantErr:   false,
 			want: &meta.Meta{
 				Theme: "default",
 			},
@@ -35,10 +32,9 @@ func TestMeta_ParseHeader(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			m := &meta.Meta{}
-			got, err := m.ParseHeader(tt.slideshow)
-			if tt.wantErr {
-				assert.Error(t, err)
-				return
+			got, hasMeta := m.ParseHeader(tt.slideshow)
+			if !hasMeta {
+				assert.NotNil(t, got)
 			}
 
 			assert.Equal(t, tt.want, got)
@@ -68,10 +64,7 @@ theme: "dark"
 `
 	// Parse the header from the markdown
 	// file
-	m, err := meta.New().ParseHeader(header)
-	if err != nil {
-		return
-	}
+	m, _ := meta.New().ParseHeader(header)
 
 	// Print the return theme
 	// meta

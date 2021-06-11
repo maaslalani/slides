@@ -49,8 +49,8 @@ var root = &cobra.Command{
 			return errors.New("could not get current user")
 		}
 
-		m, err := meta.New().ParseHeader(slides[0])
-		if err == nil {
+		m, metaExists := meta.New().ParseHeader(slides[0])
+		if metaExists {
 			slides = slides[1:]
 		}
 
