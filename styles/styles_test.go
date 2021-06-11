@@ -22,7 +22,15 @@ func TestCustomTheme(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := glamour.NewTermRenderer(styles.CustomTheme(tt.filepath))
+			if err != nil {
+				assert.True(t, tt.wantErr)
+			}
+
 			want, err := glamour.NewTermRenderer(glamour.WithStylesFromJSONFile(tt.filepath))
+			if err != nil {
+				assert.True(t, tt.wantErr)
+			}
+
 			if tt.wantErr {
 				assert.Error(t, err)
 				return
