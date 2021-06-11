@@ -52,10 +52,12 @@ func CustomTheme(filepath string) glamour.TermRendererOption {
 	if fileExists(filepath) {
 		return glamour.WithStylesFromJSONFile(filepath)
 	}
-	if filepath == "default" {
+	switch filepath {
+	case "default":
+		return glamour.WithStylesFromJSONBytes(DefaultTheme)
+	default:
 		return glamour.WithStylesFromJSONBytes(DefaultTheme)
 	}
-	return nil
 }
 
 // SelectTheme picks a glamour style config based
