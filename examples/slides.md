@@ -53,11 +53,11 @@ digraph {
     b -> c;
 }
 ```
-
+```
 ┌───┐     ┌───┐     ┌───┐
 │ a │ ──▶ │ b │ ──▶ │ c │
 └───┘     └───┘     └───┘
-
+```
 ---
 
 All you need to do is separate slides with triple dashes
