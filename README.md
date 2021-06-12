@@ -6,13 +6,31 @@ Slides in your terminal.
 ![slides](../assets/demo.gif?raw=true)
 
 ### Installation
+Using a package manager:
+
+* Go
 ```bash
-go get github.com/maaslalani/slides
+go install github.com/maaslalani/slides
 ```
 
-```bash
+* MacOS
+```
 brew install slides
 ```
+
+* Arch
+```
+yay -S slides
+```
+
+From source:
+```
+git clone https://github.com/maaslalani/slides.git
+cd slides
+go install
+```
+
+You can also download a binary from the [releases](https://github.com/maaslalani/slides/releases) page.
 
 ### Usage
 Create a simple markdown file that contains your slides:
