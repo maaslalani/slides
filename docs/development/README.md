@@ -14,3 +14,8 @@ add a file with your test case into `examples/<test>.md` and iterate on that fil
 ### Breaking Changes
 Most changes should be entirely backwards compatible.
 Ensure that `slides examples/slides.md` still works.
+
+### Codebase
+Initialization (command-line interface, defaults) happens in [`cmd/root.go`](../../cmd/root.go).
+Interaction (controls, input, output) happens in [`model.go`](../../internal/model/model.go)
+Optional configuration (e.g. `theme: dark`) can be added to [`meta.go`](../../internal/meta/meta.go)
