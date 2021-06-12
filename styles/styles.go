@@ -1,9 +1,11 @@
+// Package styles implements the theming logic for slides
 package styles
 
 import (
+	_ "embed"
 	"strings"
 
-	_ "embed"
+	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -17,6 +19,11 @@ var (
 	Page   = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
 	Slide  = lipgloss.NewStyle().Padding(1)
 	Status = lipgloss.NewStyle().Padding(1)
+)
+
+var (
+	//go:embed theme.json
+	DefaultTheme []byte
 )
 
 func JoinHorizontal(left, right string, width int) string {
@@ -37,5 +44,19 @@ func JoinVertical(top, bottom string, height int) string {
 	return top + fill + bottom
 }
 
-//go:embed theme.json
-var Theme []byte
+// SelectTheme picks a glamour style config based
+// on the theme provided in the markdown header
+func SelectTheme(theme string) glamour.TermRendererOption {
+	switch theme {
+	case "ascii":
+		return glamour.WithStyles(glamour.ASCIIStyleConfig)
+	case "light":
+		return glamour.WithStyles(glamour.LightStyleConfig)
+	case "dark":
+		return glamour.WithStyles(glamour.DarkStyleConfig)
+	case "notty":
+		return glamour.WithStyles(glamour.NoTTYStyleConfig)
+	default:
+		return glamour.WithStylesFromJSONBytes(DefaultTheme)
+	}
+}
