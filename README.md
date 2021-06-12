@@ -31,6 +31,15 @@ In fact, this entire presentation is a markdown file.
 ## Everything happens in your terminal
 Create slides and present them without ever leaving your terminal.
 
+---
+
+Include ASCII graphs with GraphViz + graph-easy.
+https://dot-to-ascii.ggerganov.com/
+
+┌──────────┐     ┌────────────┐     ┌────────┐
+│ GraphViz │ ──▶ │ graph-easy │ ──▶ │ slides │
+└──────────┘     └────────────┘     └────────┘
+
 ```
 
 Checkout the [example slides](./examples).
