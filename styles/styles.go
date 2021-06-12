@@ -7,6 +7,7 @@ import (
 
 	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/muesli/termenv"
 )
 
 const (
@@ -57,6 +58,13 @@ func SelectTheme(theme string) glamour.TermRendererOption {
 	case "notty":
 		return glamour.WithStyles(glamour.NoTTYStyleConfig)
 	default:
+		if termenv.EnvNoColor() {
+			return glamour.WithStyles(glamour.NoTTYStyleConfig)
+		}
+
+		if !termenv.HasDarkBackground(){
+			return glamour.WithStyles(glamour.LightStyleConfig)
+		}
 		return glamour.WithStylesFromJSONBytes(DefaultTheme)
 	}
 }
