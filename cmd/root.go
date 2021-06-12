@@ -12,7 +12,9 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/maaslalani/slides/internal/meta"
 	"github.com/maaslalani/slides/internal/model"
+	"github.com/maaslalani/slides/styles"
 	"github.com/spf13/cobra"
 )
 
@@ -47,11 +49,19 @@ var root = &cobra.Command{
 			return errors.New("could not get current user")
 		}
 
+		m, exists := meta.New().ParseHeader(slides[0])
+		// If the user specifies a custom configuration options
+		// skip the first "slide" since this is all configuration
+		if exists {
+			slides = slides[1:]
+		}
+
 		p := tea.NewProgram(model.Model{
 			Slides: slides,
 			Page:   0,
 			Author: user.Name,
 			Date:   time.Now().Format("2006-01-02"),
+			Theme:  styles.SelectTheme(m.Theme),
 		}, tea.WithAltScreen())
 
 		err = p.Start()
