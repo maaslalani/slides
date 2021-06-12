@@ -2,8 +2,9 @@
 
 Slides in your terminal.
 
-### Demo
-![slides](../assets/demo.gif?raw=true)
+<p align="center">
+  <img src="../assets/demo.gif?raw=true" width="600" alt="Slides Presentation" />
+</p>
 
 ### Installation
 Using a package manager:
