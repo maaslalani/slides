@@ -25,6 +25,8 @@ In fact this entire presentation is a markdown file
 ##### h5
 ###### h6
 
+---
+
 # Markdown components
 You can use everything in markdown!
 * Like bulleted list
@@ -32,14 +34,34 @@ You can use everything in markdown!
 
 1. Numbered lists too
 
+---
+
+# Tables
+
 | Tables | Too    |
 | ------ | ------ |
 | Even   | Tables |
 
 ---
 
-All you need to do is separate slides with triple dashes `---` on a separate line,
-like so:
+# Graphs
+
+```
+digraph {
+    rankdir = LR;
+    a -> b;
+    b -> c;
+}
+```
+
+┌───┐     ┌───┐     ┌───┐
+│ a │ ──▶ │ b │ ──▶ │ c │
+└───┘     └───┘     └───┘
+
+---
+
+All you need to do is separate slides with triple dashes
+`---` on a separate line, like so:
 
 ```markdown
 # Slide 1
