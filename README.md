@@ -2,16 +2,16 @@
 
 Slides in your terminal.
 
-##### Credits
-This project is heavily inspired by [`lookatme`](https://github.com/d0c-s4vage/lookatme).
-`slides` is a more minimal version of [`lookatme`](https://github.com/d0c-s4vage/lookatme) and written in Go.
-
 ### Demo
 ![slides](../assets/demo.gif?raw=true)
 
 ### Installation
-```
+```bash
 go get github.com/maaslalani/slides
+```
+
+```bash
+brew install slides
 ```
 
 ### Usage
@@ -40,9 +40,9 @@ Then, to present, run:
 slides presentation.md
 ```
 
-You are also able to pass in slides through `stdin`, this allows you to `curl` and present remote files:
+`slides` also accepts input through `stdin`:
 ```
-curl https://example.com/slides.md | slides
+curl http://example.com/slides.md | slides
 ```
 
 Go to the next slide with any of the following keys:
@@ -61,7 +61,16 @@ Go to the previous slide with any of the following keys:
 * <kbd>h</kbd>
 * <kbd>j</kbd>
 
+### Configuration
+See the [configuration documentation](./docs/configuration)
+
+### Alternatives
+
+**Credits**: This project was heavily inspired by [`lookatme`](https://github.com/d0c-s4vage/lookatme).
+
+* [`lookatme`](https://github.com/d0c-s4vage/lookatme)
+* [`sli.dev`](https://sli.dev/)
+* [`sent`](https://tools.suckless.org/sent/)
+
 ### Development
-```
-make
-```
+See the [development documentation](./docs/development)
