@@ -44,7 +44,6 @@ func JoinVertical(top, bottom string, height int) string {
 	return top + fill + bottom
 }
 
-
 // SelectTheme picks a glamour style config based
 // on the theme provided in the markdown header
 func SelectTheme(theme string) glamour.TermRendererOption {
@@ -53,9 +52,11 @@ func SelectTheme(theme string) glamour.TermRendererOption {
 		return glamour.WithStyles(glamour.ASCIIStyleConfig)
 	case "light":
 		return glamour.WithStyles(glamour.LightStyleConfig)
+	case "dark":
+		return glamour.WithStyles(glamour.DarkStyleConfig)
 	case "notty":
 		return glamour.WithStyles(glamour.NoTTYStyleConfig)
 	default:
-		return glamour.WithStyles(glamour.DarkStyleConfig)
+		return glamour.WithStylesFromJSONBytes(DefaultTheme)
 	}
 }

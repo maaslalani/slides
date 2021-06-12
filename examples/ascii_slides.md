@@ -1,5 +1,5 @@
 ---
-theme: "ascii"
+theme: ascii
 ---
 
 # Welcome to Slides

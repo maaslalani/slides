@@ -57,11 +57,11 @@ var root = &cobra.Command{
 		}
 
 		p := tea.NewProgram(model.Model{
-			Slides:         slides,
-			Page:           0,
-			Author:         user.Name,
-			Date:           time.Now().Format("2006-01-02"),
-			RendererOption: styles.SelectTheme(m.Theme),
+			Slides: slides,
+			Page:   0,
+			Author: user.Name,
+			Date:   time.Now().Format("2006-01-02"),
+			Theme:  styles.SelectTheme(m.Theme),
 		}, tea.WithAltScreen())
 
 		err = p.Start()

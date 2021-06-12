@@ -10,12 +10,12 @@ import (
 )
 
 type Model struct {
-	Slides         []string
-	Page           int
-	Author         string
-	Date           string
-	RendererOption glamour.TermRendererOption
-	viewport       viewport.Model
+	Slides   []string
+	Page     int
+	Author   string
+	Date     string
+	Theme    glamour.TermRendererOption
+	viewport viewport.Model
 }
 
 func (m Model) Init() tea.Cmd {
@@ -47,7 +47,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	r, _ := glamour.NewTermRenderer(m.RendererOption)
+	r, _ := glamour.NewTermRenderer(m.Theme)
 	slide, err := r.Render(m.Slides[m.Page])
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
