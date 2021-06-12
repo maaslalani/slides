@@ -49,18 +49,19 @@ var root = &cobra.Command{
 			return errors.New("could not get current user")
 		}
 
-		m, metaExists := meta.New().ParseHeader(slides[0])
-		if metaExists {
+		m, exists := meta.New().ParseHeader(slides[0])
+		// If the user specifies a custom configuration options
+		// skip the first "slide" since this is all configuration
+		if exists {
 			slides = slides[1:]
 		}
 
 		p := tea.NewProgram(model.Model{
-			Slides:      slides,
-			Page:        0,
-			Author:      user.Name,
-			Date:        time.Now().Format("2006-01-02"),
-			Theme:       styles.SelectTheme(m.Theme),
-			CustomTheme: styles.CustomTheme(m.Theme),
+			Slides:         slides,
+			Page:           0,
+			Author:         user.Name,
+			Date:           time.Now().Format("2006-01-02"),
+			RendererOption: styles.SelectTheme(m.Theme),
 		}, tea.WithAltScreen())
 
 		err = p.Start()

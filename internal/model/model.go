@@ -6,18 +6,16 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
-	"github.com/charmbracelet/glamour/ansi"
 	"github.com/maaslalani/slides/styles"
 )
 
 type Model struct {
-	Slides      []string
-	Page        int
-	Author      string
-	Date        string
-	CustomTheme glamour.TermRendererOption
-	Theme       ansi.StyleConfig
-	viewport    viewport.Model
+	Slides         []string
+	Page           int
+	Author         string
+	Date           string
+	RendererOption glamour.TermRendererOption
+	viewport       viewport.Model
 }
 
 func (m Model) Init() tea.Cmd {
@@ -49,12 +47,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	style := glamour.WithStyles(m.Theme)
-	if m.CustomTheme != nil {
-		style = m.CustomTheme
-	}
-
-	r, _ := glamour.NewTermRenderer(style)
+	r, _ := glamour.NewTermRenderer(m.RendererOption)
 	slide, err := r.Render(m.Slides[m.Page])
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)

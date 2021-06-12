@@ -9,52 +9,66 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCustomTheme(t *testing.T) {
+func TestSelectTheme(t *testing.T) {
 	tests := []struct {
-		name     string
-		filepath string
-		want     []byte
-		wantErr  bool
+		name    string
+		theme   string
+		want    ansi.StyleConfig
+		wantErr bool
 	}{
-		{name: "Select custom theme json", filepath: "./theme.json", wantErr: false},
-		{name: "Use an invalid filepath", filepath: "./someinvalidfile.toml", wantErr: true},
+		{name: "Select dark theme", theme: "dark", want: glamour.DarkStyleConfig, wantErr: false},
+		{name: "Select light theme", theme: "light", want: glamour.LightStyleConfig, wantErr: false},
+		{name: "Select ascii theme", theme: "ascii", want: glamour.ASCIIStyleConfig, wantErr: false},
+		{name: "Select notty theme", theme: "notty", want: glamour.NoTTYStyleConfig, wantErr: false},
+		{name: "Select theme with error", theme: "notty", want: glamour.DarkStyleConfig, wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := glamour.NewTermRenderer(styles.CustomTheme(tt.filepath))
-			if err != nil {
-				assert.True(t, tt.wantErr)
-			}
+			// Execute the theme selection and ensure
+			// it returns a non-nil theme
+			selectedTheme := styles.SelectTheme(tt.theme)
+			assert.NotNil(t, selectedTheme)
 
-			want, err := glamour.NewTermRenderer(glamour.WithStylesFromJSONFile(tt.filepath))
-			if err != nil {
-				assert.True(t, tt.wantErr)
-			}
+			// Initialize renderers to compare output
+			gotRenderer, _ := glamour.NewTermRenderer(selectedTheme)
+			wantRenderer, _ := glamour.NewTermRenderer(glamour.WithStyles(tt.want))
 
+			// Render a the same string with two different
+			// renderers
+			gotOutput, _ := gotRenderer.Render(tt.name)
+			wantOutput, _ := wantRenderer.Render(tt.name)
+
+			// Inject exception to ensure a style that doesn't match
+			// it's associated string
 			if tt.wantErr {
-				assert.Error(t, err)
+				assert.NotEqual(t, wantOutput, gotOutput)
 				return
 			}
 
-			assert.Equal(t, got, want)
+			// Ensure they both match
+			assert.Equal(t, wantOutput, gotOutput)
 		})
 	}
 }
 
-func TestSelectTheme(t *testing.T) {
+func TestSelectTheme_file(t *testing.T) {
 	tests := []struct {
-		name  string
-		theme string
-		want  ansi.StyleConfig
+		name       string
+		theme      string
+		fileExists bool
 	}{
-		{name: "Select dark theme", theme: "dark", want: glamour.DarkStyleConfig},
-		{name: "Select light theme", theme: "light", want: glamour.LightStyleConfig},
-		{name: "Select ascii theme", theme: "ascii", want: glamour.ASCIIStyleConfig},
-		{name: "Select notty theme", theme: "notty", want: glamour.NoTTYStyleConfig},
+		{name: "Select custom theme json", theme: "./theme.json", fileExists: true},
+		{name: "Use an invalid filepath", theme: "./someinvalidfile.toml", fileExists: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, styles.SelectTheme(tt.theme), tt.want)
+			// Successfully return a theme if a file exists
+			assert.NotNil(t, styles.SelectTheme(tt.theme))
+
+			// Successfully return a theme if a file doesn't exist
+			if !tt.fileExists {
+				assert.NotNil(t, styles.SelectTheme(tt.theme))
+			}
 		})
 	}
 }
