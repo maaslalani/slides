@@ -37,27 +37,37 @@ fmt.Println("Hello, world!")
 		},
 		{
 			markdown: `
+# Welcome to Slides
+
+A terminal based presentation tool
+
+~~~go
+package main
+
+import "fmt"
+
+func main() {
+  fmt.Println("Written in Go!")
+}
+~~~
+`,
+			expected: code.Block{
+				Code: `package main
+
+import "fmt"
+
+func main() {
+  fmt.Println("Written in Go!")
+}`,
+				Language: "go",
+			},
+		},
+		{
+			markdown: `
 # Slide 1
 Just a regular slide, no code block
 `,
 			expected: code.Block{},
-		},
-		{
-			markdown: `
-# Multiple Code Blocks
-~~~go
-fmt.Println("Oh no!")
-~~~
-
-# Secondary Code Block
-~~~ruby
-puts "We will only parse the first code block"
-~~~
-`,
-			expected: code.Block{
-				Code:     `fmt.Println("Oh no!")`,
-				Language: "go",
-			},
 		},
 		{
 			markdown: ``,

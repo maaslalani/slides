@@ -21,7 +21,7 @@ type Result struct {
 }
 
 // ?: means non-capture group
-var re = regexp.MustCompile("(?:```|~~~)(.*)\n(.*)\n(?:```|~~~)")
+var re = regexp.MustCompile("(?s)(?:```|~~~)(\\w+)\n(.*)\n(?:```|~~~)\n")
 
 var (
 	ErrParse = errors.New("Error: could not parse code block")
