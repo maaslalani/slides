@@ -1,5 +1,7 @@
 # Slides
 
+[![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://formulae.brew.sh/api/formula/slides.json&query=$.versions.stable&label=homebrew)](https://formulae.brew.sh/formula/slides)
+
 Slides in your terminal.
 
 <p align="center">
