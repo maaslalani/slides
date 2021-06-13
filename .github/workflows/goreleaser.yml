@@ -2,9 +2,9 @@ name: goreleaser
 
 on:
   push:
-    branches:
-    - main
-    - release/*
+    tags:
+      - '*'
+
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
