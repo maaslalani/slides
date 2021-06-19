@@ -92,7 +92,18 @@ Go to the previous slide with any of the following keys:
 * <kbd>j</kbd>
 
 ### Configuration
-See the [configuration documentation](./docs/configuration)
+
+### Theme
+`slides` allows you to customize your presentation's theme.
+
+If you want to use your own custom [theme.json](./styles/theme.json), add the following to the top of your `presentation.md`:
+```yaml
+---
+theme: ./path/to/theme.json
+---
+```
+
+Check out the provided [theme.json](../../styles/theme.json) to use as a base for your custom theme.
 
 ### Alternatives
 
