@@ -70,7 +70,7 @@ Then, to present, run:
 slides presentation.md
 ```
 
-Live reload is supported by default. It means no need to restart the presentation while continue editing the slides.
+If given a file name, `slides` will automatically look for changes in the file and update the presentation live.
 
 `slides` also accepts input through `stdin`:
 ```
