@@ -1,20 +1,17 @@
 # Slides
 
-[![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://formulae.brew.sh/api/formula/slides.json&query=$.versions.stable&label=homebrew)](https://formulae.brew.sh/formula/slides)
-
 Slides in your terminal.
+
+<p align="center">
+  <img src="./assets/slides.png?raw=true" alt="Terminal Slides" />
+</p>
 
 <p align="center">
   <img src="./assets/demo.gif?raw=true" alt="Slides Presentation" />
 </p>
 
 ### Installation
-Using a package manager:
-
-* Go
-```bash
-go install github.com/maaslalani/slides
-```
+[![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://formulae.brew.sh/api/formula/slides.json&query=$.versions.stable&label=homebrew)](https://formulae.brew.sh/formula/slides)
 
 * MacOS
 ```
@@ -24,6 +21,11 @@ brew install slides
 * Arch
 ```
 yay -S slides
+```
+
+* Go
+```bash
+go install github.com/maaslalani/slides
 ```
 
 From source:
