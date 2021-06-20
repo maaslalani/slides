@@ -21,7 +21,7 @@ yay -S slides
 
 * Go
 ```bash
-go install github.com/maaslalani/slides
+go install github.com/maaslalani/slides@latest
 ```
 
 From source:
