@@ -2,7 +2,7 @@
 
 Slides allows you to execute code blocks directly inside your slides!
 
-Just press `e` and the result of the code block will be displayed as virtual
+Just press `ctrl+e` and the result of the code block will be displayed as virtual
 text in your slides.
 
 Currently supported languages:
