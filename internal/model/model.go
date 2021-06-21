@@ -106,7 +106,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.Page--
 			}
 			m.VirtualText = ""
-		case "e":
+		case "ctrl+e":
 			// Run code block
 			block, err := code.Parse(m.Slides[m.Page])
 			if err != nil {
