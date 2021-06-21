@@ -52,6 +52,16 @@ Create slides and present them without ever leaving your terminal.
 
 ---
 
+## Execute code blocks
+Press `ctrl+e` on a slide with a code block to execute it
+Slides with display the output at the end of the slide.
+
+~~~ruby
+puts "Hello, world!"
+~~~
+
+---
+
 Include ASCII graphs with GraphViz + graph-easy.
 https://dot-to-ascii.ggerganov.com/
 
