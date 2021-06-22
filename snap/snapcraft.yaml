@@ -22,7 +22,7 @@ assumes:
   
 apps:
   slides:
-    command: bin/main.go
+    command: bin/slides
     command-chain: 
       - bin/homeishome-launch     
     plugs:
