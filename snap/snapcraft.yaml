@@ -3,6 +3,13 @@ adopt-info: slides
 summary: Slides in your terminal.
 description: |
   Slides in your terminal.
+  
+  Usage:
+    slides <file.md> [flags]
+
+  Flags:
+    -h, --help   help for slides
+    
 license: MIT
 
 base: core20
