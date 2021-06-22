@@ -33,7 +33,6 @@ parts:
     source: https://github.com/maaslalani/slides
     source-type: git
     plugin: go
-    go-import-path: github.com/maaslalani/slides
 
   homeishome-launch:
     plugin: nil
