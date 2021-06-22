@@ -1,0 +1,35 @@
+name: slides
+adopt-info: slides
+summary: Slides in your terminal.
+description: |
+  Slides in your terminal.
+license: MIT
+
+base: core20
+grade: stable 
+confinement: strict
+compression: lzo
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: ppc64el
+  - build-on: s390x
+
+apps:
+  slides:
+    command: bin/slides
+    plugs:
+      - home
+
+  slides:
+    source: https://github.com/maaslalani/slides
+    source-type: git
+    plugin: make
+    
+  build-packages:
+    - golang
+    
+  stage-packages:
+    - golang
