@@ -33,8 +33,8 @@ parts:
     source: https://github.com/maaslalani/slides
     source-type: git
     plugin: go
-    go-channel: github.com/maaslalani/slides
-    
+    go-channel: latest
+        
     override-pull: |
       snapcraftctl pull
       snapcraftctl set-version "$(git describe --tags | sed 's/^v//' | cut -d "-" -f1)"    
