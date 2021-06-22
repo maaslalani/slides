@@ -33,7 +33,7 @@ parts:
     source: https://github.com/maaslalani/slides
     source-type: git
     plugin: go
-    go-channel: latest
+    go-channel: latest/stable
         
     override-pull: |
       snapcraftctl pull
