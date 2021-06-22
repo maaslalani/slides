@@ -22,7 +22,8 @@ apps:
     command: bin/slides
     plugs:
       - home
-
+      
+parts:
   slides:
     source: https://github.com/maaslalani/slides
     source-type: git
