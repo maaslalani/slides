@@ -16,10 +16,15 @@ architectures:
   - build-on: armhf
   - build-on: ppc64el
   - build-on: s390x
-
+  
+assumes:
+  - command-chain
+  
 apps:
   slides:
     command: bin/slides
+    command-chain: 
+      - bin/homeishome-launch     
     plugs:
       - home
       
@@ -29,8 +34,13 @@ parts:
     source-type: git
     plugin: make
     
-  build-packages:
-    - golang
+    build-packages:
+      - golang
     
-  stage-packages:
-    - golang
+    stage-packages:
+      - golang
+
+  homeishome-launch:
+    plugin: nil
+    stage-snaps:
+      - homeishome-launch     
