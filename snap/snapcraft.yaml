@@ -22,7 +22,7 @@ assumes:
   
 apps:
   slides:
-    command: bin/slides
+    command: bin/main.go
     command-chain: 
       - bin/homeishome-launch     
     plugs:
@@ -32,13 +32,8 @@ parts:
   slides:
     source: https://github.com/maaslalani/slides
     source-type: git
-    plugin: make
-    
-    build-packages:
-      - golang
-    
-    stage-packages:
-      - golang
+    plugin: go
+    go-import-path: github.com/maaslalani/slides
 
   homeishome-launch:
     plugin: nil
