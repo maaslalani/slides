@@ -14,6 +14,14 @@ Slides in your terminal.
 brew install slides
 ```
 
+* Any Linux Distro running `snapd`
+
+[![slides](https://snapcraft.io/slides/badge.svg)](https://snapcraft.io/slides)
+
+```
+sudo snap install slides
+```
+
 * Arch
 ```
 yay -S slides
