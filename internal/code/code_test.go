@@ -37,6 +37,16 @@ fmt.Println("Hello, world!")
 		},
 		{
 			markdown: `
+~~~python
+print("Hello, world!")
+~~~`,
+			expected: code.Block{
+				Code:     `print("Hello, world!")`,
+				Language: "python",
+			},
+		},
+		{
+			markdown: `
 # Welcome to Slides
 
 A terminal based presentation tool
