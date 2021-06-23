@@ -96,12 +96,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "ctrl+c", "q":
 			return m, tea.Quit
-		case " ", "down", "k", "right", "l", "enter", "n":
+		case " ", "down", "j", "right", "l", "enter", "n":
 			if m.Page < len(m.Slides)-1 {
 				m.Page++
 			}
 			m.VirtualText = ""
-		case "up", "j", "left", "h", "p":
+		case "up", "k", "left", "h", "p":
 			if m.Page > 0 {
 				m.Page--
 			}
