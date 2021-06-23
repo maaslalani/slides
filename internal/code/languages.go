@@ -11,6 +11,7 @@ const (
 	Go     = "go"
 	Ruby   = "ruby"
 	Python = "python"
+	Elixir = "elixir"
 )
 
 var Languages = map[string]Language{
@@ -29,5 +30,9 @@ var Languages = map[string]Language{
 	Python: {
 		Extension: "py",
 		Command:   []string{"python"},
+	},
+	Elixir: {
+		Extension: "exs",
+		Command: 	[]string{"elixir"},
 	},
 }

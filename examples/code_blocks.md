@@ -10,6 +10,7 @@ Currently supported languages:
 * `go`
 * `ruby`
 * `python`
+* `elixir`
 
 ---
 
@@ -47,4 +48,12 @@ puts "Hello, world!"
 
 ```python
 print("Hello, world!")
+```
+
+---
+
+### Elixir
+
+```elixir
+IO.puts "Hello, world!"
 ```
