@@ -18,8 +18,7 @@ import (
 )
 
 const (
-	delimiter    = "\n---\n"
-	altDelimiter = "\n~~~\n"
+	delimiter = "\n---\n"
 )
 
 type Model struct {
@@ -67,7 +66,6 @@ func (m *Model) Load() error {
 		return err
 	}
 
-	content = strings.ReplaceAll(content, altDelimiter, delimiter)
 	slides := strings.Split(content, delimiter)
 
 	metaData, exists := meta.New().ParseHeader(slides[0])
