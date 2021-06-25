@@ -4,17 +4,18 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"os"
+	"strings"
+	"time"
+
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
 	"github.com/maaslalani/slides/internal/code"
 	"github.com/maaslalani/slides/internal/meta"
 	"github.com/maaslalani/slides/styles"
-	"io"
-	"io/ioutil"
-	"os"
-	"strings"
-	"time"
 )
 
 const (
@@ -133,8 +134,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m Model) View() string {
 	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(0))
 	slide := m.Slides[m.Page]
-	slide += m.VirtualText
 	slide, err := r.Render(slide)
+	slide += m.VirtualText
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
 	}
