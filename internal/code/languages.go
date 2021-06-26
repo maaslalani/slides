@@ -33,6 +33,6 @@ var Languages = map[string]Language{
 	},
 	Elixir: {
 		Extension: "exs",
-		Command: 	[]string{"elixir"},
+		Command:   []string{"elixir"},
 	},
 }

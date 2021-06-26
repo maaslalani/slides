@@ -102,6 +102,9 @@ func main() {
 	}
 
 	for _, tc := range tt {
+		if testing.Short() {
+			t.SkipNow()
+		}
 		r := code.Execute(tc.block)
 		if r.Out != tc.expected.Out {
 			t.Fatalf("invalid output, got %s, want %s", r.Out, tc.expected.Out)
