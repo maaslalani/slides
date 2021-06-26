@@ -67,3 +67,24 @@ func (b *Block) Execute() {
 
 	b.Output = string(out)
 }
+
+// Pre processes the markdown content by executing the commands necessary and
+// returns the new processed content
+func Pre(content string) string {
+	blocks := Parse(content)
+
+	if len(blocks) <= 0 {
+		return content
+	}
+
+	for _, block := range blocks {
+		// TODO: Use goroutines, if possible
+		block.Execute()
+
+		// If multiple blocks have the same Raw value The will _likely_ have the
+		// same Output value so we can probably optimize this
+		// There may be edge cases, though, since block execution is not deterministic.
+		content = strings.Replace(content, block.Raw, block.Output, 1)
+	}
+	return content
+}

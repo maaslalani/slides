@@ -15,6 +15,7 @@ import (
 	"github.com/charmbracelet/glamour"
 	"github.com/maaslalani/slides/internal/code"
 	"github.com/maaslalani/slides/internal/meta"
+	"github.com/maaslalani/slides/internal/process"
 	"github.com/maaslalani/slides/styles"
 )
 
@@ -66,6 +67,8 @@ func (m *Model) Load() error {
 	if err != nil {
 		return err
 	}
+
+	content = process.Pre(content)
 
 	slides := strings.Split(content, delimiter)
 
