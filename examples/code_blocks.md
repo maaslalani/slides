@@ -7,10 +7,11 @@ text in your slides.
 
 Currently supported languages:
 * `bash`
-* `go`
-* `ruby`
-* `python`
 * `elixir`
+* `go`
+* `javascript`
+* `python`
+* `ruby`
 
 ---
 
@@ -18,6 +19,14 @@ Currently supported languages:
 
 ```bash
 ls
+```
+
+---
+
+### Elixir
+
+```elixir
+IO.puts "Hello, world!"
 ```
 
 ---
@@ -36,10 +45,10 @@ func main() {
 
 ---
 
-### Ruby
+### Javascript
 
-```ruby
-puts "Hello, world!"
+```javascript
+console.log("Hello, world!")
 ```
 
 ---
@@ -52,8 +61,8 @@ print("Hello, world!")
 
 ---
 
-### Elixir
+### Ruby
 
-```elixir
-IO.puts "Hello, world!"
+```ruby
+puts "Hello, world!"
 ```
