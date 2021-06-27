@@ -7,11 +7,12 @@ type Language struct {
 
 // Supported Languages
 const (
-	Bash   = "bash"
-	Go     = "go"
-	Ruby   = "ruby"
-	Python = "python"
-	Elixir = "elixir"
+	Bash       = "bash"
+	Elixir     = "elixir"
+	Go         = "go"
+	Javascript = "javascript"
+	Python     = "python"
+	Ruby       = "ruby"
 )
 
 var Languages = map[string]Language{
@@ -19,9 +20,17 @@ var Languages = map[string]Language{
 		Extension: "sh",
 		Command:   []string{"bash"},
 	},
+	Elixir: {
+		Extension: "exs",
+		Command:   []string{"elixir"},
+	},
 	Go: {
 		Extension: "go",
 		Command:   []string{"go", "run"},
+	},
+	Javascript: {
+		Extension: "js",
+		Command:   []string{"node"},
 	},
 	Ruby: {
 		Extension: "rb",
@@ -30,9 +39,5 @@ var Languages = map[string]Language{
 	Python: {
 		Extension: "py",
 		Command:   []string{"python"},
-	},
-	Elixir: {
-		Extension: "exs",
-		Command:   []string{"elixir"},
 	},
 }
