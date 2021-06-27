@@ -27,6 +27,11 @@ sudo snap install slides
 yay -S slides
 ```
 
+* NixOS (unstable)
+```
+nix-env -iA nixos.slides
+```
+
 * Go
 ```bash
 go install github.com/maaslalani/slides@latest
