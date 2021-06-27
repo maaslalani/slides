@@ -14,6 +14,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
 	"github.com/maaslalani/slides/internal/code"
+	"github.com/maaslalani/slides/internal/file"
 	"github.com/maaslalani/slides/internal/meta"
 	"github.com/maaslalani/slides/internal/process"
 	"github.com/maaslalani/slides/styles"
@@ -67,8 +68,6 @@ func (m *Model) Load() error {
 	if err != nil {
 		return err
 	}
-
-	content = process.Pre(content)
 
 	slides := strings.Split(content, delimiter)
 
@@ -162,7 +161,15 @@ func readFile(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return string(b), err
+	content := string(b)
+
+	// Pre-process slides if the file is executable to avoid
+	// unintentional code execution when presenting slides
+	if file.IsExecutable(s) {
+		content = process.Pre(content)
+	}
+
+	return content, err
 }
 
 func readStdin() (string, error) {
