@@ -65,13 +65,26 @@ Create slides and present them without ever leaving your terminal.
 
 ---
 
-Include ASCII graphs with GraphViz + graph-easy.
-https://dot-to-ascii.ggerganov.com/
+# Pre-process slides
 
-┌──────────┐     ┌────────────┐     ┌────────┐
-│ GraphViz │ ──▶ │ graph-easy │ ──▶ │ slides │
-└──────────┘     └────────────┘     └────────┘
+You can add a code block with ~~~ and write a command to run before displaying
+the slides, the text inside the code block will be passed as stdin to the command
+and the code block will be replaced with the stdout of the command.
 
+~~~graph-easy --as=boxart
+[ A ] - to -> [ B ]
+~~~
+
+The above will be pre-processed to look like:
+
+┌───┐  to   ┌───┐
+│ A │ ────> │ B │
+└───┘       └───┘
+
+For security reasons, you must pass a file that has execution permissions
+for the slides to be pre-processed.
+
+chmod +x file.md
 ```
 
 Checkout the [example slides](./examples).

@@ -3,6 +3,7 @@
 package file
 
 import (
+	"io/fs"
 	"os"
 )
 
@@ -15,4 +16,9 @@ func Exists(filepath string) bool {
 		return false
 	}
 	return !info.IsDir()
+}
+
+// IsExecutable returns whether a file has execution permissions
+func IsExecutable(s fs.FileInfo) bool {
+	return s.Mode().Perm()&0111 == 0111
 }
