@@ -33,7 +33,7 @@ nix-env -iA nixos.slides
 ```
 
 * Go
-```bash
+```
 go install github.com/maaslalani/slides@latest
 ```
 
@@ -87,7 +87,7 @@ for the slides to be pre-processed.
 chmod +x file.md
 ```
 
-Checkout the [example slides](./examples).
+Checkout the [example slides](https://github.com/maaslalani/slides/tree/main/examples).
 
 Then, to present, run:
 ```
@@ -131,7 +131,7 @@ theme: ./path/to/theme.json
 ---
 ```
 
-Check out the provided [theme.json](../../styles/theme.json) to use as a base for your custom theme.
+Check out the provided [theme.json](./styles/theme.json) to use as a base for your custom theme.
 
 ### Alternatives
 
