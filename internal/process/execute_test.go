@@ -16,7 +16,7 @@ func TestExecute(t *testing.T) {
 		},
 		{
 			block: Block{
-				Command: "sd Find Replace",
+				Command: "sed -e s/Find/Replace/g",
 				Input:   "Find",
 			},
 			want: "Replace",
