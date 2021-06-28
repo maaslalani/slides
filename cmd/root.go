@@ -9,13 +9,15 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/maaslalani/slides/internal/model"
+	"github.com/maaslalani/slides/internal/version"
 	"github.com/spf13/cobra"
 )
 
 var root = &cobra.Command{
-	Use:   "slides <file.md>",
-	Short: "Slides is a terminal based presentation tool",
-	Args:  cobra.MaximumNArgs(1),
+	Use:     "slides <file.md>",
+	Short:   "Slides is a terminal based presentation tool",
+	Args:    cobra.MaximumNArgs(1),
+	Version: version.Version,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var err error
 		var fileName string
@@ -47,6 +49,11 @@ var root = &cobra.Command{
 }
 
 func Execute() {
+	root.SetVersionTemplate(fmt.Sprintf(
+		version.VersionTemplate,
+		version.Version,
+		version.ShortCommit,
+		version.CommitDate))
 	err := root.Execute()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

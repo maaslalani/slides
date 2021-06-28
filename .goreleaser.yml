@@ -1,0 +1,15 @@
+project_name: slides
+
+builds:
+- main: ./main.go
+  flags:
+  - -trimpath
+  ldflags:
+  - -X github.com/maaslalani/slides/internal/version.Version={{ .Version }}
+  - -X github.com/maaslalani/slides/internal/version.ShortCommit={{ .ShortCommit }}
+  - -X github.com/maaslalani/slides/internal/version.CommitDate={{ .CommitDate }}
+  goos:
+  - windows
+  - darwin
+  - linux
+

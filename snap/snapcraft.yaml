@@ -41,10 +41,26 @@ parts:
     source-type: git
     plugin: go
     go-channel: latest/stable
-        
+
     override-pull: |
       snapcraftctl pull
       snapcraftctl set-version "$(git describe --tags | sed 's/^v//' | cut -d "-" -f1)"    
+
+    override-build: |
+      version=$(git describe --tags | sed 's/^v//' | cut -d "-" -f1)
+      shortCommit=git rev-parse --short HEAD
+      commitDate=git show -s --format=%cd --date=short
+
+      baseFlag="-X github.com/maaslalani/slides/internal/version"
+      ldFlags="${baseFlag}.Version=${version}"
+      ldFlags="${ldFlags} ${baseFlag}.ShortCommit=${shortCommit}"
+      ldFlags="${ldFlags} ${baseFlag}.CommitDate${commitDate}"
+
+      GO111MODULE=on CGO_ENABLED=0 go build -trimpath -ldflags "${ldFlags" -o slides main.go
+
+      chmod +x slides
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      mv slides $SNAPCRAFT_PART_INSTALL/bin
 
   homeishome-launch:
     plugin: nil
