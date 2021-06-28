@@ -131,7 +131,7 @@ theme: ./path/to/theme.json
 ---
 ```
 
-Check out the provided [theme.json](../../styles/theme.json) to use as a base for your custom theme.
+Check out the provided [theme.json](./styles/theme.json) to use as a base for your custom theme.
 
 ### Alternatives
 
