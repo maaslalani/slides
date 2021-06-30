@@ -12,6 +12,7 @@ Currently supported languages:
 * `javascript`
 * `python`
 * `ruby`
+* `perl`
 
 ---
 
@@ -65,4 +66,13 @@ print("Hello, world!")
 
 ```ruby
 puts "Hello, world!"
+```
+
+---
+### Perl
+
+```perl
+
+print ("hello, world");
+
 ```

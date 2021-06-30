@@ -13,6 +13,7 @@ const (
 	Javascript = "javascript"
 	Python     = "python"
 	Ruby       = "ruby"
+	Perl       = "perl"
 )
 
 var Languages = map[string]Language{
@@ -39,5 +40,9 @@ var Languages = map[string]Language{
 	Python: {
 		Extension: "py",
 		Command:   []string{"python"},
+	},
+	Perl: {
+		Extension: "pl",
+		Command:   []string{"perl"},
 	},
 }
