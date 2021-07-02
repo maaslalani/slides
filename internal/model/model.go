@@ -74,7 +74,7 @@ func (m *Model) Load() error {
 	metaData, exists := meta.New().ParseHeader(slides[0])
 	// If the user specifies a custom configuration options
 	// skip the first "slide" since this is all configuration
-	if exists {
+	if exists && len(slides) > 1 {
 		slides = slides[1:]
 	}
 
