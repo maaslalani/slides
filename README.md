@@ -8,6 +8,7 @@ Slides in your terminal.
 
 ### Installation
 [![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://formulae.brew.sh/api/formula/slides.json&query=$.versions.stable&label=homebrew)](https://formulae.brew.sh/formula/slides)
+[![Snapcraft](https://snapcraft.io/slides/badge.svg)](https://snapcraft.io/slides)
 
 * MacOS
 ```
@@ -15,8 +16,6 @@ brew install slides
 ```
 
 * Any Linux Distro running `snapd`
-
-[![slides](https://snapcraft.io/slides/badge.svg)](https://snapcraft.io/slides)
 
 ```
 sudo snap install slides
