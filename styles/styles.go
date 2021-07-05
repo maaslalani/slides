@@ -60,18 +60,19 @@ func SelectTheme(theme string) glamour.TermRendererOption {
 		return glamour.WithStyles(glamour.NoTTYStyleConfig)
 	default:
 		bytes, err := os.ReadFile(theme)
-		if err != nil {
-			// Should log a warning so the user knows we failed to read their theme file
-			if termenv.EnvNoColor() {
-				return glamour.WithStyles(glamour.NoTTYStyleConfig)
-			}
+		if err == nil {
+			return glamour.WithStylesFromJSONBytes(bytes)
+		}
+		// Should log a warning so the user knows we failed to read their theme file
 
-			if !termenv.HasDarkBackground() {
-				return glamour.WithStyles(glamour.LightStyleConfig)
-			}
-			return glamour.WithStylesFromJSONBytes(DefaultTheme)
+		if termenv.EnvNoColor() {
+			return glamour.WithStyles(glamour.NoTTYStyleConfig)
 		}
 
-		return glamour.WithStylesFromJSONBytes(bytes)
+		if !termenv.HasDarkBackground() {
+			return glamour.WithStyles(glamour.LightStyleConfig)
+		}
+
+		return glamour.WithStylesFromJSONBytes(DefaultTheme)
 	}
 }
