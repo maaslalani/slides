@@ -3,6 +3,7 @@ package styles
 
 import (
 	_ "embed"
+	"os"
 	"strings"
 
 	"github.com/charmbracelet/glamour"
@@ -58,13 +59,19 @@ func SelectTheme(theme string) glamour.TermRendererOption {
 	case "notty":
 		return glamour.WithStyles(glamour.NoTTYStyleConfig)
 	default:
-		if termenv.EnvNoColor() {
-			return glamour.WithStyles(glamour.NoTTYStyleConfig)
+		bytes, err := os.ReadFile(theme)
+		if err != nil {
+			// Should log a warning so the user knows we failed to read their theme file
+			if termenv.EnvNoColor() {
+				return glamour.WithStyles(glamour.NoTTYStyleConfig)
+			}
+
+			if !termenv.HasDarkBackground() {
+				return glamour.WithStyles(glamour.LightStyleConfig)
+			}
+			return glamour.WithStylesFromJSONBytes(DefaultTheme)
 		}
 
-		if !termenv.HasDarkBackground(){
-			return glamour.WithStyles(glamour.LightStyleConfig)
-		}
-		return glamour.WithStylesFromJSONBytes(DefaultTheme)
+		return glamour.WithStylesFromJSONBytes(bytes)
 	}
 }
