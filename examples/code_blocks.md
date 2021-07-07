@@ -54,6 +54,14 @@ console.log("Hello, world!")
 
 ---
 
+# Lua
+
+```lua
+print("Hello, World!")
+```
+
+---
+
 ### Python
 
 ```python
