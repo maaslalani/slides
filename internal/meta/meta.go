@@ -3,10 +3,15 @@
 package meta
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/adrg/frontmatter"
 	"gopkg.in/yaml.v2"
+)
+
+var (
+	comment = regexp.MustCompile(`\s*#.*`)
 )
 
 // Meta contains all of the data to be parsed
@@ -28,6 +33,10 @@ func New() *Meta {
 // return false to acknowledge that there is no front matter in this slide
 func (m *Meta) ParseHeader(header string) (*Meta, bool) {
 	fallback := &Meta{Theme: "default"}
+	header = comment.ReplaceAllString(header, "")
+	if len(header) <= 0 {
+		return fallback, false
+	}
 	bytes, err := frontmatter.Parse(strings.NewReader(header), &m)
 	if err != nil {
 		return fallback, false
