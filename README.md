@@ -66,9 +66,6 @@ Create slides and present them without ever leaving your terminal.
 ---
 
 ## Code execution
-
-Note: use three backticks for code blocks
-
 ```go
 package main
 
@@ -79,16 +76,16 @@ func main() {
 }
 ```
 
-You can execute code inside your slides by pressing <C-e>,
+You can execute code inside your slides by pressing `<C-e>`,
 the output of your command will be displayed at the end of the current slide.
 
 ---
 
 ## Pre-process slides
 
-You can add a code block with ~~~ and write a command to run *before* displaying
-the slides, the text inside the code block will be passed as stdin to the command
-and the code block will be replaced with the stdout of the command.
+You can add a code block with `~~~` and write a command to run *before* displaying
+the slides, the text inside the code block will be passed as `stdin` to the command
+and the code block will be replaced with the `stdout` of the command.
 
 ~~~graph-easy --as=boxart
 [ A ] - to -> [ B ]
