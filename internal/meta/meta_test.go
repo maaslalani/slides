@@ -28,11 +28,18 @@ func TestMeta_ParseHeader(t *testing.T) {
 				Theme: "default",
 			},
 		},
+		{
+			name:      "Fallback if first slide is valid yaml",
+			slideshow: "---\n# Header Slide---\nContent\n",
+			want: &meta.Meta{
+				Theme: "default",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			m := &meta.Meta{}
-			got, hasMeta := m.ParseHeader(tt.slideshow)
+			got, hasMeta := m.Parse(tt.slideshow)
 			if !hasMeta {
 				assert.NotNil(t, got)
 			}
@@ -56,7 +63,7 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func ExampleMeta_ParseHeader() {
+func ExampleMeta_Parse() {
 	header := `
 ---
 theme: "dark"
@@ -64,7 +71,7 @@ theme: "dark"
 `
 	// Parse the header from the markdown
 	// file
-	m, _ := meta.New().ParseHeader(header)
+	m, _ := meta.New().Parse(header)
 
 	// Print the return theme
 	// meta

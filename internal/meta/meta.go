@@ -3,9 +3,6 @@
 package meta
 
 import (
-	"strings"
-
-	"github.com/adrg/frontmatter"
 	"gopkg.in/yaml.v2"
 )
 
@@ -21,20 +18,25 @@ func New() *Meta {
 	return &Meta{}
 }
 
-// ParseHeader parses metadata from a slideshows header slide
+// Parse parses metadata from a slideshows header slide
 // including theme information
 //
 // If no front matter is provided, it will fallback to the default theme and
 // return false to acknowledge that there is no front matter in this slide
-func (m *Meta) ParseHeader(header string) (*Meta, bool) {
-	fallback := &Meta{Theme: "default"}
-	bytes, err := frontmatter.Parse(strings.NewReader(header), &m)
+func (m *Meta) Parse(header string) (*Meta, bool) {
+	fallback := &Meta{
+		Theme: "default",
+	}
+
+	err := yaml.Unmarshal([]byte(header), &m)
 	if err != nil {
 		return fallback, false
 	}
 
-	err = yaml.Unmarshal(bytes, &m)
-	if err != nil {
+	// This fixes a bug where the first slide of a presentation won't show up if
+	// the first slide is valid YAML (i.e. "# Header")
+	// FIXME: This only works because we currently only have one option (theme),
+	if m.Theme == "" {
 		return fallback, false
 	}
 
