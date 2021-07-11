@@ -69,9 +69,10 @@ func (m *Model) Load() error {
 		return err
 	}
 
+	content = strings.TrimPrefix(content, strings.TrimPrefix(delimiter, "\n"))
 	slides := strings.Split(content, delimiter)
 
-	metaData, exists := meta.New().ParseHeader(slides[0])
+	metaData, exists := meta.New().Parse(slides[0])
 	// If the user specifies a custom configuration options
 	// skip the first "slide" since this is all configuration
 	if exists && len(slides) > 1 {
