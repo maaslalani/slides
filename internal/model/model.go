@@ -142,7 +142,7 @@ func (m Model) View() string {
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
 	}
-	slide = styles.Slide.Render(slide)
+	slide = styles.Slide.Width(m.viewport.Width).Render(slide)
 
 	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
 	right := styles.Page.Render(fmt.Sprintf("Slide %d / %d", m.Page+1, len(m.Slides)))
