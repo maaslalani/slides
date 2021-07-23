@@ -135,14 +135,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(0))
+	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(m.viewport.Width))
 	slide := m.Slides[m.Page]
 	slide, err := r.Render(slide)
 	slide += m.VirtualText
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
 	}
-	slide = styles.Slide.Width(m.viewport.Width).Render(slide)
+	slide = styles.Slide.Render(slide)
 
 	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
 	right := styles.Page.Render(fmt.Sprintf("Slide %d / %d", m.Page+1, len(m.Slides)))
