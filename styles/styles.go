@@ -63,7 +63,7 @@ func SelectTheme(theme string) glamour.TermRendererOption {
 	default:
 		var themeReader io.Reader
 		var err error
-		if strings.HasPrefix(theme, "http://") || strings.HasPrefix(theme, "https://") {
+		if strings.HasPrefix(theme, "http") {
 			var resp *http.Response
 			resp, err = http.Get(theme)
 			if err != nil {
