@@ -3,6 +3,8 @@ package styles
 
 import (
 	_ "embed"
+	"io"
+	"net/http"
 	"os"
 	"strings"
 
@@ -59,20 +61,41 @@ func SelectTheme(theme string) glamour.TermRendererOption {
 	case "notty":
 		return glamour.WithStyles(glamour.NoTTYStyleConfig)
 	default:
-		bytes, err := os.ReadFile(theme)
+		var themeReader io.Reader
+		var err error
+		if strings.HasPrefix(theme, "http") {
+			var resp *http.Response
+			resp, err = http.Get(theme)
+			if err != nil {
+				return getDefaultTheme()
+			}
+			defer resp.Body.Close()
+			themeReader = resp.Body
+		} else {
+			file, err := os.Open(theme)
+			if err != nil {
+				return getDefaultTheme()
+			}
+			defer file.Close()
+			themeReader = file
+		}
+		bytes, err := io.ReadAll(themeReader)
 		if err == nil {
 			return glamour.WithStylesFromJSONBytes(bytes)
 		}
 		// Should log a warning so the user knows we failed to read their theme file
-
-		if termenv.EnvNoColor() {
-			return glamour.WithStyles(glamour.NoTTYStyleConfig)
-		}
-
-		if !termenv.HasDarkBackground() {
-			return glamour.WithStyles(glamour.LightStyleConfig)
-		}
-
-		return glamour.WithStylesFromJSONBytes(DefaultTheme)
+		return getDefaultTheme()
 	}
+}
+
+func getDefaultTheme() glamour.TermRendererOption {
+	if termenv.EnvNoColor() {
+		return glamour.WithStyles(glamour.NoTTYStyleConfig)
+	}
+
+	if !termenv.HasDarkBackground() {
+		return glamour.WithStyles(glamour.LightStyleConfig)
+	}
+
+	return glamour.WithStylesFromJSONBytes(DefaultTheme)
 }
