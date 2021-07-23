@@ -72,10 +72,12 @@ func SelectTheme(theme string) glamour.TermRendererOption {
 			defer resp.Body.Close()
 			themeReader = resp.Body
 		} else {
-			themeReader, err = os.Open(theme)
+			file, err := os.Open(theme)
 			if err != nil {
 				return getDefaultTheme()
 			}
+			defer file.Close()
+			themeReader = file
 		}
 		bytes, err := io.ReadAll(themeReader)
 		if err == nil {
