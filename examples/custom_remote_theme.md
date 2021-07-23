@@ -4,4 +4,4 @@ theme: https://github.com/maaslalani/slides/raw/main/styles/theme.json
 
 # Slides
 
-The above title should be orange and be prefixed with `CUSTOM`.
+The theme of this slide is fetched from https://github.com/maaslalani/slides/raw/main/styles/theme.json, the title above should be green.
