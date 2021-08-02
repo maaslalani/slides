@@ -164,9 +164,15 @@ func readFile(path string) (string, error) {
 	}
 	content := string(b)
 
+
 	// Pre-process slides if the file is executable to avoid
 	// unintentional code execution when presenting slides
 	if file.IsExecutable(s) {
+		// Remove shebang if file has one
+		if strings.HasPrefix(content, "#!") {
+			content = strings.Join(strings.SplitN(content, "\n", 2)[1:], "\n")
+		}
+
 		content = process.Pre(content)
 	}
 
