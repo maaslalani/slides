@@ -125,7 +125,7 @@ Go to the next slide with any of the following keys:
 * <kbd>down</kbd>
 * <kbd>enter</kbd>
 * <kbd>n</kbd>
-* <kbd>k</kbd>
+* <kbd>j</kbd>
 * <kbd>l</kbd>
 
 Go to the previous slide with any of the following keys:
@@ -133,7 +133,7 @@ Go to the previous slide with any of the following keys:
 * <kbd>up</kbd>
 * <kbd>p</kbd>
 * <kbd>h</kbd>
-* <kbd>j</kbd>
+* <kbd>k</kbd>
 
 Press <kbd>ctrl+e</kbd> on a slide with a code block to execute it.
 
