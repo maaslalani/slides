@@ -5,10 +5,9 @@ go 1.16
 require (
 	github.com/alecthomas/chroma v0.9.2 // indirect
 	github.com/charmbracelet/bubbles v0.8.0
-	github.com/charmbracelet/bubbletea v0.14.1
+	github.com/charmbracelet/bubbletea v0.14.2-0.20210802170552-2792304416db
 	github.com/charmbracelet/glamour v0.3.0
 	github.com/charmbracelet/lipgloss v0.3.0
-	github.com/containerd/console v1.0.2 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.15 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.9.0
