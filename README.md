@@ -140,6 +140,7 @@ Press <kbd>ctrl+e</kbd> on a slide with a code block to execute it.
 ### Configuration
 
 ### Theme
+
 `slides` allows you to customize your presentation's theme.
 
 If you want to use your own custom [theme.json](./styles/theme.json), add the following to the top of your `presentation.md`:
@@ -150,6 +151,48 @@ theme: ./path/to/theme.json
 ```
 
 Check out the provided [theme.json](./styles/theme.json) to use as a base for your custom theme.
+
+You can also pass the URL to a theme and `slides` will fetch it from the remote before presenting so that you don't need to keep the theme file on disk.
+
+```yaml
+---
+theme: https://github.com/maaslalani/slides/raw/main/styles/theme.json
+---
+```
+
+### Author
+
+If you want to customize the name displayed on the bottom left corner of `slides`,
+you may pass a string to the `author` field in the metadata section of your `slides.md` file.
+This value defaults to your OS user's full name.
+
+```yaml
+---
+author: Gopher
+---
+```
+
+### Date
+
+To customize the format of the date string being used,
+you may pass a string formatted the way you want using the date `2006-01-02`.
+This value defaults to `2006-01-02`.
+
+```yaml
+---
+date: January 2, 2006
+---
+```
+
+To hide the date, you may also pass an empty string `""`.
+
+### Paging
+
+To customize the page information displayed on the bottom right corner of
+`slides`, you may pass a string containing 0 or more `%d` directives which will
+automatically be formatted with the current slide number and total slide
+number.
+This value defaults to `Slide %d / %d`.
 
 ### Alternatives
 
