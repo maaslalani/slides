@@ -12,19 +12,19 @@ import (
 // from values set to empty strings in the YAML header. We replace values not
 // set by defaults values when parsing a header.
 type parsedMeta struct {
-	Theme     *string `yaml:"theme"`
-	Author    *string `yaml:"author"`
-	Date      *string `yaml:"date"`
-	Numbering *string `yaml:"numbering"`
+	Theme  *string `yaml:"theme"`
+	Author *string `yaml:"author"`
+	Date   *string `yaml:"date"`
+	Paging *string `yaml:"paging"`
 }
 
 // Meta contains all of the data to be parsed
 // out of a markdown file's header section
 type Meta struct {
-	Theme     string
-	Author    string
-	Date      string
-	Numbering string
+	Theme  string
+	Author string
+	Date   string
+	Paging string
 }
 
 // New creates a new instance of the
@@ -40,10 +40,10 @@ func New() *Meta {
 // return false to acknowledge that there is no front matter in this slide
 func (m *Meta) Parse(header string) (*Meta, bool) {
 	fallback := &Meta{
-		Theme:     defaultTheme(),
-		Author:    defaultAuthor(),
-		Date:      defaultDate(),
-		Numbering: defaultNumbering(),
+		Theme:  defaultTheme(),
+		Author: defaultAuthor(),
+		Date:   defaultDate(),
+		Paging: defaultPaging(),
 	}
 
 	var tmp parsedMeta
@@ -70,10 +70,10 @@ func (m *Meta) Parse(header string) (*Meta, bool) {
 		m.Date = fallback.Date
 	}
 
-	if tmp.Numbering != nil {
-		m.Numbering = *tmp.Numbering
+	if tmp.Paging != nil {
+		m.Paging = *tmp.Paging
 	} else {
-		m.Numbering = fallback.Numbering
+		m.Paging = fallback.Paging
 	}
 
 	return m, true
@@ -96,6 +96,6 @@ func defaultDate() string {
 	return "2006-01-02"
 }
 
-func defaultNumbering() string {
+func defaultPaging() string {
 	return "Slide %d / %d"
 }
