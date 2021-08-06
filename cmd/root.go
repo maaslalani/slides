@@ -1,10 +1,8 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"os/user"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -24,14 +22,8 @@ var root = &cobra.Command{
 			fileName = args[0]
 		}
 
-		user, err := user.Current()
-		if err != nil {
-			return errors.New("could not get current user")
-		}
-
 		presentation := model.Model{
 			Page:     0,
-			Author:   user.Name,
 			Date:     time.Now().Format("2006-01-02"),
 			FileName: fileName,
 		}

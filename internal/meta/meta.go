@@ -3,22 +3,28 @@
 package meta
 
 import (
+	"os/user"
+
 	"gopkg.in/yaml.v2"
 )
-
-const defaultTheme = "default"
 
 // Temporary structure to differentiate values not present in the YAML header
 // from values set to empty strings in the YAML header. We replace values not
 // set by defaults values when parsing a header.
 type parsedMeta struct {
-	Theme *string `yaml:"theme"`
+	Theme     *string `yaml:"theme"`
+	Author    *string `yaml:"author"`
+	Date      *string `yaml:"date"`
+	Numbering *string `yaml:"numbering"`
 }
 
 // Meta contains all of the data to be parsed
 // out of a markdown file's header section
 type Meta struct {
-	Theme string
+	Theme     string
+	Author    string
+	Date      string
+	Numbering string
 }
 
 // New creates a new instance of the
@@ -33,7 +39,12 @@ func New() *Meta {
 // If no front matter is provided, it will fallback to the default theme and
 // return false to acknowledge that there is no front matter in this slide
 func (m *Meta) Parse(header string) (*Meta, bool) {
-	fallback := &Meta{Theme: defaultTheme}
+	fallback := &Meta{
+		Theme:     defaultTheme(),
+		Author:    defaultAuthor(),
+		Date:      defaultDate(),
+		Numbering: defaultNumbering(),
+	}
 
 	var tmp parsedMeta
 	err := yaml.Unmarshal([]byte(header), &tmp)
@@ -47,5 +58,44 @@ func (m *Meta) Parse(header string) (*Meta, bool) {
 		m.Theme = fallback.Theme
 	}
 
+	if tmp.Author != nil {
+		m.Author = *tmp.Author
+	} else {
+		m.Author = fallback.Author
+	}
+
+	if tmp.Date != nil {
+		m.Date = *tmp.Date
+	} else {
+		m.Date = fallback.Date
+	}
+
+	if tmp.Numbering != nil {
+		m.Numbering = *tmp.Numbering
+	} else {
+		m.Numbering = fallback.Numbering
+	}
+
 	return m, true
+}
+
+func defaultTheme() string {
+	return "default"
+}
+
+func defaultAuthor() string {
+	user, err := user.Current()
+	if err != nil {
+		return ""
+	}
+
+	return user.Name
+}
+
+func defaultDate() string {
+	return "2006-01-02"
+}
+
+func defaultNumbering() string {
+	return "Slide %d / %d"
 }
