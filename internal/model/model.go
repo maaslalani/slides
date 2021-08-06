@@ -25,13 +25,14 @@ const (
 )
 
 type Model struct {
-	Slides   []string
-	Page     int
-	Author   string
-	Date     string
-	Theme    glamour.TermRendererOption
-	FileName string
-	viewport viewport.Model
+	Slides    []string
+	Page      int
+	Author    string
+	Date      string
+	Theme     glamour.TermRendererOption
+	Numbering string
+	FileName  string
+	viewport  viewport.Model
 	// VirtualText is used for additional information that is not part of the
 	// original slides, it will be displayed on a slide and reset on page change
 	VirtualText string
@@ -80,6 +81,9 @@ func (m *Model) Load() error {
 	}
 
 	m.Slides = slides
+	m.Author = metaData.Author
+	m.Date = time.Now().Format(metaData.Date)
+	m.Numbering = metaData.Numbering
 	if m.Theme == nil {
 		m.Theme = styles.SelectTheme(metaData.Theme)
 	}
@@ -145,9 +149,20 @@ func (m Model) View() string {
 	slide = styles.Slide.Render(slide)
 
 	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
-	right := styles.Page.Render(fmt.Sprintf("Slide %d / %d", m.Page+1, len(m.Slides)))
+	right := styles.Page.Render(m.numbering())
 	status := styles.Status.Render(styles.JoinHorizontal(left, right, m.viewport.Width))
 	return styles.JoinVertical(slide, status, m.viewport.Height)
+}
+
+func (m *Model) numbering() string {
+	switch strings.Count(m.Numbering, "%d") {
+	case 2:
+		return fmt.Sprintf(m.Numbering, m.Page+1, len(m.Slides))
+	case 1:
+		return fmt.Sprintf(m.Numbering, m.Page+1)
+	default:
+		return m.Numbering
+	}
 }
 
 func readFile(path string) (string, error) {
@@ -163,7 +178,6 @@ func readFile(path string) (string, error) {
 		return "", err
 	}
 	content := string(b)
-
 
 	// Pre-process slides if the file is executable to avoid
 	// unintentional code execution when presenting slides

@@ -2,6 +2,7 @@ package meta_test
 
 import (
 	"fmt"
+	"os/user"
 	"testing"
 
 	"github.com/maaslalani/slides/internal/meta"
@@ -9,6 +10,9 @@ import (
 )
 
 func TestMeta_ParseHeader(t *testing.T) {
+	user, _ := user.Current()
+	date := "2006-01-02"
+
 	tests := []struct {
 		name      string
 		slideshow string
@@ -18,21 +22,90 @@ func TestMeta_ParseHeader(t *testing.T) {
 			name:      "Parse theme from header",
 			slideshow: fmt.Sprintf("---\ntheme: %q\n", "dark"),
 			want: &meta.Meta{
-				Theme: "dark",
+				Theme:     "dark",
+				Author:    user.Name,
+				Date:      date,
+				Numbering: "Slide %d / %d",
 			},
 		},
 		{
 			name:      "Fallback to default if no theme provided",
 			slideshow: "\n# Header Slide\n > Subtitle\n",
 			want: &meta.Meta{
-				Theme: "default",
+				Theme:     "default",
+				Author:    user.Name,
+				Date:      date,
+				Numbering: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Parse author from header",
+			slideshow: fmt.Sprintf("---\nauthor: %q\n", "gopher"),
+			want: &meta.Meta{
+				Theme:     "default",
+				Author:    "gopher",
+				Date:      date,
+				Numbering: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Fallback to default if no author provided",
+			slideshow: "\n# Header Slide\n > Subtitle\n",
+			want: &meta.Meta{
+				Theme:     "default",
+				Author:    user.Name,
+				Date:      date,
+				Numbering: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Parse date from header",
+			slideshow: fmt.Sprintf("---\ndate: %q\n", "31/01/1970"),
+			want: &meta.Meta{
+				Theme:     "default",
+				Author:    user.Name,
+				Date:      "31/01/1970",
+				Numbering: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Fallback to default if no date provided",
+			slideshow: "\n# Header Slide\n > Subtitle\n",
+			want: &meta.Meta{
+				Theme:     "default",
+				Author:    user.Name,
+				Date:      date,
+				Numbering: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Parse numbering from header",
+			slideshow: fmt.Sprintf("---\nnumbering: %q\n", "%d of %d"),
+			want: &meta.Meta{
+				Theme:     "default",
+				Author:    user.Name,
+				Date:      date,
+				Numbering: "%d of %d",
+			},
+		},
+		{
+			name:      "Fallback to default if no numebring provided",
+			slideshow: "\n# Header Slide\n > Subtitle\n",
+			want: &meta.Meta{
+				Theme:     "default",
+				Author:    user.Name,
+				Date:      date,
+				Numbering: "Slide %d / %d",
 			},
 		},
 		{
 			name:      "Fallback if first slide is valid yaml",
 			slideshow: "---\n# Header Slide---\nContent\n",
 			want: &meta.Meta{
-				Theme: "default",
+				Theme:     "default",
+				Author:    user.Name,
+				Date:      date,
+				Numbering: "Slide %d / %d",
 			},
 		},
 	}
@@ -67,6 +140,9 @@ func ExampleMeta_Parse() {
 	header := `
 ---
 theme: "dark"
+author: "Gopher"
+date: "Apr. 4, 2021"
+numbering: "%d"
 ---
 `
 	// Parse the header from the markdown
@@ -76,4 +152,7 @@ theme: "dark"
 	// Print the return theme
 	// meta
 	fmt.Println(m.Theme)
+	fmt.Println(m.Author)
+	fmt.Println(m.Date)
+	fmt.Println(m.Numbering)
 }
