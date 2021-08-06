@@ -158,6 +158,18 @@ paging: Slide %d / %d
 ---
 ```
 
+* `theme`: Path to `json` file containing a [glamour
+  theme](https://github.com/charmbracelet/glamour/tree/master/styles), can also
+  be a link to a remote `json` file which slides will fetch before presenting.
+* `author`: A `string` to display on the bottom-left corner of the presentation
+  view. Defaults to the OS current user's full name. Can be empty to hide the author.
+* `date`: A `string` that is used to format today's date in the form
+  `2006-01-02`. If the date is not a valid form of `2006-01-02` the contents of
+  the string will be displayed. Defaults to `2006-01-02`.
+* `paging`: A `string` that contains 0 or more `%d` directives. The first `%d`
+  will be replaced with the current slide number and the second `%d` will be
+  replaced with the total slides count. Defaults to `Slide %d / %d`.
+
 ### Alternatives
 
 **Credits**: This project was heavily inspired by [`lookatme`](https://github.com/d0c-s4vage/lookatme).
