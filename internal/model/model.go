@@ -113,15 +113,19 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			m.VirtualText = ""
 		case "ctrl+e":
-			// Run code block
-			block, err := code.Parse(m.Slides[m.Page])
+			// Run code blocks
+			blocks, err := code.Parse(m.Slides[m.Page])
 			if err != nil {
 				// We couldn't parse the code block on the screen
 				m.VirtualText = "\n" + err.Error()
 				return m, nil
 			}
-			res := code.Execute(block)
-			m.VirtualText = res.Out
+			var outs []string
+			for _, block := range blocks {
+				res := code.Execute(block)
+				outs = append(outs, res.Out)
+			}
+			m.VirtualText = strings.Join(outs, "\n")
 		}
 
 	case fileWatchMsg:

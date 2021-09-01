@@ -21,7 +21,7 @@ type Result struct {
 }
 
 // ?: means non-capture group
-var re = regexp.MustCompile("(?s)(?:```|~~~)(\\w+)\n(.*)\n(?:```|~~~)\\s?")
+var re = regexp.MustCompile("(?s)(?:```|~~~)(\\w+)\n(.*?)\n(?:```|~~~)\\s?")
 
 var (
 	ErrParse = errors.New("Error: could not parse code block")
@@ -29,19 +29,28 @@ var (
 
 // Parse takes a block of markdown and returns an array of Block's with code
 // and associated languages
-func Parse(markdown string) (Block, error) {
-	match := re.FindStringSubmatch(markdown)
+func Parse(markdown string) ([]Block, error) {
+	matchs := re.FindAllStringSubmatch(markdown, -1)
 
-	// There was either no language specified or no code block
-	// Either way, we cannot execute the expression
-	if len(match) < 3 {
-		return Block{}, ErrParse
+	var rv []Block
+	for _, match := range matchs {
+		// There was either no language specified or no code block
+		// Either way, we cannot execute the expression
+		if len(match) < 3 {
+			continue
+		}
+		rv = append(rv, Block{
+			Language: match[1],
+			Code:     match[2],
+		})
+
 	}
 
-	return Block{
-		Language: match[1],
-		Code:     match[2],
-	}, nil
+	if len(rv) == 0 {
+		return nil, ErrParse
+	}
+
+	return rv, nil
 }
 
 const (
