@@ -8,8 +8,8 @@ import (
 
 func TestParse(t *testing.T) {
 	tt := []struct {
-		markdown string
-		expected code.Block
+		markdown  string
+		expecteds []code.Block
 	}{
 		// We can't put backticks ```
 		// in multi-line strings, ~~~ instead
@@ -19,9 +19,11 @@ func TestParse(t *testing.T) {
 puts "Hello, world!"
 ~~~
 `,
-			expected: code.Block{
-				Code:     `puts "Hello, world!"`,
-				Language: "ruby",
+			expecteds: []code.Block{
+				{
+					Code:     `puts "Hello, world!"`,
+					Language: "ruby",
+				},
 			},
 		},
 		{
@@ -30,9 +32,11 @@ puts "Hello, world!"
 fmt.Println("Hello, world!")
 ~~~
 `,
-			expected: code.Block{
-				Code:     `fmt.Println("Hello, world!")`,
-				Language: "go",
+			expecteds: []code.Block{
+				{
+					Code:     `fmt.Println("Hello, world!")`,
+					Language: "go",
+				},
 			},
 		},
 		{
@@ -40,9 +44,11 @@ fmt.Println("Hello, world!")
 ~~~python
 print("Hello, world!")
 ~~~`,
-			expected: code.Block{
-				Code:     `print("Hello, world!")`,
-				Language: "python",
+			expecteds: []code.Block{
+				{
+					Code:     `print("Hello, world!")`,
+					Language: "python",
+				},
 			},
 		},
 		{
@@ -61,15 +67,17 @@ func main() {
 }
 ~~~
 `,
-			expected: code.Block{
-				Code: `package main
+			expecteds: []code.Block{
+				{
+					Code: `package main
 
 import "fmt"
 
 func main() {
   fmt.Println("Written in Go!")
 }`,
-				Language: "go",
+					Language: "go",
+				},
 			},
 		},
 		{
@@ -77,23 +85,50 @@ func main() {
 # Slide 1
 Just a regular slide, no code block
 `,
-			expected: code.Block{},
+			expecteds: nil,
 		},
 		{
-			markdown: ``,
-			expected: code.Block{},
+			markdown:  ``,
+			expecteds: nil,
+		},
+		{
+			markdown: `
+~~~ruby
+puts "Hello, world!"
+~~~
+
+~~~go
+fmt.Println("Hello, world!")
+~~~
+`,
+			expecteds: []code.Block{
+				{
+					Code:     `puts "Hello, world!"`,
+					Language: "ruby",
+				},
+				{
+					Code:     `fmt.Println("Hello, world!")`,
+					Language: "go",
+				},
+			},
 		},
 	}
 
 	for _, tc := range tt {
-		b, _ := code.Parse(tc.markdown)
-		if b.Code != tc.expected.Code {
-			t.Log(b.Code)
-			t.Log(tc.expected.Code)
-			t.Fatal("parse failed: incorrect code")
+		bs, _ := code.Parse(tc.markdown)
+		if len(bs) != len(tc.expecteds) {
+			t.Errorf("parse fail: incorrect size of blocks")
 		}
-		if b.Language != tc.expected.Language {
-			t.Fatalf("incorrect language, got %s, want %s", b.Language, tc.expected.Language)
+		for idx, b := range bs {
+			expected := tc.expecteds[idx]
+			if b.Code != expected.Code {
+				t.Log(b.Code)
+				t.Log(expected.Code)
+				t.Fatal("parse failed: incorrect code")
+			}
+			if b.Language != expected.Language {
+				t.Fatalf("incorrect language, got %s, want %s", b.Language, expected.Language)
+			}
 		}
 	}
 }
