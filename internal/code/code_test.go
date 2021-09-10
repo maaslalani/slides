@@ -8,8 +8,8 @@ import (
 
 func TestParse(t *testing.T) {
 	tt := []struct {
-		markdown  string
-		expecteds []code.Block
+		markdown string
+		expected []code.Block
 	}{
 		// We can't put backticks ```
 		// in multi-line strings, ~~~ instead
@@ -19,7 +19,7 @@ func TestParse(t *testing.T) {
 puts "Hello, world!"
 ~~~
 `,
-			expecteds: []code.Block{
+			expected: []code.Block{
 				{
 					Code:     `puts "Hello, world!"`,
 					Language: "ruby",
@@ -32,7 +32,7 @@ puts "Hello, world!"
 fmt.Println("Hello, world!")
 ~~~
 `,
-			expecteds: []code.Block{
+			expected: []code.Block{
 				{
 					Code:     `fmt.Println("Hello, world!")`,
 					Language: "go",
@@ -44,7 +44,7 @@ fmt.Println("Hello, world!")
 ~~~python
 print("Hello, world!")
 ~~~`,
-			expecteds: []code.Block{
+			expected: []code.Block{
 				{
 					Code:     `print("Hello, world!")`,
 					Language: "python",
@@ -67,7 +67,7 @@ func main() {
 }
 ~~~
 `,
-			expecteds: []code.Block{
+			expected: []code.Block{
 				{
 					Code: `package main
 
@@ -85,11 +85,11 @@ func main() {
 # Slide 1
 Just a regular slide, no code block
 `,
-			expecteds: nil,
+			expected: nil,
 		},
 		{
-			markdown:  ``,
-			expecteds: nil,
+			markdown: ``,
+			expected: nil,
 		},
 		{
 			markdown: `
@@ -101,7 +101,7 @@ puts "Hello, world!"
 fmt.Println("Hello, world!")
 ~~~
 `,
-			expecteds: []code.Block{
+			expected: []code.Block{
 				{
 					Code:     `puts "Hello, world!"`,
 					Language: "ruby",
@@ -115,19 +115,19 @@ fmt.Println("Hello, world!")
 	}
 
 	for _, tc := range tt {
-		bs, _ := code.Parse(tc.markdown)
-		if len(bs) != len(tc.expecteds) {
+		blocks, _ := code.Parse(tc.markdown)
+		if len(blocks) != len(tc.expected) {
 			t.Errorf("parse fail: incorrect size of blocks")
 		}
-		for idx, b := range bs {
-			expected := tc.expecteds[idx]
-			if b.Code != expected.Code {
-				t.Log(b.Code)
+		for i, block := range blocks {
+			expected := tc.expected[i]
+			if block.Code != expected.Code {
+				t.Log(block.Code)
 				t.Log(expected.Code)
 				t.Fatal("parse failed: incorrect code")
 			}
-			if b.Language != expected.Language {
-				t.Fatalf("incorrect language, got %s, want %s", b.Language, expected.Language)
+			if block.Language != expected.Language {
+				t.Fatalf("incorrect language, got %s, want %s", block.Language, expected.Language)
 			}
 		}
 	}

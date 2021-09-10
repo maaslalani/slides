@@ -30,10 +30,10 @@ var (
 // Parse takes a block of markdown and returns an array of Block's with code
 // and associated languages
 func Parse(markdown string) ([]Block, error) {
-	matchs := re.FindAllStringSubmatch(markdown, -1)
+	matches := re.FindAllStringSubmatch(markdown, -1)
 
 	var rv []Block
-	for _, match := range matchs {
+	for _, match := range matches {
 		// There was either no language specified or no code block
 		// Either way, we cannot execute the expression
 		if len(match) < 3 {
