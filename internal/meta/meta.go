@@ -4,6 +4,7 @@ package meta
 
 import (
 	"os/user"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -65,7 +66,7 @@ func (m *Meta) Parse(header string) (*Meta, bool) {
 	}
 
 	if tmp.Date != nil {
-		m.Date = *tmp.Date
+		m.Date = parseDate(*tmp.Date)
 	} else {
 		m.Date = fallback.Date
 	}
@@ -98,4 +99,22 @@ func defaultDate() string {
 
 func defaultPaging() string {
 	return "Slide %d / %d"
+}
+
+func parseDate(value string) string {
+	pairs := [][]string{
+		{"YYYY", "2006"},
+		{"YY", "06"},
+		{"MMMM", "January"},
+		{"MMM", "Jan"},
+		{"MM", "01"},
+		{"mm", "1"},
+		{"DD", "02"},
+		{"dd", "2"},
+	}
+
+	for _, p := range pairs {
+		value = strings.ReplaceAll(value, p[0], p[1])
+	}
+	return value
 }

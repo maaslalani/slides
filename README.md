@@ -163,12 +163,27 @@ paging: Slide %d / %d
   be a link to a remote `json` file which slides will fetch before presenting.
 * `author`: A `string` to display on the bottom-left corner of the presentation
   view. Defaults to the OS current user's full name. Can be empty to hide the author.
-* `date`: A `string` that is used to format today's date in the form
-  `2006-01-02`. If the date is not a valid form of `2006-01-02` the contents of
-  the string will be displayed. Defaults to `2006-01-02`.
+* `date`: A `string` that is used to format today's date in the native Go
+  format `2006-01-02` or in the `YYYY-MM-DD` format. If the date is not a valid
+  format, the string will be displayed. Defaults to `2006-01-02`.
 * `paging`: A `string` that contains 0 or more `%d` directives. The first `%d`
   will be replaced with the current slide number and the second `%d` will be
   replaced with the total slides count. Defaults to `Slide %d / %d`.
+
+#### Date format
+
+Given the date _January 02, 2006_:
+
+| Value  | Translates to |
+|--------|---------------|
+| `YYYY` | 2006          |
+| `YY`   | 06            |
+| `MMMM` | January       |
+| `MMM`  | Jan           |
+| `MM`   | 01            |
+| `mm`   | 1             |
+| `DD`   | 02            |
+| `dd`   | 2             |
 
 ### Alternatives
 
