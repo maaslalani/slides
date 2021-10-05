@@ -59,12 +59,62 @@ func TestMeta_ParseHeader(t *testing.T) {
 			},
 		},
 		{
-			name:      "Parse date from header",
+			name:      "Parse static date from header",
 			slideshow: fmt.Sprintf("---\ndate: %q\n", "31/01/1970"),
 			want: &meta.Meta{
 				Theme:  "default",
 				Author: user.Name,
 				Date:   "31/01/1970",
+				Paging: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Parse go-styled date from header",
+			slideshow: fmt.Sprintf("---\ndate: %q\n", "Jan 2, 2006"),
+			want: &meta.Meta{
+				Theme:  "default",
+				Author: user.Name,
+				Date:   "Jan 2, 2006",
+				Paging: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Parse YYYY-MM-DD date from header",
+			slideshow: fmt.Sprintf("---\ndate: %q\n", "YYYY-MM-DD"),
+			want: &meta.Meta{
+				Theme:  "default",
+				Author: user.Name,
+				Date:   "2006-01-02",
+				Paging: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Parse dd/mm/YY date from header",
+			slideshow: fmt.Sprintf("---\ndate: %q\n", "dd/mm/YY"),
+			want: &meta.Meta{
+				Theme:  "default",
+				Author: user.Name,
+				Date:   "2/1/06",
+				Paging: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Parse MMM dd, YYYY date from header",
+			slideshow: fmt.Sprintf("---\ndate: %q\n", "MMM dd, YYYY"),
+			want: &meta.Meta{
+				Theme:  "default",
+				Author: user.Name,
+				Date:   "Jan 2, 2006",
+				Paging: "Slide %d / %d",
+			},
+		},
+		{
+			name:      "Parse MMMM DD, YYYY date from header",
+			slideshow: fmt.Sprintf("---\ndate: %q\n", "MMMM DD, YYYY"),
+			want: &meta.Meta{
+				Theme:  "default",
+				Author: user.Name,
+				Date:   "January 02, 2006",
 				Paging: "Slide %d / %d",
 			},
 		},
