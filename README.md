@@ -120,7 +120,10 @@ If given a file name, `slides` will automatically look for changes in the file a
 curl http://example.com/slides.md | slides
 ```
 
-Go to the next slide with any of the following keys:
+Go to the first slide with the following key sequence:
+* <kbd>g</kbd> <kbd>g</kbd>
+
+Go to the next slide with any of the following key sequences:
 * <kbd>space</kbd>
 * <kbd>right</kbd>
 * <kbd>down</kbd>
@@ -128,13 +131,21 @@ Go to the next slide with any of the following keys:
 * <kbd>n</kbd>
 * <kbd>j</kbd>
 * <kbd>l</kbd>
+* number + any of the above (go forward n slides)
 
-Go to the previous slide with any of the following keys:
+Go to the previous slide with any of the following key sequences:
 * <kbd>left</kbd>
 * <kbd>up</kbd>
 * <kbd>p</kbd>
 * <kbd>h</kbd>
 * <kbd>k</kbd>
+* number + any of the above (go back n slides)
+
+Go to a specific slide with the following key sequence:
+* number + <kbd>G</kbd>
+
+Go to the last slide with the following key:
+* <kbd>G</kbd>
 
 ### Code Execution
 
