@@ -9,15 +9,13 @@ type repeatableFunction func(slide, totalSlides int) int
 // State represents the current buffer, current slide, and true if virtual text
 // should be cleared.
 type State struct {
-	Buffer string
-	Slide int
-	ClearVirtualText bool
+	Buffer    string
+	Slide     int
+	NumSlides int
 }
 
 // Navigate receives the current State and keyPress, and returns the new State.
-func Navigate(currentState State, keyPress string, numSlides int) State {
-	// Implementation
-
+func Navigate(currentState State, keyPress string) State {
 	switch keyPress {
 	case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
 		newBuffer := keyPress
@@ -27,9 +25,9 @@ func Navigate(currentState State, keyPress string, numSlides int) State {
 		}
 
 		return State{
-			Buffer:           newBuffer,
-			Slide:            currentState.Slide,
-			ClearVirtualText: false,
+			Buffer:    newBuffer,
+			Slide:     currentState.Slide,
+			NumSlides: currentState.NumSlides,
 		}
 	case "g":
 		switch currentState.Buffer {
@@ -37,46 +35,43 @@ func Navigate(currentState State, keyPress string, numSlides int) State {
 			return State {
 				Buffer: "",
 				Slide: navigateFirst(),
-				ClearVirtualText: false,
+				NumSlides: currentState.NumSlides,
 			}
 		default:
 			return State {
 				Buffer: "g",
 				Slide: currentState.Slide,
-				ClearVirtualText: false,
+				NumSlides: currentState.NumSlides,
 			}
 		}
 	case "G":
+		targetSlide := navigateLast(currentState.NumSlides)
 		if bufferIsNumeric(currentState.Buffer) {
-			return State {
-				Buffer: "",
-				Slide: navigateSlide(currentState.Buffer, numSlides),
-				ClearVirtualText: false,
-			}
-		} else {
-			return State {
-				Buffer: "",
-				Slide: navigateLast(numSlides),
-				ClearVirtualText: false,
-			}
+			targetSlide = navigateSlide(currentState.Buffer, currentState.NumSlides)
+		}
+
+		return State {
+			Buffer: "",
+			Slide: targetSlide,
+			NumSlides: currentState.NumSlides,
 		}
 	case " ", "down", "j", "right", "l", "enter", "n":
 		return State {
 			Buffer: "",
-			Slide: navigateNext(currentState.Buffer, currentState.Slide, numSlides),
-			ClearVirtualText: true,
+			Slide: navigateNext(currentState),
+			NumSlides: currentState.NumSlides,
 		}
 	case "up", "k", "left", "h", "p":
 		return State{
 			Buffer: "",
-			Slide:  navigatePrevious(currentState.Buffer, currentState.Slide, numSlides),
-			ClearVirtualText: true,
+			Slide:  navigatePrevious(currentState),
+			NumSlides: currentState.NumSlides,
 		}
 	default:
 		return State {
 			Buffer: "",
 			Slide: currentState.Slide,
-			ClearVirtualText: false,
+			NumSlides: currentState.NumSlides,
 		}
 	}
 }
@@ -90,14 +85,14 @@ func navigateFirst() int {
 	return 0
 }
 
-func navigateNext(buffer string, slide, numSlides int) int {
+func navigateNext(state State) int {
 	return repeatableAction(func(slide, totalSlides int) int {
 		if slide < totalSlides-1 {
 			return slide + 1
 		}
 
 		return totalSlides - 1
-	}, buffer, slide, numSlides)
+	}, state.Buffer, state.Slide, state.NumSlides)
 }
 
 func navigateSlide(buffer string, numSlides int) int {
@@ -115,14 +110,14 @@ func navigateSlide(buffer string, numSlides int) int {
 	return destinationSlide
 }
 
-func navigatePrevious(buffer string, slide, totalSlides int) int {
+func navigatePrevious(state State) int {
 	return repeatableAction(func(slide, totalSlides int) int {
 		if slide > 0 {
 			return slide - 1
 		}
 
 		return slide
-	}, buffer, slide, totalSlides)
+	}, state.Buffer, state.Slide, state.NumSlides)
 }
 
 func navigateLast(numSlides int) int {
