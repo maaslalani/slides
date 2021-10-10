@@ -6,38 +6,78 @@ import (
 
 type repeatableFunction func(slide, totalSlides int) int
 
-// Navigate receives the current buffer, keyPress, current slide, and total number of slides.
-// Navigate returns the new (updated) buffer, new current slide, and true if virtual text should be cleared.
-// For example, if showing user slide 1 and there are 10 slides available, slide will be 0 and numSlides will be 10.
-func Navigate(buffer, keyPress string, slide, numSlides int) (string, int, bool) {
+// State represents the current buffer, current slide, and true if virtual text
+// should be cleared.
+type State struct {
+	Buffer string
+	Slide int
+	ClearVirtualText bool
+}
+
+// Navigate receives the current State and keyPress, and returns the new State.
+func Navigate(currentState State, keyPress string, numSlides int) State {
 	// Implementation
 
 	switch keyPress {
 	case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-		if bufferIsNumeric(buffer) {
-			return buffer + keyPress, slide, false
-		} else {
-			return keyPress, slide, false
+		newBuffer := keyPress
+
+		if bufferIsNumeric(currentState.Buffer) {
+			newBuffer = currentState.Buffer + keyPress
+		}
+
+		return State{
+			Buffer:           newBuffer,
+			Slide:            currentState.Slide,
+			ClearVirtualText: false,
 		}
 	case "g":
-		switch buffer {
+		switch currentState.Buffer {
 		case "g":
-			return "", navigateFirst(), false
+			return State {
+				Buffer: "",
+				Slide: navigateFirst(),
+				ClearVirtualText: false,
+			}
 		default:
-			return "g", slide, false
+			return State {
+				Buffer: "g",
+				Slide: currentState.Slide,
+				ClearVirtualText: false,
+			}
 		}
 	case "G":
-		if bufferIsNumeric(buffer) {
-			return "", navigateSlide(buffer, numSlides), false
+		if bufferIsNumeric(currentState.Buffer) {
+			return State {
+				Buffer: "",
+				Slide: navigateSlide(currentState.Buffer, numSlides),
+				ClearVirtualText: false,
+			}
 		} else {
-			return "", navigateLast(numSlides), false
+			return State {
+				Buffer: "",
+				Slide: navigateLast(numSlides),
+				ClearVirtualText: false,
+			}
 		}
 	case " ", "down", "j", "right", "l", "enter", "n":
-		return "", navigateNext(buffer, slide, numSlides), true
+		return State {
+			Buffer: "",
+			Slide: navigateNext(currentState.Buffer, currentState.Slide, numSlides),
+			ClearVirtualText: true,
+		}
 	case "up", "k", "left", "h", "p":
-		return "", navigatePrevious(buffer, slide, numSlides), true
+		return State{
+			Buffer: "",
+			Slide:  navigatePrevious(currentState.Buffer, currentState.Slide, numSlides),
+			ClearVirtualText: true,
+		}
 	default:
-		return "", slide, false
+		return State {
+			Buffer: "",
+			Slide: currentState.Slide,
+			ClearVirtualText: false,
+		}
 	}
 }
 

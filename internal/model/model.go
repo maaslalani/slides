@@ -103,8 +103,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		keyPress := msg.String()
 
-		shouldClearVirtualText := false
-
 		switch keyPress {
 		case "ctrl+e":
 			// Run code blocks
@@ -123,11 +121,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "q":
 			return m, tea.Quit
 		default:
-			m.buffer, m.Page, shouldClearVirtualText = navigation.Navigate(m.buffer, keyPress, m.Page, len(m.Slides))
-		}
-
-		if shouldClearVirtualText {
-			m.VirtualText = ""
+			newState := navigation.Navigate(navigation.State{
+				Buffer:           m.buffer,
+				Slide:            m.Page,
+				ClearVirtualText: false,
+			}, keyPress, len(m.Slides))
+			m.buffer, m.Page = newState.Buffer, newState.Slide
+			if newState.ClearVirtualText {
+				m.VirtualText = ""
+			}
 		}
 
 	case fileWatchMsg:
