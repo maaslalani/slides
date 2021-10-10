@@ -4,74 +4,68 @@ import (
 	"strconv"
 )
 
-type repeatableFunction func(slide, totalSlides int) int
+type repeatableFunc func(slide, totalSlides int) int
 
-// State represents the current buffer, current slide, and true if virtual text
-// should be cleared.
+// State tracks the current buffer, page, and total number of slides
 type State struct {
-	Buffer    string
-	Slide     int
-	NumSlides int
+	Buffer      string
+	Page        int
+	TotalSlides int
 }
 
 // Navigate receives the current State and keyPress, and returns the new State.
-func Navigate(currentState State, keyPress string) State {
+func Navigate(state State, keyPress string) State {
 	switch keyPress {
 	case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
 		newBuffer := keyPress
 
-		if bufferIsNumeric(currentState.Buffer) {
-			newBuffer = currentState.Buffer + keyPress
+		if bufferIsNumeric(state.Buffer) {
+			newBuffer = state.Buffer + keyPress
 		}
 
 		return State{
-			Buffer:    newBuffer,
-			Slide:     currentState.Slide,
-			NumSlides: currentState.NumSlides,
+			Buffer:      newBuffer,
+			Page:        state.Page,
+			TotalSlides: state.TotalSlides,
 		}
 	case "g":
-		switch currentState.Buffer {
+		switch state.Buffer {
 		case "g":
-			return State {
-				Buffer: "",
-				Slide: navigateFirst(),
-				NumSlides: currentState.NumSlides,
+			return State{
+				Page:        0,
+				TotalSlides: state.TotalSlides,
 			}
 		default:
-			return State {
-				Buffer: "g",
-				Slide: currentState.Slide,
-				NumSlides: currentState.NumSlides,
+			return State{
+				Buffer:      "g",
+				Page:        state.Page,
+				TotalSlides: state.TotalSlides,
 			}
 		}
 	case "G":
-		targetSlide := navigateLast(currentState.NumSlides)
-		if bufferIsNumeric(currentState.Buffer) {
-			targetSlide = navigateSlide(currentState.Buffer, currentState.NumSlides)
+		targetSlide := state.TotalSlides - 1
+		if bufferIsNumeric(state.Buffer) {
+			targetSlide = navigateSlide(state.Buffer, state.TotalSlides)
 		}
 
-		return State {
-			Buffer: "",
-			Slide: targetSlide,
-			NumSlides: currentState.NumSlides,
+		return State{
+			Page:        targetSlide,
+			TotalSlides: state.TotalSlides,
 		}
 	case " ", "down", "j", "right", "l", "enter", "n":
-		return State {
-			Buffer: "",
-			Slide: navigateNext(currentState),
-			NumSlides: currentState.NumSlides,
+		return State{
+			Page:        navigateNext(state),
+			TotalSlides: state.TotalSlides,
 		}
 	case "up", "k", "left", "h", "p":
 		return State{
-			Buffer: "",
-			Slide:  navigatePrevious(currentState),
-			NumSlides: currentState.NumSlides,
+			Page:        navigatePrevious(state),
+			TotalSlides: state.TotalSlides,
 		}
 	default:
-		return State {
-			Buffer: "",
-			Slide: currentState.Slide,
-			NumSlides: currentState.NumSlides,
+		return State{
+			Page:        state.Page,
+			TotalSlides: state.TotalSlides,
 		}
 	}
 }
@@ -81,10 +75,6 @@ func bufferIsNumeric(buffer string) bool {
 	return err == nil
 }
 
-func navigateFirst() int {
-	return 0
-}
-
 func navigateNext(state State) int {
 	return repeatableAction(func(slide, totalSlides int) int {
 		if slide < totalSlides-1 {
@@ -92,15 +82,15 @@ func navigateNext(state State) int {
 		}
 
 		return totalSlides - 1
-	}, state.Buffer, state.Slide, state.NumSlides)
+	}, state)
 }
 
-func navigateSlide(buffer string, numSlides int) int {
+func navigateSlide(buffer string, totalSlides int) int {
 	destinationSlide, _ := strconv.Atoi(buffer)
 	destinationSlide -= 1
 
-	if destinationSlide > numSlides -1 {
-		return numSlides - 1
+	if destinationSlide > totalSlides-1 {
+		return totalSlides - 1
 	}
 
 	if destinationSlide < 0 {
@@ -117,29 +107,25 @@ func navigatePrevious(state State) int {
 		}
 
 		return slide
-	}, state.Buffer, state.Slide, state.NumSlides)
+	}, state)
 }
 
-func navigateLast(numSlides int) int {
-	return numSlides - 1
-}
-
-func repeatableAction(fn repeatableFunction, buffer string, slide, totalSlides int) int {
-	if !bufferIsNumeric(buffer) {
-		return fn(slide, totalSlides)
+func repeatableAction(fn repeatableFunc, state State) int {
+	if !bufferIsNumeric(state.Buffer) {
+		return fn(state.Page, state.TotalSlides)
 	}
 
-	repeat, _ := strconv.Atoi(buffer)
-	currentSlide := slide
+	repeat, _ := strconv.Atoi(state.Buffer)
+	page := state.Page
 
 	if repeat == 0 {
 		// This is how behaviour works in Vim, so following principle of least astonishment.
-		return fn(slide, totalSlides)
+		return fn(state.Page, state.TotalSlides)
 	}
 
 	for i := 0; i < repeat; i++ {
-		currentSlide = fn(currentSlide, totalSlides)
+		page = fn(page, state.TotalSlides)
 	}
 
-	return currentSlide
+	return page
 }

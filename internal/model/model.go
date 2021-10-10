@@ -123,13 +123,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		default:
 			newState := navigation.Navigate(navigation.State{
 				Buffer:    m.buffer,
-				Slide:     m.Page,
-				NumSlides: len(m.Slides),
+				Page:     m.Page,
+				TotalSlides: len(m.Slides),
 			}, keyPress)
-			if newState.Slide != m.Page {
+			if newState.Page != m.Page {
 				m.VirtualText = ""
 			}
-			m.buffer, m.Page = newState.Buffer, newState.Slide
+			m.buffer, m.Page = newState.Buffer, newState.Page
 		}
 
 	case fileWatchMsg:
