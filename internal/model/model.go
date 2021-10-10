@@ -4,10 +4,12 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/maaslalani/slides/internal/file"
+	"github.com/maaslalani/slides/internal/navigation"
+	"github.com/maaslalani/slides/internal/process"
 	"io"
 	"io/ioutil"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -15,9 +17,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
 	"github.com/maaslalani/slides/internal/code"
-	"github.com/maaslalani/slides/internal/file"
 	"github.com/maaslalani/slides/internal/meta"
-	"github.com/maaslalani/slides/internal/process"
 	"github.com/maaslalani/slides/styles"
 )
 
@@ -41,8 +41,6 @@ type Model struct {
 }
 
 type fileWatchMsg struct{}
-
-type repeatableFunction func() int
 
 var fileInfo os.FileInfo
 
@@ -104,38 +102,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.KeyMsg:
 		keyPress := msg.String()
+
+		shouldClearVirtualText := false
+
 		switch keyPress {
-		case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-			if m.bufferIsNumeric() {
-				m.buffer += keyPress
-			} else {
-				m.buffer = keyPress
-			}
-		case "ctrl+c", "q":
-			return m, tea.Quit
-		case "g":
-			switch m.buffer {
-			case "g":
-				m.Page = m.navigateFirst()
-				m.buffer = ""
-			default:
-				m.buffer = "g"
-			}
-		case "G":
-			if m.bufferIsNumeric() {
-				m.Page = m.navigatePage()
-			} else {
-				m.Page = m.navigateLast()
-			}
-			m.buffer = ""
-		case " ", "down", "j", "right", "l", "enter", "n":
-			m.Page = m.navigateNext()
-			m.VirtualText = ""
-			m.buffer = ""
-		case "up", "k", "left", "h", "p":
-			m.Page = m.navigatePrevious()
-			m.VirtualText = ""
-			m.buffer = ""
 		case "ctrl+e":
 			// Run code blocks
 			blocks, err := code.Parse(m.Slides[m.Page])
@@ -150,7 +120,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				outs = append(outs, res.Out)
 			}
 			m.VirtualText = strings.Join(outs, "\n")
-			m.buffer = ""
+		case "ctrl+c", "q":
+			return m, tea.Quit
+		default:
+			m.buffer, m.Page, shouldClearVirtualText = navigation.Navigate(m.buffer, keyPress, m.Page, len(m.Slides))
+		}
+
+		if shouldClearVirtualText {
+			m.VirtualText = ""
 		}
 
 	case fileWatchMsg:
@@ -192,54 +169,6 @@ func (m *Model) paging() string {
 	default:
 		return m.Paging
 	}
-}
-
-func (m Model) bufferIsNumeric() bool {
-	_, err := strconv.Atoi(m.buffer)
-	return err == nil
-}
-
-func (m Model) navigateFirst() int {
-	return 0
-}
-
-func (m Model) navigateNext() int {
-	return m.repeatableAction(func() int {
-		if m.Page < len(m.Slides)-1 {
-			m.Page++
-		}
-
-		return m.Page
-	})
-}
-
-func (m Model) navigatePage() int {
-	page, _ := strconv.Atoi(m.buffer)
-	page -= 1
-
-	if page > len(m.Slides) -1 {
-		return len(m.Slides) - 1
-	}
-
-	if page < 0 {
-		return 0
-	}
-
-	return page
-}
-
-func (m Model) navigatePrevious() int {
-	return m.repeatableAction(func() int {
-		if m.Page > 0 {
-			m.Page--
-		}
-
-		return m.Page
-	})
-}
-
-func (m Model) navigateLast() int {
-	return len(m.Slides) - 1
 }
 
 func readFile(path string) (string, error) {
@@ -295,23 +224,4 @@ func readStdin() (string, error) {
 	}
 
 	return b.String(), nil
-}
-
-func (m Model) repeatableAction(fn repeatableFunction) int {
-	if !m.bufferIsNumeric() {
-		return fn()
-	}
-
-	repeat, _ := strconv.Atoi(m.buffer)
-
-	if repeat == 0 {
-		// This is how behaviour works in Vim, so following principle of least astonishment.
-		return fn()
-	}
-
-	for i := 0; i < repeat; i++ {
-		m.Page = fn()
-	}
-
-	return m.Page
 }
