@@ -64,7 +64,7 @@ var Languages = map[string]Language{
 	},
 	Perl: {
 		Extension: "pl",
-		Cmds:      base{"pl"},
+		Cmds:      base{"perl"},
 	},
 	Rust: {
 		Extension: "rs",
