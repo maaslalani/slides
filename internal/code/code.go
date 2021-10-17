@@ -5,7 +5,9 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
+	"strings"
 	"time"
 )
 
@@ -88,21 +90,54 @@ func Execute(code Block) Result {
 		}
 	}
 
-	cmd := exec.Command(language.Command[0], append(language.Command[1:], f.Name())...)
+	var (
+		output   strings.Builder
+		exitCode int
+	)
+
+	// replacer for commands
+	repl := strings.NewReplacer(
+		"<file>", f.Name(),
+		// <name>: file name without extension and without path
+		"<name>", filepath.Base(strings.TrimSuffix(f.Name(), filepath.Ext(f.Name()))),
+		"<path>", filepath.Dir(f.Name()),
+	)
 
 	// For accuracy of program execution speed, we can't put anything after
 	// recording the start time or before recording the end time.
 	start := time.Now()
-	out, err := cmd.Output()
-	end := time.Now()
 
-	exitCode := 0
-	if err != nil {
-		exitCode = 1
+	var cmds multi
+
+	switch t := language.Cmds.(type) {
+	case base:
+		cmds = multi{append(t, "<file>")}
+	case single:
+		cmds = multi{t}
+	case multi:
+		cmds = t
 	}
 
+	for _, c := range cmds {
+		// replace <file>, <name> and <path> in commands
+		for i, v := range c {
+			c[i] = repl.Replace(v)
+		}
+		// execute and write output
+		cmd := exec.Command(c[0], c[1:]...)
+		out, err := cmd.Output()
+		output.Write(out)
+
+		// update status code
+		if err != nil {
+			exitCode = 1
+		}
+	}
+
+	end := time.Now()
+
 	return Result{
-		Out:           string(out),
+		Out:           output.String(),
 		ExitCode:      exitCode,
 		ExecutionTime: end.Sub(start),
 	}

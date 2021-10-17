@@ -2,10 +2,10 @@
 
 Slides allows you to execute code blocks directly inside your slides!
 
-Just press `ctrl+e` and the result of the code block will be displayed as virtual
-text in your slides.
+Just press `ctrl+e` and the result of the code block will be displayed as virtual text in your slides.
 
 Currently supported languages:
+
 * `bash`
 * `elixir`
 * `go`
@@ -13,6 +13,7 @@ Currently supported languages:
 * `python`
 * `ruby`
 * `perl`
+* `rust` (no windows support)
 
 ---
 
@@ -54,7 +55,7 @@ console.log("Hello, world!")
 
 ---
 
-# Lua
+### Lua
 
 ```lua
 print("Hello, World!")
@@ -82,4 +83,14 @@ puts "Hello, world!"
 
 ```perl
 print ("hello, world");
+```
+
+---
+
+### Rust
+
+```rust
+fn main() {
+    println!("Hello, world!");
+}
 ```
