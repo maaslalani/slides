@@ -107,18 +107,7 @@ func Execute(code Block) Result {
 	// recording the start time or before recording the end time.
 	start := time.Now()
 
-	var cmds multi
-
-	switch t := language.Cmds.(type) {
-	case base:
-		cmds = multi{append(t, "<file>")}
-	case single:
-		cmds = multi{t}
-	case multi:
-		cmds = t
-	}
-
-	for _, c := range cmds {
+	for _, c := range language.Commands {
 		// replace <file>, <name> and <path> in commands
 		for i, v := range c {
 			c[i] = repl.Replace(v)

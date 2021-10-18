@@ -1,15 +1,8 @@
 package code
 
-// base: A filename is appended to the end of the arguments.
-// Example: base{"py"} -> `py test.py`
+// cmds: Multiple commands; placeholders can be used
 // Placeholders <file>, <name> and <path> can be used.
-type base []string
-
-// single: Same as base, except that the filename is not appended.
-type single []string
-
-// multi: Multiple commands; placeholders can be used
-type multi [][]string
+type cmds [][]string
 
 // ----
 
@@ -17,7 +10,7 @@ type Language struct {
 	Extension string
 	// Commands  [][]string // placeholders: <name> file name (without extension),
 	// <file> file name, <path> path without file name
-	Cmds interface{} // type of multi, single, base
+	Commands cmds
 }
 
 // Supported Languages
@@ -36,39 +29,39 @@ const (
 var Languages = map[string]Language{
 	Bash: {
 		Extension: "sh",
-		Cmds:      base{"bash"},
+		Commands:  cmds{{"bash", "<file>"}},
 	},
 	Elixir: {
 		Extension: "exs",
-		Cmds:      base{"elixir"},
+		Commands:  cmds{{"elixir", "<file>"}},
 	},
 	Go: {
 		Extension: "go",
-		Cmds:      base{"go", "run"},
+		Commands:  cmds{{"go", "run", "<file>"}},
 	},
 	Javascript: {
 		Extension: "js",
-		Cmds:      base{"node"},
+		Commands:  cmds{{"node", "<file>"}},
 	},
 	Lua: {
 		Extension: "lua",
-		Cmds:      base{"lua"},
+		Commands:  cmds{{"lua", "<file>"}},
 	},
 	Ruby: {
 		Extension: "rb",
-		Cmds:      base{"ruby"},
+		Commands:  cmds{{"ruby", "<file>"}},
 	},
 	Python: {
 		Extension: "py",
-		Cmds:      base{"python"},
+		Commands:  cmds{{"python", "<file>"}},
 	},
 	Perl: {
 		Extension: "pl",
-		Cmds:      base{"perl"},
+		Commands:  cmds{{"perl", "<file>"}},
 	},
 	Rust: {
 		Extension: "rs",
-		Cmds: multi{
+		Commands: cmds{
 			// compile code
 			{"rustc", "<file>", "-o", "<path>/<name>.run"},
 			// grant execute permissions
