@@ -15,14 +15,20 @@ import (
 
 const (
 	salmon = lipgloss.Color("#E8B4BC")
+	pink   = lipgloss.Color("#e84393")
 )
 
 var (
-	Author = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Left).MarginLeft(2)
-	Date   = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).Margin(0, 1)
-	Page   = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
-	Slide  = lipgloss.NewStyle().Padding(1)
-	Status = lipgloss.NewStyle().Padding(1)
+	Author       = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Left).MarginLeft(2)
+	Date         = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).Margin(0, 1)
+	Page         = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
+	Slide        = lipgloss.NewStyle().Padding(1)
+	Status       = lipgloss.NewStyle().Padding(1)
+	ActionStatus = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#000000")).
+			Background(pink).
+			Align(lipgloss.Left).
+			MarginLeft(3)
 )
 
 var (

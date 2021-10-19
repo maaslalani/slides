@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/maaslalani/slides/internal/actions"
 	"github.com/maaslalani/slides/internal/file"
 	"github.com/maaslalani/slides/internal/navigation"
 	"github.com/maaslalani/slides/internal/process"
@@ -38,6 +39,8 @@ type Model struct {
 	// VirtualText is used for additional information that is not part of the
 	// original slides, it will be displayed on a slide and reset on page change
 	VirtualText string
+	// Actions
+	actions actions.Actions
 }
 
 type fileWatchMsg struct{}
@@ -103,7 +106,31 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		keyPress := msg.String()
 
+		if m.actions.IsCapturing() {
+			// special keys (backspace, ctrl+_)
+			// single key
+			if len(keyPress) == 1 {
+				// append to buffer
+				m.actions.Buffer += keyPress
+			} else if msg.Type == tea.KeyEnter {
+				m.actions.Execute(&m)
+			} else if msg.Type == tea.KeyBackspace {
+				// delete last buffer char
+				if len(m.actions.Buffer) > 1 {
+					m.actions.Buffer = m.actions.Buffer[:len(m.actions.Buffer)-1]
+				}
+			} else if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyEscape {
+				// exit command mode
+				m.actions.Reset()
+			}
+			return m, nil
+		}
+
 		switch keyPress {
+		case ":", "/", "?":
+			// command mode!
+			m.actions.Begin(keyPress)
+			return m, nil
 		case "ctrl+e":
 			// Run code blocks
 			blocks, err := code.Parse(m.Slides[m.Page])
@@ -122,8 +149,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		default:
 			newState := navigation.Navigate(navigation.State{
-				Buffer:    m.buffer,
-				Page:     m.Page,
+				Buffer:      m.buffer,
+				Page:        m.Page,
 				TotalSlides: len(m.Slides),
 			}, keyPress)
 			if newState.Page != m.Page {
@@ -159,7 +186,8 @@ func (m Model) View() string {
 	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
 	right := styles.Page.Render(m.paging())
 	status := styles.Status.Render(styles.JoinHorizontal(left, right, m.viewport.Width))
-	return styles.JoinVertical(slide, status, m.viewport.Height)
+	actionBar := styles.JoinVertical(styles.ActionStatus.Render(m.actions.GetStatus()), status, 2)
+	return styles.JoinVertical(slide, actionBar, m.viewport.Height)
 }
 
 func (m *Model) paging() string {
@@ -171,6 +199,9 @@ func (m *Model) paging() string {
 	default:
 		return m.Paging
 	}
+}
+func (m *Model) SetPage(page int) {
+	m.Page = page
 }
 
 func readFile(path string) (string, error) {
