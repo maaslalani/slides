@@ -4,6 +4,7 @@ var Hooks = []HookFunc{
 	searchHook,
 	helpHook,
 	gotoHook,
+	directGotoHook,
 }
 
 type Ctx struct {

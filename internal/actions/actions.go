@@ -34,8 +34,8 @@ func (a *Actions) CreateCtx(m hooks.Model) *hooks.Ctx {
 	var command = strings.TrimSpace(a.Buffer)
 	var args []string
 	if strings.Contains(command, " ") {
-		command = command[:strings.Index(command, " ")]
 		args = strings.Split(command, " ")[1:]
+		command = command[:strings.Index(command, " ")]
 	}
 	return &hooks.Ctx{
 		Prefix:  a.Prefix,
@@ -51,6 +51,14 @@ func (a *Actions) GetStatus() string {
 	}
 	if !a.IsCapturing() {
 		return ""
+	}
+	// Special case: forward- and backward-search
+	if a.Prefix == "/" || a.Prefix == "?" {
+		var dir = "->"
+		if a.Prefix == "?" {
+			dir = "<-"
+		}
+		return fmt.Sprintf("| Search %s [%s]%s", dir, a.Prefix, a.Buffer)
 	}
 	return fmt.Sprintf("[ %s(%s) ]", a.Prefix, a.Buffer)
 }

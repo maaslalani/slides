@@ -6,6 +6,28 @@ import (
 	"strings"
 )
 
+var gotoHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
+	if ctx.Prefix != ":" || ctx.Command != "goto" {
+		// setting `accept = false` means send the command to other hooks
+		return "" /* accept: */, false
+	}
+	if len(ctx.Args) != 1 {
+		return "err: syntax: goto <slide>", true
+	}
+	// parse arg[0] to number
+	n, err := strconv.Atoi(ctx.Args[0])
+	if err != nil {
+		return fmt.Sprintf("err: %s", err.Error()), true
+	}
+	// check bounds
+	if n <= 0 || n > len(ctx.Model.GetSlides()) {
+		return "err: page out of bounds", true
+	}
+	// goto page
+	ctx.Model.SetPage(n - 1)
+	return fmt.Sprintf("ok: navigated to page %d", n), true
+}
+
 // searchHook - jump to a slide containing a that contains the <search term>
 // /<search term> - forward search
 // ?<search term> - backward search
@@ -57,7 +79,7 @@ var searchHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 
 // gotoHook - :<slide>
 // jump to a slide
-var gotoHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
+var directGotoHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 	// check if command is a number
 	if n, err := strconv.Atoi(ctx.Command); err == nil {
 		accept = true
