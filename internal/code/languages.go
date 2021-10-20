@@ -64,8 +64,6 @@ var Languages = map[string]Language{
 		Commands: cmds{
 			// compile code
 			{"rustc", "<file>", "-o", "<path>/<name>.run"},
-			// grant execute permissions
-			{"chmod", "+x", "<path>/<name>.run"},
 			// run compiled file
 			{"<path>/<name>.run"},
 		},
