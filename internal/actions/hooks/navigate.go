@@ -62,7 +62,7 @@ var gotoHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 	if n, err := strconv.Atoi(ctx.Command); err == nil {
 		accept = true
 		if n <= 0 {
-			msg = fmt.Sprintf("error: cannot go to slide 0")
+			msg = "error: cannot go to slide 0"
 		} else if l := len(ctx.Model.GetSlides()); l < n {
 			msg = fmt.Sprintf("error: input %d > %d", n, l)
 		} else {
