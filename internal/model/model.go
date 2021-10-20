@@ -186,11 +186,16 @@ func (m Model) View() string {
 	}
 	slide = styles.Slide.Render(slide)
 
-	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
+	var left string
+	if s := m.actions.GetStatus(); s != "" {
+		left = styles.ActionStatus.Render(s)
+	} else {
+		left = styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
+	}
+
 	right := styles.Page.Render(m.paging())
 	status := styles.Status.Render(styles.JoinHorizontal(left, right, m.viewport.Width))
-	actionBar := styles.JoinVertical(styles.ActionStatus.Render(m.actions.GetStatus()), status, 2)
-	return styles.JoinVertical(slide, actionBar, m.viewport.Height)
+	return styles.JoinVertical(slide, status, m.viewport.Height)
 }
 
 func (m *Model) paging() string {

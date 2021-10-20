@@ -58,9 +58,9 @@ func (a *Actions) GetStatus() string {
 		if a.Prefix == "?" {
 			dir = "<-"
 		}
-		return fmt.Sprintf("| Search %s [%s]%s", dir, a.Prefix, a.Buffer)
+		return fmt.Sprintf("Search %s %s", dir, a.Buffer)
 	}
-	return fmt.Sprintf("[ %s(%s) ]", a.Prefix, a.Buffer)
+	return fmt.Sprintf("> %s(%s)", a.Prefix, a.Buffer)
 }
 
 func (a *Actions) Execute(m hooks.Model) {

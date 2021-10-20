@@ -1,49 +1,27 @@
 package hooks
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
-
-var gotoHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
-	if ctx.Prefix != ":" || ctx.Command != "goto" {
-		// setting `accept = false` means send the command to other hooks
-		return "" /* accept: */, false
-	}
-	if len(ctx.Args) != 1 {
-		return "err: syntax: goto <slide>", true
-	}
-	// parse arg[0] to number
-	n, err := strconv.Atoi(ctx.Args[0])
-	if err != nil {
-		return fmt.Sprintf("err: %s", err.Error()), true
-	}
-	// check bounds
-	if n <= 0 || n > len(ctx.Model.GetSlides()) {
-		return "err: page out of bounds", true
-	}
-	// goto page
-	ctx.Model.SetPage(n - 1)
-	return fmt.Sprintf("ok: navigated to page %d", n), true
-}
 
 // searchHook - jump to a slide containing a that contains the <search term>
 // /<search term> - forward search
 // ?<search term> - backward search
 var searchHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
+	if ctx.Prefix != "/" && ctx.Prefix != "?" {
+		return "", false
+	}
 	check := func(ctx *Ctx, i int) bool {
 		content := ctx.Model.GetSlides()[i]
 		headers := extractHeaders(content)
 		if h := hasHeader(headers, ctx.Command); h != "" {
 			ctx.Model.SetPage(i)
-			msg = "found: " + h
 			accept = true
 			return true
 		}
 		return false
 	}
-
 	// forward search
 	if ctx.Prefix == "/" {
 		// search from next slide to end
@@ -58,7 +36,6 @@ var searchHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 				return
 			}
 		}
-		return "cannot forward-find: " + ctx.Command, true
 	} else if ctx.Prefix == "?" {
 		// search from previous slide to start
 		for i := ctx.Model.GetPage() - 1; i >= 0; i-- {
@@ -72,23 +49,17 @@ var searchHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 				return
 			}
 		}
-		return "cannot backward-find: " + ctx.Command, true
 	}
-	return "", false
+	return "", true
 }
 
 // gotoHook - :<slide>
 // jump to a slide
-var directGotoHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
+var gotoHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 	// check if command is a number
 	if n, err := strconv.Atoi(ctx.Command); err == nil {
 		accept = true
-		if n <= 0 {
-			msg = "error: cannot go to slide 0"
-		} else if l := len(ctx.Model.GetSlides()); l < n {
-			msg = fmt.Sprintf("error: input %d > %d", n, l)
-		} else {
-			msg = fmt.Sprintf("ok: switched to slide %d", n)
+		if n > 0 && len(ctx.Model.GetSlides()) >= n {
 			ctx.Model.SetPage(n - 1)
 		}
 		return
