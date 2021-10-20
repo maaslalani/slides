@@ -6,16 +6,29 @@ import (
 	"strings"
 )
 
+// Actions holds the current action-context
 type Actions struct {
 	Prefix    string
 	Buffer    string
 	StatusBar string
 }
 
+func (a *Actions) IsCapturing() bool {
+	return a.Prefix != ""
+}
+
 func (a *Actions) Begin(prefix string) {
 	a.Reset()
 	a.Prefix = prefix
 }
+
+func (a *Actions) Reset() {
+	a.Prefix = ""
+	a.Buffer = ""
+	a.StatusBar = ""
+}
+
+///
 
 func (a *Actions) CreateCtx(m hooks.Model) *hooks.Ctx {
 	var command = strings.TrimSpace(a.Buffer)
@@ -34,7 +47,7 @@ func (a *Actions) CreateCtx(m hooks.Model) *hooks.Ctx {
 
 func (a *Actions) GetStatus() string {
 	if a.StatusBar != "" {
-		return fmt.Sprintf("# %s #", a.StatusBar)
+		return fmt.Sprintf("> %s", a.StatusBar)
 	}
 	if !a.IsCapturing() {
 		return ""
@@ -42,26 +55,14 @@ func (a *Actions) GetStatus() string {
 	return fmt.Sprintf("[ %s(%s) ]", a.Prefix, a.Buffer)
 }
 
-func (a *Actions) IsCapturing() bool {
-	return a.Prefix != ""
-}
-
-func (a *Actions) Reset() {
-	a.Prefix = ""
-	a.Buffer = ""
-	a.StatusBar = ""
-}
-
 func (a *Actions) Execute(m hooks.Model) {
 	ctx := a.CreateCtx(m)
 	a.Reset()
-
 	for _, hook := range hooks.Hooks {
 		if msg, ok := hook(ctx); ok {
 			a.StatusBar = msg
 			return
 		}
 	}
-
-	a.StatusBar = "! command (" + ctx.Command + ") not found."
+	a.StatusBar = "err: command (" + ctx.Command + ") not found"
 }

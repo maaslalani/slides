@@ -6,6 +6,9 @@ import (
 	"strings"
 )
 
+// searchHook - jump to a slide containing a that contains the <search term>
+// /<search term> - forward search
+// ?<search term> - backward search
 var searchHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 	check := func(ctx *Ctx, i int) bool {
 		content := ctx.Model.GetSlides()[i]
@@ -21,11 +24,13 @@ var searchHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 
 	// forward search
 	if ctx.Prefix == "/" {
+		// search from next slide to end
 		for i := ctx.Model.GetPage() + 1; i < len(ctx.Model.GetSlides()); i++ {
 			if check(ctx, i) {
 				return
 			}
 		}
+		// search from first slide to previous
 		for i := 0; i < ctx.Model.GetPage(); i++ {
 			if check(ctx, i) {
 				return
@@ -33,11 +38,13 @@ var searchHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 		}
 		return "cannot forward-find: " + ctx.Command, true
 	} else if ctx.Prefix == "?" {
+		// search from previous slide to start
 		for i := ctx.Model.GetPage() - 1; i >= 0; i-- {
 			if check(ctx, i) {
 				return
 			}
 		}
+		// search from end to next slide
 		for i := len(ctx.Model.GetSlides()) - 1; i > ctx.Model.GetPage(); i-- {
 			if check(ctx, i) {
 				return
@@ -48,6 +55,8 @@ var searchHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 	return "", false
 }
 
+// gotoHook - :<slide>
+// jump to a slide
 var gotoHook HookFunc = func(ctx *Ctx) (msg string, accept bool) {
 	// check if command is a number
 	if n, err := strconv.Atoi(ctx.Command); err == nil {
