@@ -34,12 +34,12 @@ func (a *Actions) CreateCtx(m hooks.Model) *hooks.Ctx {
 
 func (a *Actions) GetStatus() string {
 	if a.StatusBar != "" {
-		return fmt.Sprintf(" < %s > ", a.StatusBar)
+		return fmt.Sprintf("# %s #", a.StatusBar)
 	}
 	if !a.IsCapturing() {
 		return ""
 	}
-	return fmt.Sprintf(" [ %s<%s> ] ", a.Prefix, a.Buffer)
+	return fmt.Sprintf("[ %s(%s) ]", a.Prefix, a.Buffer)
 }
 
 func (a *Actions) IsCapturing() bool {

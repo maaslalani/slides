@@ -116,7 +116,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.actions.Execute(&m)
 			} else if msg.Type == tea.KeyBackspace {
 				// delete last buffer char
-				if len(m.actions.Buffer) > 1 {
+				if len(m.actions.Buffer) > 0 {
 					m.actions.Buffer = m.actions.Buffer[:len(m.actions.Buffer)-1]
 				}
 			} else if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyEscape {
@@ -200,9 +200,6 @@ func (m *Model) paging() string {
 		return m.Paging
 	}
 }
-func (m *Model) SetPage(page int) {
-	m.Page = page
-}
 
 func readFile(path string) (string, error) {
 	s, err := os.Stat(path)
@@ -257,4 +254,16 @@ func readStdin() (string, error) {
 	}
 
 	return b.String(), nil
+}
+
+func (m *Model) GetPage() int {
+	return m.Page
+}
+
+func (m *Model) SetPage(page int) {
+	m.Page = page
+}
+
+func (m *Model) GetSlides() []string {
+	return m.Slides
 }
