@@ -108,23 +108,26 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// add key presses to action buffer
 		if m.actions.IsCapturing() {
-			// single key
 			if len(keyPress) == 1 {
-				// append to buffer
+				// single key: append to buffer
 				m.actions.Buffer += keyPress
 
-				// execute current buffer
 			} else if msg.Type == tea.KeyEnter {
-				m.actions.Execute(&m)
+				// execute current buffer
+				if m.actions.Buffer != "" {
+					m.actions.Execute(&m)
+				} else {
+					m.actions.Reset()
+				}
 
-				// delete last char from buffer
 			} else if msg.Type == tea.KeyBackspace {
+				// delete last char from buffer
 				if len(m.actions.Buffer) > 0 {
 					m.actions.Buffer = m.actions.Buffer[:len(m.actions.Buffer)-1]
 				}
 
-				// quit command mode
 			} else if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyEscape {
+				// quit command mode
 				m.actions.Reset()
 			}
 			return m, nil
