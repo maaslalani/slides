@@ -13,7 +13,7 @@ Currently supported languages:
 * `python`
 * `ruby`
 * `perl`
-* `rust` (no windows support)
+* `rust`
 
 ---
 
