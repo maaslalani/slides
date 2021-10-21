@@ -33,26 +33,6 @@ func TestExecute(t *testing.T) {
 		},
 		{
 			block: code.Block{
-				Code:     `puts "Hi, there!"`,
-				Language: "ruby",
-			},
-			expected: code.Result{
-				Out:      "Hi, there!\n",
-				ExitCode: 0,
-			},
-		},
-		{
-			block: code.Block{
-				Code:     `print "No new line"`,
-				Language: "ruby",
-			},
-			expected: code.Result{
-				Out:      "No new line",
-				ExitCode: 0,
-			},
-		},
-		{
-			block: code.Block{
 				Code: `
 package main
 
