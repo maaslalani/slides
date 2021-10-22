@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/maaslalani/slides/internal/actions"
 	"github.com/maaslalani/slides/internal/file"
 	"github.com/maaslalani/slides/internal/navigation"
 	"github.com/maaslalani/slides/internal/process"
@@ -39,8 +38,7 @@ type Model struct {
 	// VirtualText is used for additional information that is not part of the
 	// original slides, it will be displayed on a slide and reset on page change
 	VirtualText string
-	// Actions
-	actions actions.Actions
+	search      navigation.Search
 }
 
 type fileWatchMsg struct{}
@@ -107,35 +105,34 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		keyPress := msg.String()
 
 		// add key presses to action buffer
-		if m.actions.IsCapturing() {
+		if m.search.Active {
 			if len(keyPress) == 1 {
 				// single key: append to buffer
-				m.actions.Buffer += keyPress
+				m.search.Write(keyPress)
 
 			} else if msg.Type == tea.KeyEnter {
 				// execute current buffer
-				if m.actions.Buffer != "" {
-					m.actions.Execute(&m)
+				if m.search.Buffer != "" {
+					m.search.Execute(&m)
 				} else {
-					m.actions.Reset()
+					m.search.Cancel()
 				}
 
 			} else if msg.Type == tea.KeyBackspace {
 				// delete last char from buffer
-				if len(m.actions.Buffer) > 0 {
-					m.actions.Buffer = m.actions.Buffer[:len(m.actions.Buffer)-1]
-				}
+				m.search.Delete()
 
 			} else if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyEscape {
 				// quit command mode
-				m.actions.Reset()
+				m.search.Cancel()
 			}
 			return m, nil
 		}
 
 		switch keyPress {
-		case ":", "/", "?": // command keys: ':', '/' and '?'
-			m.actions.Begin(keyPress)
+		case "/":
+			// Begin search
+			m.search.Begin()
 			return m, nil
 		case "ctrl+e":
 			// Run code blocks
@@ -190,9 +187,11 @@ func (m Model) View() string {
 	slide = styles.Slide.Render(slide)
 
 	var left string
-	if s := m.actions.GetStatus(); s != "" {
-		left = styles.ActionStatus.Render(s)
+	if m.search.Active {
+		// render search bar
+		left = styles.ActionStatus.Render(fmt.Sprintf("🔍: '%s'", m.search.Buffer))
 	} else {
+		// render author and date
 		left = styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
 	}
 
