@@ -56,7 +56,7 @@ var SearchTypes = map[rune]*searchType{
 				return nil
 			}
 			return func(content string) bool {
-				return pattern.MatchString(content)
+				return len(pattern.FindAllString(content, 1)) != 0
 			}
 		},
 	},
