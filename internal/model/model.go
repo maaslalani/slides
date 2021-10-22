@@ -189,7 +189,8 @@ func (m Model) View() string {
 	var left string
 	if m.search.Active {
 		// render search bar
-		left = styles.ActionStatus.Render(fmt.Sprintf("🔍: '%s'", m.search.Buffer))
+		buf, sType := m.search.GetBufType()
+		left = styles.ActionStatus.Render(fmt.Sprintf("[%s] 🔍: '%s'", sType.Desc, buf))
 	} else {
 		// render author and date
 		left = styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
