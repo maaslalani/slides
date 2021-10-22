@@ -134,6 +134,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// Begin search
 			m.search.Begin()
 			return m, nil
+		case "ctrl+n":
+			// Go to next occurrence
+			m.search.Execute(&m)
 		case "ctrl+e":
 			// Run code blocks
 			blocks, err := code.Parse(m.Slides[m.Page])

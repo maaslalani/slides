@@ -90,7 +90,7 @@ func (s *Search) getSearchType() (key rune, typ *searchType) {
 			return
 		}
 	}
-	typ, _ = SearchTypes[key]
+	typ = SearchTypes[key]
 	return
 }
 
