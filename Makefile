@@ -6,6 +6,3 @@ test:
 
 build:
 	go build -o slides
-
-install:
-	go install
