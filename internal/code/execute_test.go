@@ -13,26 +13,6 @@ func TestExecute(t *testing.T) {
 	}{
 		{
 			block: code.Block{
-				Code:     `fn main() { println!("Hello, world!"); }`,
-				Language: code.Rust,
-			},
-			expected: code.Result{
-				Out:      "Hello, world!\n",
-				ExitCode: 0,
-			},
-		},
-		{
-			block: code.Block{
-				Code:     `puts "Hello, world!"`,
-				Language: "ruby",
-			},
-			expected: code.Result{
-				Out:      "Hello, world!\n",
-				ExitCode: 0,
-			},
-		},
-		{
-			block: code.Block{
 				Code: `
 package main
 
@@ -46,16 +26,6 @@ func main() {
 			},
 			expected: code.Result{
 				Out:      "Hello, go!",
-				ExitCode: 0,
-			},
-		},
-		{
-			block: code.Block{
-				Code:     `print("Hello, python!")`,
-				Language: "python",
-			},
-			expected: code.Result{
-				Out:      "Hello, python!\n",
 				ExitCode: 0,
 			},
 		},
@@ -92,9 +62,6 @@ func main() {
 	}
 
 	for _, tc := range tt {
-		if testing.Short() {
-			t.SkipNow()
-		}
 		r := code.Execute(tc.block)
 		if r.Out != tc.expected.Out {
 			t.Fatalf("invalid output for lang %s, got %s, want %s | %+v",
