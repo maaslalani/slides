@@ -153,17 +153,11 @@ Go to the last slide with the following key:
 
 To quickly jump to the right slide, you can use the search function.
 
-Press <kbd>/</kbd>, enter your search text and press <kbd>Enter</kbd>. By default, the search only searches the **
-headings of your slides**. If you want to start a full text search, press <kbd>*</kbd> after <kbd>/</kbd>.
+Press <kbd>/</kbd>, enter your search term and press <kbd>Enter</kbd>  
+(*The search term is interpreted as a regular expression. Lookaheads are possible. The `/i` flag causes case
+insensitivity.*).
 
 Press <kbd>ctrl+n</kbd> after a search to go to the next search result.
-
-#### List of all search operators
-
-* *(default)*: Headings Search
-* <kbd>*</kbd>: Full-text Search (case-insensitive)
-* <kbd>^</kbd>: Full-text Search (case-sensitive)
-* <kbd>$</kbd>: Full-text Search (RegEx)
 
 ### Code Execution
 
