@@ -192,8 +192,7 @@ func (m Model) View() string {
 	var left string
 	if m.search.Active {
 		// render search bar
-		buf, sType := m.search.GetBufType()
-		left = styles.ActionStatus.Render(fmt.Sprintf("[%s] 🔍: '%s'", sType.Desc, buf))
+		left = styles.ActionStatus.Render(fmt.Sprintf("/%s", m.search.Buffer))
 	} else {
 		// render author and date
 		left = styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
@@ -270,7 +269,7 @@ func readStdin() (string, error) {
 	return b.String(), nil
 }
 
-func (m *Model) GetPage() int {
+func (m *Model) CurrentPage() int {
 	return m.Page
 }
 

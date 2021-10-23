@@ -15,7 +15,6 @@ import (
 
 const (
 	salmon = lipgloss.Color("#E8B4BC")
-	pink   = lipgloss.Color("#e84393")
 )
 
 var (
@@ -25,8 +24,7 @@ var (
 	Slide        = lipgloss.NewStyle().Padding(1)
 	Status       = lipgloss.NewStyle().Padding(1)
 	ActionStatus = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#000000")).
-			Background(pink).
+			Foreground(salmon).
 			Align(lipgloss.Left).
 			MarginLeft(3)
 )
