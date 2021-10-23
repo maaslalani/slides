@@ -142,15 +142,33 @@ Go to the previous slide with any of the following key sequences:
 * number + any of the above (go back n slides)
 
 Go to a specific slide with the following key sequence:
+
 * number + <kbd>G</kbd>
 
 Go to the last slide with the following key:
+
 * <kbd>G</kbd>
+
+### Search
+
+To quickly jump to the right slide, you can use the search function.
+
+Press <kbd>/</kbd>, enter your search text and press <kbd>Enter</kbd>. By default, the search only searches the **
+headings of your slides**. If you want to start a full text search, press <kbd>*</kbd> after <kbd>/</kbd>.
+
+Press <kbd>ctrl+n</kbd> after a search to go to the next search result.
+
+#### List of all search operators
+
+* *(default)*: Headings Search
+* <kbd>*</kbd>: Full-text Search (case-insensitive)
+* <kbd>^</kbd>: Full-text Search (case-sensitive)
+* <kbd>$</kbd>: Full-text Search (RegEx)
 
 ### Code Execution
 
-If slides finds a code block on the current slides it can execute the code
-block and display the result as virtual text on the screen.
+If slides finds a code block on the current slides it can execute the code block and display the result as virtual text
+on the screen.
 
 Press <kbd>ctrl+e</kbd> on a slide with a code block to execute it and display the result.
 
