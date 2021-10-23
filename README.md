@@ -154,8 +154,7 @@ Go to the last slide with the following key:
 To quickly jump to the right slide, you can use the search function.
 
 Press <kbd>/</kbd>, enter your search term and press <kbd>Enter</kbd>  
-(*The search term is interpreted as a regular expression. Lookaheads are possible. The `/i` flag causes case
-insensitivity.*).
+(*The search term is interpreted as a regular expression. The `/i` flag causes case-insensitivity.*).
 
 Press <kbd>ctrl+n</kbd> after a search to go to the next search result.
 
