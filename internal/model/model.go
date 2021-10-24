@@ -112,10 +112,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			} else if msg.Type == tea.KeyEnter {
 				// execute current buffer
-				if m.search.Buffer != "" {
+				if m.search.Query != "" {
 					m.search.Execute(&m)
 				} else {
-					m.search.Cancel()
+					m.search.Done()
 				}
 
 			} else if msg.Type == tea.KeyBackspace {
@@ -124,7 +124,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			} else if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyEscape {
 				// quit command mode
-				m.search.Cancel()
+				m.search.Query = ""
+				m.search.Done()
 			}
 			return m, nil
 		}
@@ -192,7 +193,7 @@ func (m Model) View() string {
 	var left string
 	if m.search.Active {
 		// render search bar
-		left = styles.ActionStatus.Render(fmt.Sprintf("/%s", m.search.Buffer))
+		left = styles.ActionStatus.Render(fmt.Sprintf("/%s", m.search.Query))
 	} else {
 		// render author and date
 		left = styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
@@ -277,6 +278,6 @@ func (m *Model) SetPage(page int) {
 	m.Page = page
 }
 
-func (m *Model) GetSlides() []string {
+func (m *Model) Pages() []string {
 	return m.Slides
 }

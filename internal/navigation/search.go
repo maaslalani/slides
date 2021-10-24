@@ -9,22 +9,16 @@ import (
 type Model interface {
 	CurrentPage() int
 	SetPage(page int)
-	GetSlides() []string
+	Pages() []string
 }
 
 // Search represents the current search
 type Search struct {
 	// Active - Show search bar instead of author and date?
-	// Store keystrokes in Buffer?
+	// Store keystrokes in Query?
 	Active bool
-	// Buffer stores the current "search term"
-	Buffer string
-}
-
-// Cancel the current search and delete the search buffer
-func (s *Search) Cancel() {
-	s.Buffer = ""
-	s.Done()
+	// Query stores the current "search term"
+	Query string
 }
 
 // Mark Search as
@@ -37,19 +31,19 @@ func (s *Search) Done() {
 
 // Begin a new search (deletes old buffer)
 func (s *Search) Begin() {
-	s.Cancel() // clear buffer
 	s.Active = true
+	s.Query = ""
 }
 
 // Write a keystroke to the buffer
 func (s *Search) Write(key string) {
-	s.Buffer += key
+	s.Query += key
 }
 
 // Delete the last keystroke from the buffer
 func (s *Search) Delete() {
-	if len(s.Buffer) > 0 {
-		s.Buffer = s.Buffer[0 : len(s.Buffer)-1]
+	if len(s.Query) > 0 {
+		s.Query = s.Query[0 : len(s.Query)-1]
 	}
 }
 
@@ -57,11 +51,11 @@ func (s *Search) Delete() {
 func (s *Search) Execute(m Model) {
 	defer s.Done()
 	// ignore empty buffers, also ignores '*<search term>', ...
-	if s.Buffer == "" {
+	if s.Query == "" {
 		return
 	}
 	// compile pattern
-	expr := s.Buffer
+	expr := s.Query
 	if strings.HasSuffix(expr, "/i") {
 		expr = "(?i)" + expr[:len(expr)-2]
 	}
@@ -70,7 +64,7 @@ func (s *Search) Execute(m Model) {
 		return
 	}
 	check := func(i int) bool {
-		content := m.GetSlides()[i]
+		content := m.Pages()[i]
 		if len(pattern.FindAllStringSubmatch(content, 1)) != 0 {
 			m.SetPage(i)
 			return true
@@ -78,7 +72,7 @@ func (s *Search) Execute(m Model) {
 		return false
 	}
 	// search from next slide to end
-	for i := m.CurrentPage() + 1; i < len(m.GetSlides()); i++ {
+	for i := m.CurrentPage() + 1; i < len(m.Pages()); i++ {
 		if check(i) {
 			return
 		}
