@@ -50,11 +50,9 @@ func (s *Search) Delete() {
 // Execute search
 func (s *Search) Execute(m Model) {
 	defer s.Done()
-	// ignore empty buffers, also ignores '*<search term>', ...
 	if s.Query == "" {
 		return
 	}
-	// compile pattern
 	expr := s.Query
 	if strings.HasSuffix(expr, "/i") {
 		expr = "(?i)" + expr[:len(expr)-2]

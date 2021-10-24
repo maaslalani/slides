@@ -106,11 +106,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// add key presses to action buffer
 		if m.search.Active {
-			if len(keyPress) == 1 {
-				// single key: append to buffer
-				m.search.Write(keyPress)
+			switch msg.Type {
+			case tea.KeyRunes:
+				k := string(msg.Runes)
+				// rune key: append to buffer
+				m.search.Write(k)
 
-			} else if msg.Type == tea.KeyEnter {
+			case tea.KeyEnter:
 				// execute current buffer
 				if m.search.Query != "" {
 					m.search.Execute(&m)
@@ -118,11 +120,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.search.Done()
 				}
 
-			} else if msg.Type == tea.KeyBackspace {
+			case tea.KeyBackspace:
 				// delete last char from buffer
 				m.search.Delete()
 
-			} else if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyEscape {
+			case tea.KeyCtrlC, tea.KeyEscape:
 				// quit command mode
 				m.search.Query = ""
 				m.search.Done()
