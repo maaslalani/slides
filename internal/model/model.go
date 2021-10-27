@@ -38,6 +38,7 @@ type Model struct {
 	// VirtualText is used for additional information that is not part of the
 	// original slides, it will be displayed on a slide and reset on page change
 	VirtualText string
+	search      navigation.Search
 }
 
 type fileWatchMsg struct{}
@@ -103,7 +104,42 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		keyPress := msg.String()
 
+		// add key presses to action buffer
+		if m.search.Active {
+			switch msg.Type {
+			case tea.KeyRunes:
+				k := string(msg.Runes)
+				// rune key: append to buffer
+				m.search.Write(k)
+
+			case tea.KeyEnter:
+				// execute current buffer
+				if m.search.Query != "" {
+					m.search.Execute(&m)
+				} else {
+					m.search.Done()
+				}
+
+			case tea.KeyBackspace:
+				// delete last char from buffer
+				m.search.Delete()
+
+			case tea.KeyCtrlC, tea.KeyEscape:
+				// quit command mode
+				m.search.Query = ""
+				m.search.Done()
+			}
+			return m, nil
+		}
+
 		switch keyPress {
+		case "/":
+			// Begin search
+			m.search.Begin()
+			return m, nil
+		case "ctrl+n":
+			// Go to next occurrence
+			m.search.Execute(&m)
 		case "ctrl+e":
 			// Run code blocks
 			blocks, err := code.Parse(m.Slides[m.Page])
@@ -122,8 +158,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		default:
 			newState := navigation.Navigate(navigation.State{
-				Buffer:    m.buffer,
-				Page:     m.Page,
+				Buffer:      m.buffer,
+				Page:        m.Page,
 				TotalSlides: len(m.Slides),
 			}, keyPress)
 			if newState.Page != m.Page {
@@ -156,7 +192,15 @@ func (m Model) View() string {
 	}
 	slide = styles.Slide.Render(slide)
 
-	left := styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
+	var left string
+	if m.search.Active {
+		// render search bar
+		left = styles.ActionStatus.Render(fmt.Sprintf("/%s", m.search.Query))
+	} else {
+		// render author and date
+		left = styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
+	}
+
 	right := styles.Page.Render(m.paging())
 	status := styles.Status.Render(styles.JoinHorizontal(left, right, m.viewport.Width))
 	return styles.JoinVertical(slide, status, m.viewport.Height)
@@ -226,4 +270,16 @@ func readStdin() (string, error) {
 	}
 
 	return b.String(), nil
+}
+
+func (m *Model) CurrentPage() int {
+	return m.Page
+}
+
+func (m *Model) SetPage(page int) {
+	m.Page = page
+}
+
+func (m *Model) Pages() []string {
+	return m.Slides
 }
