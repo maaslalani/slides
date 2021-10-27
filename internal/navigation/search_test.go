@@ -42,6 +42,10 @@ func TestSearch(t *testing.T) {
 	queries := []query{
 		{"basic 'first'", "first", 1},
 		{"basic 'abc'", "abc", 5},
+		{"basic 'abc' next occurrence", "abc", 5},
+		{"'abc' ignore case", "abc/i", 4},
+		{"'abc' ignore case", "abc/i", 5},
+		{"'abc' ignore case", "abc/i", 4},
 		{"next occurrence 1/2", "sec", 6},
 		{"next occurrence 2/2", "sec", 2},
 		{"regex", "a.c", 5},
