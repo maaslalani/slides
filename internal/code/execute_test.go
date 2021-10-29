@@ -45,7 +45,7 @@ func main() {
 				Language: "bash",
 			},
 			expected: code.Result{
-				Out:      "",
+				Out:      "exit status 127",
 				ExitCode: 1,
 			},
 		},

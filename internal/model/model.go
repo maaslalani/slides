@@ -138,6 +138,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.search.Begin()
 			return m, nil
 		case "ctrl+n":
+			m.VirtualText = ""
 			// Go to next occurrence
 			m.search.Execute(&m)
 		case "ctrl+e":

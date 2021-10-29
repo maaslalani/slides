@@ -80,6 +80,8 @@ func Execute(code Block) Result {
 			ExitCode: ExitCodeInternalError,
 		}
 	}
+
+	defer f.Close()
 	defer os.Remove(f.Name())
 
 	_, err = f.WriteString(code.Code)
@@ -108,14 +110,19 @@ func Execute(code Block) Result {
 	start := time.Now()
 
 	for _, c := range language.Commands {
+		var command []string
 		// replace <file>, <name> and <path> in commands
-		for i, v := range c {
-			c[i] = repl.Replace(v)
+		for _, v := range c {
+			command = append(command, repl.Replace(v))
 		}
 		// execute and write output
-		cmd := exec.Command(c[0], c[1:]...)
+		cmd := exec.Command(command[0], command[1:]...)
 		out, err := cmd.Output()
-		output.Write(out)
+		if err != nil {
+			output.Write([]byte(err.Error()))
+		} else {
+			output.Write(out)
+		}
 
 		// update status code
 		if err != nil {
