@@ -131,7 +131,7 @@ Go to the next slide with any of the following key sequences:
 * <kbd>n</kbd>
 * <kbd>j</kbd>
 * <kbd>l</kbd>
-* <kbd>pgdown</kbd>
+* <kbd>Page Down</kbd>
 * number + any of the above (go forward n slides)
 
 Go to the previous slide with any of the following key sequences:
@@ -140,7 +140,7 @@ Go to the previous slide with any of the following key sequences:
 * <kbd>p</kbd>
 * <kbd>h</kbd>
 * <kbd>k</kbd>
-* <kbd>pgup</kbd>
+* <kbd>Page Up</kbd>
 * number + any of the above (go back n slides)
 
 Go to a specific slide with the following key sequence:
