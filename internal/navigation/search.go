@@ -1,9 +1,11 @@
 package navigation
 
 import (
-	"github.com/charmbracelet/bubbles/textinput"
 	"regexp"
 	"strings"
+
+	"github.com/charmbracelet/bubbles/textinput"
+	"github.com/maaslalani/slides/styles"
 )
 
 // Model is an interface for models.model, so that cycle imports are avoided
@@ -23,9 +25,12 @@ type Search struct {
 }
 
 func NewSearch() Search {
-	sti := textinput.NewModel()
-	sti.Placeholder = "search..."
-	return Search{SearchTextInput: sti}
+	ti := textinput.NewModel()
+	ti.Placeholder = "search"
+	ti.Prompt = "/"
+	ti.PromptStyle = styles.Search
+	ti.TextStyle = styles.Search
+	return Search{SearchTextInput: ti}
 }
 
 func (s *Search) Query() string {
