@@ -46,7 +46,7 @@ func main() {
 			},
 			expected: code.Result{
 				Out:      "exit status 127",
-				ExitCode: 1,
+				ExitCode: 127,
 			},
 		},
 		{
