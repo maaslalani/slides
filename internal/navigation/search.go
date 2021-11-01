@@ -1,6 +1,7 @@
 package navigation
 
 import (
+	"github.com/charmbracelet/bubbles/textinput"
 	"regexp"
 	"strings"
 )
@@ -18,7 +19,21 @@ type Search struct {
 	// Store keystrokes in Query?
 	Active bool
 	// Query stores the current "search term"
-	Query string
+	SearchTextInput textinput.Model
+}
+
+func NewSearch() Search {
+	sti := textinput.NewModel()
+	sti.Placeholder = "search..."
+	return Search{SearchTextInput: sti}
+}
+
+func (s *Search) Query() string {
+	return s.SearchTextInput.Value()
+}
+
+func (s *Search) SetQuery(query string) {
+	s.SearchTextInput.SetValue(query)
 }
 
 // Mark Search as
@@ -32,28 +47,16 @@ func (s *Search) Done() {
 // Begin a new search (deletes old buffer)
 func (s *Search) Begin() {
 	s.Active = true
-	s.Query = ""
-}
-
-// Write a keystroke to the buffer
-func (s *Search) Write(key string) {
-	s.Query += key
-}
-
-// Delete the last keystroke from the buffer
-func (s *Search) Delete() {
-	if len(s.Query) > 0 {
-		s.Query = s.Query[0 : len(s.Query)-1]
-	}
+	s.SetQuery("")
 }
 
 // Execute search
 func (s *Search) Execute(m Model) {
 	defer s.Done()
-	if s.Query == "" {
+	expr := s.Query()
+	if expr == "" {
 		return
 	}
-	expr := s.Query
 	if strings.HasSuffix(expr, "/i") {
 		expr = "(?i)" + expr[:len(expr)-2]
 	}

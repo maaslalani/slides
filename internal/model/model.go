@@ -38,7 +38,7 @@ type Model struct {
 	// VirtualText is used for additional information that is not part of the
 	// original slides, it will be displayed on a slide and reset on page change
 	VirtualText string
-	search      navigation.Search
+	Search      navigation.Search
 }
 
 type fileWatchMsg struct{}
@@ -104,42 +104,39 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		keyPress := msg.String()
 
-		// add key presses to action buffer
-		if m.search.Active {
-			switch msg.Type {
-			case tea.KeyRunes:
-				k := string(msg.Runes)
-				// rune key: append to buffer
-				m.search.Write(k)
+		if m.Search.Active {
 
+			switch msg.Type {
 			case tea.KeyEnter:
 				// execute current buffer
-				if m.search.Query != "" {
-					m.search.Execute(&m)
+				if m.Search.Query() != "" {
+					m.Search.Execute(&m)
 				} else {
-					m.search.Done()
+					m.Search.Done()
 				}
-
-			case tea.KeyBackspace:
-				// delete last char from buffer
-				m.search.Delete()
-
+				// cancel search
+				return m, nil
 			case tea.KeyCtrlC, tea.KeyEscape:
 				// quit command mode
-				m.search.Query = ""
-				m.search.Done()
+				m.Search.SetQuery("")
+				m.Search.Done()
+				return m, nil
 			}
-			return m, nil
+
+			var cmd tea.Cmd
+			m.Search.SearchTextInput, cmd = m.Search.SearchTextInput.Update(msg)
+			return m, cmd
 		}
 
 		switch keyPress {
 		case "/":
 			// Begin search
-			m.search.Begin()
+			m.Search.Begin()
+			m.Search.SearchTextInput.Focus()
 			return m, nil
 		case "ctrl+n":
 			// Go to next occurrence
-			m.search.Execute(&m)
+			m.Search.Execute(&m)
 		case "ctrl+e":
 			// Run code blocks
 			blocks, err := code.Parse(m.Slides[m.Page])
@@ -191,9 +188,9 @@ func (m Model) View() string {
 	slide = styles.Slide.Render(slide)
 
 	var left string
-	if m.search.Active {
+	if m.Search.Active {
 		// render search bar
-		left = styles.ActionStatus.Render(fmt.Sprintf("/%s", m.search.Query))
+		left = m.Search.SearchTextInput.View()
 	} else {
 		// render author and date
 		left = styles.Author.Render(m.Author) + styles.Date.Render(m.Date)
