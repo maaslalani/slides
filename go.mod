@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/alecthomas/chroma v0.9.4 // indirect
 	github.com/charmbracelet/bubbles v0.9.0
-	github.com/charmbracelet/bubbletea v0.18.0
+	github.com/charmbracelet/bubbletea v0.19.0
 	github.com/charmbracelet/glamour v0.3.1-0.20210812014529-49f2da7feda6 // anything after v0.3.0 for orderedList fix
 	github.com/charmbracelet/lipgloss v0.4.0
 	github.com/microcosm-cc/bluemonday v1.0.16 // indirect
