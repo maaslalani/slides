@@ -61,7 +61,7 @@ func TestSearch(t *testing.T) {
 
 	s := &Search{}
 	for _, query := range queries {
-		s.Query = query.query
+		s.SetQuery(query.query)
 		s.Execute(m)
 		if m.CurrentPage() != query.expected {
 			t.Errorf("[%s] expected page %d, got %d", query.desc, query.expected, m.CurrentPage())
