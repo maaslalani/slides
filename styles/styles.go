@@ -18,15 +18,12 @@ const (
 )
 
 var (
-	Author       = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Left).MarginLeft(2)
-	Date         = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).Margin(0, 1)
-	Page         = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
-	Slide        = lipgloss.NewStyle().Padding(1)
-	Status       = lipgloss.NewStyle().Padding(1)
-	ActionStatus = lipgloss.NewStyle().
-			Foreground(salmon).
-			Align(lipgloss.Left).
-			MarginLeft(3)
+	Author = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Left).MarginLeft(2)
+	Date   = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).Margin(0, 1)
+	Page   = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
+	Slide  = lipgloss.NewStyle().Padding(1)
+	Status = lipgloss.NewStyle().Padding(1)
+	Search = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).MarginLeft(2)
 )
 
 var (
