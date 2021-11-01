@@ -138,7 +138,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.search.Begin()
 			return m, nil
 		case "ctrl+n":
-			m.VirtualText = ""
 			// Go to next occurrence
 			m.search.Execute(&m)
 		case "ctrl+e":
@@ -163,10 +162,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				Page:        m.Page,
 				TotalSlides: len(m.Slides),
 			}, keyPress)
-			if newState.Page != m.Page {
-				m.VirtualText = ""
-			}
-			m.buffer, m.Page = newState.Buffer, newState.Page
+			m.buffer = newState.Buffer
+			m.SetPage(newState.Page)
 		}
 
 	case fileWatchMsg:
@@ -278,6 +275,11 @@ func (m *Model) CurrentPage() int {
 }
 
 func (m *Model) SetPage(page int) {
+	if m.Page == page {
+		return
+	}
+
+	m.VirtualText = ""
 	m.Page = page
 }
 
