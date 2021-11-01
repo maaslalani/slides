@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/maaslalani/slides/internal/navigation"
 	"os"
 	"time"
 
@@ -26,6 +27,7 @@ var root = &cobra.Command{
 			Page:     0,
 			Date:     time.Now().Format("2006-01-02"),
 			FileName: fileName,
+			Search:   navigation.NewSearch(),
 		}
 		err = presentation.Load()
 		if err != nil {
