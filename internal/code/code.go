@@ -126,7 +126,11 @@ func Execute(code Block) Result {
 
 		// update status code
 		if err != nil {
-			exitCode = 1
+			if cmd.ProcessState != nil {
+				exitCode = cmd.ProcessState.ExitCode()
+			} else {
+				exitCode = 1 // non-zero
+			}
 		}
 	}
 
