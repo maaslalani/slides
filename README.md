@@ -193,6 +193,7 @@ paging: Slide %d / %d
 * `paging`: A `string` that contains 0 or more `%d` directives. The first `%d`
   will be replaced with the current slide number and the second `%d` will be
   replaced with the total slides count. Defaults to `Slide %d / %d`.
+  You will need to surround the paging value with quotes if it starts with `%`.
 
 #### Date format
 
