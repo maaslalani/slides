@@ -6,8 +6,8 @@ require (
 	github.com/charmbracelet/bubbles v0.10.2
 	github.com/charmbracelet/bubbletea v0.19.3
 	github.com/charmbracelet/glamour v0.5.0
-	github.com/charmbracelet/lipgloss v0.4.0
-	github.com/muesli/termenv v0.11.0
+	github.com/charmbracelet/lipgloss v0.5.0
+	github.com/muesli/termenv v0.11.1-0.20220204035834-5ac8409525e0
 	github.com/stretchr/testify v1.7.0
 	gopkg.in/yaml.v2 v2.4.0
 )
