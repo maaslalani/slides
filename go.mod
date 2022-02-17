@@ -3,7 +3,7 @@ module github.com/maaslalani/slides
 go 1.17
 
 require (
-	github.com/charmbracelet/bubbles v0.10.2
+	github.com/charmbracelet/bubbles v0.10.3
 	github.com/charmbracelet/bubbletea v0.20.0
 	github.com/charmbracelet/glamour v0.5.0
 	github.com/charmbracelet/lipgloss v0.5.0
