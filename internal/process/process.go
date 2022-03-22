@@ -60,7 +60,7 @@ func (b *Block) Execute() {
 		_, _ = io.WriteString(stdin, b.Input)
 	}()
 
-	out, err := cmd.CombinedOutput()
+	out, err := cmd.Output()
 	if err != nil {
 		return
 	}
