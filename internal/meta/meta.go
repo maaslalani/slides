@@ -3,6 +3,7 @@
 package meta
 
 import (
+	"os"
 	"os/user"
 	"strings"
 
@@ -81,7 +82,11 @@ func (m *Meta) Parse(header string) (*Meta, bool) {
 }
 
 func defaultTheme() string {
-	return "default"
+	theme := os.Getenv("GLAMOUR_THEME")
+	if theme == "" {
+		return "default"
+	}
+	return theme
 }
 
 func defaultAuthor() string {
