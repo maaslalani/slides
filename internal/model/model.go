@@ -2,6 +2,7 @@ package model
 
 import (
 	"bufio"
+	_ "embed"
 	"errors"
 	"fmt"
 	"github.com/maaslalani/slides/internal/file"
@@ -19,6 +20,11 @@ import (
 	"github.com/maaslalani/slides/internal/code"
 	"github.com/maaslalani/slides/internal/meta"
 	"github.com/maaslalani/slides/styles"
+)
+
+var (
+	//go:embed tutorial.md
+	slidesTutorial []byte
 )
 
 const (
@@ -247,7 +253,7 @@ func readStdin() (string, error) {
 	}
 
 	if stat.Mode()&os.ModeNamedPipe == 0 && stat.Size() == 0 {
-		return "", errors.New("no slides provided")
+		return string(slidesTutorial), nil
 	}
 
 	reader := bufio.NewReader(os.Stdin)
