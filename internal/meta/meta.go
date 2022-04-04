@@ -82,7 +82,7 @@ func (m *Meta) Parse(header string) (*Meta, bool) {
 }
 
 func defaultTheme() string {
-	theme := os.Getenv("GLAMOUR_THEME")
+	theme := os.Getenv("GLAMOUR_STYLE")
 	if theme == "" {
 		return "default"
 	}
