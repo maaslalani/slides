@@ -19,7 +19,10 @@ func slidesMiddleware(srv *Server) wish.Middleware {
 		_, _, active := s.Pty()
 		if !active {
 			fmt.Println("no active terminal, skipping")
-			s.Exit(1)
+			err := s.Exit(1)
+			if err != nil {
+				fmt.Println("Error exiting session")
+			}
 			return nil
 		}
 		return newProg(srv.presentation, tea.WithInput(s), tea.WithOutput(s), tea.WithAltScreen())
