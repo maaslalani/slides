@@ -9,6 +9,7 @@ require (
 	github.com/charmbracelet/lipgloss v0.5.0
 	github.com/charmbracelet/wish v0.3.1
 	github.com/gliderlabs/ssh v0.3.3
+	github.com/muesli/coral v1.0.0
 	github.com/muesli/termenv v0.11.1-0.20220212125758-44cd13922739
 	github.com/stretchr/testify v1.7.1
 	gopkg.in/yaml.v2 v2.4.0
@@ -25,6 +26,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
@@ -35,6 +37,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/yuin/goldmark v1.4.7 // indirect
 	github.com/yuin/goldmark-emoji v1.0.1 // indirect
 	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70 // indirect

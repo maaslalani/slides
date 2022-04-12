@@ -26,3 +26,4 @@ func slidesMiddleware(srv *Server) wish.Middleware {
 	}
 	return bm.MiddlewareWithProgramHandler(teaHandler, termenv.ANSI256)
 }
+
