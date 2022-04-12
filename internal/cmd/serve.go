@@ -23,7 +23,7 @@ var (
     fileName string
 
     ServeCmd = &coral.Command{
-        Use:     "serve",
+        Use:     "serve <file.md>",
         Aliases: []string{"server"},
         Short:   "Start an SSH server to run slides",
         Args:    coral.ArbitraryArgs,
