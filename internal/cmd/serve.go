@@ -25,8 +25,8 @@ var (
     ServeCmd = &coral.Command{
         Use:     "serve",
         Aliases: []string{"server"},
-        Short:   "Start a Gambit server",
-        Args:    coral.NoArgs,
+        Short:   "Start an SSH server to run slides",
+        Args:    coral.ArbitraryArgs,
         RunE: func(cmd *coral.Command, args []string) error {
             k := os.Getenv("SLIDES_SERVER_KEY_PATH")
             if k != "" {
@@ -41,7 +41,7 @@ var (
                 port, _ = strconv.Atoi(p)
             }
 
-            if len(args) > 1 {
+            if len(args) > 0 {
                 fileName = args[0]
             }
 

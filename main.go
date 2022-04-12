@@ -21,7 +21,7 @@ var (
 			var err error
 			var fileName string
 
-			if len(args) > 1 {
+			if len(args) > 0 {
 				fileName = args[0]
 			}
 
