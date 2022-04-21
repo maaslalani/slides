@@ -9,7 +9,7 @@ Slides in your terminal.
 ### Installation
 [![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://formulae.brew.sh/api/formula/slides.json&query=$.versions.stable&label=homebrew)](https://formulae.brew.sh/formula/slides)
 [![Snapcraft](https://snapcraft.io/slides/badge.svg)](https://snapcraft.io/slides)
-[![AUR](https://img.shields.io/aur/version/slides)](https://aur.archlinux.org/packages/slides)
+[![AUR](https://img.shields.io/aur/version/slides?label=Arch)](https://aur.archlinux.org/packages/slides)
 
 <details>
 <summary>Instructions</summary>
