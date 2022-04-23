@@ -237,6 +237,28 @@ Given the date _January 02, 2006_:
 | `DD`   | 02            |
 | `dd`   | 2             |
 
+### SSH
+
+Slides is accessible over `ssh` if hosted on a machine through the `slides
+serve [file]` command.
+
+On a machine, run:
+
+```
+slides serve [file]
+```
+
+Then, on another machine (or same machine), `ssh` into the port specified by
+the `slides serve [file]` command:
+```
+ssh 127.0.0.1 -p 53531
+```
+
+You will be able to access the presentation hosted over SSH! You can use this
+to present with `slides` from a computer that doesn't have `slides` installed,
+but does have `ssh`. Or, let your viewers have access to the slides on their
+own computer without needing to download `slides` and the presentation file.
+
 ### Alternatives
 
 **Credits**: This project was heavily inspired by [`lookatme`](https://github.com/d0c-s4vage/lookatme).
