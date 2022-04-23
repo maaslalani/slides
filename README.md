@@ -167,6 +167,33 @@ on the screen.
 
 Press <kbd>ctrl+e</kbd> on a slide with a code block to execute it and display the result.
 
+### Pre-processing
+
+You can add a code block with three tildes (`~`) and write a command to run *before* displaying
+the slides, the text inside the code block will be passed as `stdin` to the command
+and the code block will be replaced with the `stdout` of the command.
+
+```
+~~~graph-easy --as=boxart
+[ A ] - to -> [ B ]
+~~~
+```
+
+The above will be pre-processed to look like:
+
+```
+┌───┐  to   ┌───┐
+│ A │ ────> │ B │
+└───┘       └───┘
+```
+
+For security reasons, you must pass a file that has execution permissions
+for the slides to be pre-processed. You can use `chmod` to add these permissions.
+
+```bash
+chmod +x file.md
+```
+
 ### Configuration
 
 `slides` allows you to customize your presentation's look and feel with metadata at the top of your `slides.md`.
