@@ -174,7 +174,7 @@ Press <kbd>ctrl+e</kbd> on a slide with a code block to execute it and display t
 You can add a code block with three tildes (`~`) and write a command to run
 *before* displaying the slides, the text inside the code block will be passed
 as `stdin` to the command and the code block will be replaced with the `stdout`
-of the command. Wrap the pre-processed block in three tildes (\`) to keep
+of the command. Wrap the pre-processed block in three backticks (`\``) to keep
 proper formatting and new lines.
 
 ````
