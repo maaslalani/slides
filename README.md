@@ -87,9 +87,11 @@ You can add a code block with three tildes (`~`) and write a command to run *bef
 the slides, the text inside the code block will be passed as `stdin` to the command
 and the code block will be replaced with the `stdout` of the command.
 
+```
 ~~~graph-easy --as=boxart
 [ A ] - to -> [ B ]
 ~~~
+```
 
 The above will be pre-processed to look like:
 
@@ -169,15 +171,19 @@ Press <kbd>ctrl+e</kbd> on a slide with a code block to execute it and display t
 
 ### Pre-processing
 
-You can add a code block with three tildes (`~`) and write a command to run *before* displaying
-the slides, the text inside the code block will be passed as `stdin` to the command
-and the code block will be replaced with the `stdout` of the command.
+You can add a code block with three tildes (`~`) and write a command to run
+*before* displaying the slides, the text inside the code block will be passed
+as `stdin` to the command and the code block will be replaced with the `stdout`
+of the command. Wrap the pre-processed block in three tildes (\`) to keep
+proper formatting and new lines.
 
+````
 ```
 ~~~graph-easy --as=boxart
 [ A ] - to -> [ B ]
 ~~~
 ```
+````
 
 The above will be pre-processed to look like:
 
