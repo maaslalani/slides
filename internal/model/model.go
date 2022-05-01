@@ -157,6 +157,27 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				outs = append(outs, res.Out)
 			}
 			m.VirtualText = strings.Join(outs, "\n")
+		case "c":
+			// copy code blocks to clipboard
+			blocks, err := code.Parse(m.Slides[m.Page])
+			if err != nil {
+				// We couldn't parse the code block on the screen
+				m.VirtualText = "\n" + err.Error()
+				return m, nil
+			}
+			for _, block := range blocks {
+				err := code.Copy(block)
+				if err != nil {
+					m.VirtualText = "\n" + err.Error()
+					return m, nil
+				}
+			}
+			if len(blocks) > 1 {
+				m.VirtualText = "\n" + "copied code blocks to clipboard"
+			} else {
+				m.VirtualText = "\n" + "copied code block to clipboard"
+			}
+			return m, nil
 		case "ctrl+c", "q":
 			return m, tea.Quit
 		default:
