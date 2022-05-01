@@ -9,6 +9,8 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/atotto/clipboard"
 )
 
 type Block struct {
@@ -141,4 +143,9 @@ func Execute(code Block) Result {
 		ExitCode:      exitCode,
 		ExecutionTime: end.Sub(start),
 	}
+}
+
+// Copy copies the contents of a code block to the clipboard.
+func Copy(block Block) error {
+	return clipboard.WriteAll(block.Code)
 }
