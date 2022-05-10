@@ -8,7 +8,7 @@ require (
 	github.com/charmbracelet/glamour v0.5.0
 	github.com/charmbracelet/lipgloss v0.5.0
 	github.com/charmbracelet/wish v0.3.1
-	github.com/gliderlabs/ssh v0.3.3
+	github.com/gliderlabs/ssh v0.3.4
 	github.com/muesli/coral v1.0.0
 	github.com/muesli/termenv v0.11.1-0.20220212125758-44cd13922739
 	github.com/stretchr/testify v1.7.1
