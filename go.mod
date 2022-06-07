@@ -11,7 +11,7 @@ require (
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/muesli/coral v1.0.0
 	github.com/muesli/termenv v0.11.1-0.20220212125758-44cd13922739
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.2
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -45,5 +45,5 @@ require (
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sys v0.0.0-20220224120231-95c6836cb0e7 // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
