@@ -1,6 +1,6 @@
 ---
 author: Gopher
-date: January 2, 2006
+date: May 22, 2022
 paging: Page %d of %d
 ---
 
@@ -11,7 +11,7 @@ Customize the bottom information bar by adding metadata to your `slides.md` file
 ```
 --- 
 author: Gopher
-date: January 2, 2006
+date: May 22, 2022
 paging: Page %d of %d
 --- 
 ```

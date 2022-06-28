@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os/user"
 	"testing"
+	"time"
 
 	"github.com/maaslalani/slides/internal/meta"
 	"github.com/stretchr/testify/assert"
@@ -11,7 +12,7 @@ import (
 
 func TestMeta_ParseHeader(t *testing.T) {
 	user, _ := user.Current()
-	date := "2006-01-02"
+	date := time.Now().Format("2006-01-02")
 
 	tests := []struct {
 		name      string
@@ -70,11 +71,11 @@ func TestMeta_ParseHeader(t *testing.T) {
 		},
 		{
 			name:      "Parse go-styled date from header",
-			slideshow: fmt.Sprintf("---\ndate: %q\n", "Jan 2, 2006"),
+			slideshow: fmt.Sprintf("---\ndate: %q\n", "MMM dd, YYYY"),
 			want: &meta.Meta{
 				Theme:  "default",
 				Author: user.Name,
-				Date:   "Jan 2, 2006",
+				Date:   time.Now().Format("Jan 2, 2006"),
 				Paging: "Slide %d / %d",
 			},
 		},
@@ -84,7 +85,7 @@ func TestMeta_ParseHeader(t *testing.T) {
 			want: &meta.Meta{
 				Theme:  "default",
 				Author: user.Name,
-				Date:   "2006-01-02",
+				Date:   time.Now().Format("2006-01-02"),
 				Paging: "Slide %d / %d",
 			},
 		},
@@ -94,7 +95,7 @@ func TestMeta_ParseHeader(t *testing.T) {
 			want: &meta.Meta{
 				Theme:  "default",
 				Author: user.Name,
-				Date:   "2/1/06",
+				Date:   time.Now().Format("2/1/06"),
 				Paging: "Slide %d / %d",
 			},
 		},
@@ -104,7 +105,7 @@ func TestMeta_ParseHeader(t *testing.T) {
 			want: &meta.Meta{
 				Theme:  "default",
 				Author: user.Name,
-				Date:   "Jan 2, 2006",
+				Date:   time.Now().Format("Jan 2, 2006"),
 				Paging: "Slide %d / %d",
 			},
 		},
@@ -114,7 +115,7 @@ func TestMeta_ParseHeader(t *testing.T) {
 			want: &meta.Meta{
 				Theme:  "default",
 				Author: user.Name,
-				Date:   "January 02, 2006",
+				Date:   time.Now().Format("January 02, 2006"),
 				Paging: "Slide %d / %d",
 			},
 		},

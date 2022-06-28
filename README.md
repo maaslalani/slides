@@ -210,7 +210,7 @@ chmod +x file.md
 ---
 theme: ./path/to/theme.json
 author: Gopher
-date: January 2, 2006
+date: MMMM dd, YYYY
 paging: Slide %d / %d
 ---
 ```
@@ -220,9 +220,8 @@ paging: Slide %d / %d
   be a link to a remote `json` file which slides will fetch before presenting.
 * `author`: A `string` to display on the bottom-left corner of the presentation
   view. Defaults to the OS current user's full name. Can be empty to hide the author.
-* `date`: A `string` that is used to format today's date in the native Go
-  format `2006-01-02` or in the `YYYY-MM-DD` format. If the date is not a valid
-  format, the string will be displayed. Defaults to `2006-01-02`.
+* `date`: A `string` that is used to format today's date in the `YYYY-MM-DD` format. If the date is not a valid
+  format, the string will be displayed. Defaults to `YYYY-MM-DD`.
 * `paging`: A `string` that contains 0 or more `%d` directives. The first `%d`
   will be replaced with the current slide number and the second `%d` will be
   replaced with the total slides count. Defaults to `Slide %d / %d`.

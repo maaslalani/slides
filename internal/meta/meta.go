@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/user"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v2"
 )
@@ -67,7 +68,12 @@ func (m *Meta) Parse(header string) (*Meta, bool) {
 	}
 
 	if tmp.Date != nil {
-		m.Date = parseDate(*tmp.Date)
+		parsedDate := parseDate(*tmp.Date)
+		if parsedDate == *tmp.Date {
+			m.Date = *tmp.Date
+		} else {
+			m.Date = time.Now().Format(parsedDate)
+		}
 	} else {
 		m.Date = fallback.Date
 	}
@@ -99,7 +105,7 @@ func defaultAuthor() string {
 }
 
 func defaultDate() string {
-	return "2006-01-02"
+	return time.Now().Format(parseDate("YYYY-MM-DD"))
 }
 
 func defaultPaging() string {

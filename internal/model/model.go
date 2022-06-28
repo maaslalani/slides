@@ -91,7 +91,7 @@ func (m *Model) Load() error {
 
 	m.Slides = slides
 	m.Author = metaData.Author
-	m.Date = time.Now().Format(metaData.Date)
+	m.Date = metaData.Date
 	m.Paging = metaData.Paging
 	if m.Theme == nil {
 		m.Theme = styles.SelectTheme(metaData.Theme)
