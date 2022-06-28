@@ -1,0 +1,17 @@
+examples/*
+!examples/simple
+!examples/identity
+!examples/bubbletea
+examples/bubbletea/bubbletea
+examples/bubbletea/.ssh
+!examples/git
+examples/git/git
+examples/git/.ssh
+examples/git/.repos
+!examples/scp
+.repos
+.ssh
+coverage.txt
+
+# MacOS specific
+.DS_Store
