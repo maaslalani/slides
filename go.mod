@@ -11,7 +11,7 @@ require (
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/muesli/coral v1.0.0
 	github.com/muesli/termenv v0.12.1-0.20220615005108-4e9068de9898
-	github.com/stretchr/testify v1.7.5
+	github.com/stretchr/testify v1.8.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
