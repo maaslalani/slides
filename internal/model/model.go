@@ -165,7 +165,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 			for _, b := range blocks {
-				clipboard.WriteAll(b.Code)
+				_ = clipboard.WriteAll(b.Code)
 			}
 			return m, nil
 		case "ctrl+c", "q":
