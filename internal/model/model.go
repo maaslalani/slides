@@ -5,14 +5,16 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
-	"github.com/maaslalani/slides/internal/file"
-	"github.com/maaslalani/slides/internal/navigation"
-	"github.com/maaslalani/slides/internal/process"
 	"io"
 	"io/ioutil"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/atotto/clipboard"
+	"github.com/maaslalani/slides/internal/file"
+	"github.com/maaslalani/slides/internal/navigation"
+	"github.com/maaslalani/slides/internal/process"
 
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
@@ -100,6 +102,7 @@ func (m *Model) Load() error {
 	return nil
 }
 
+// Update updates the presentation model.
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -111,7 +114,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		keyPress := msg.String()
 
 		if m.Search.Active {
-
 			switch msg.Type {
 			case tea.KeyEnter:
 				// execute current buffer
@@ -157,25 +159,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				outs = append(outs, res.Out)
 			}
 			m.VirtualText = strings.Join(outs, "\n")
-		case "c":
-			// copy code blocks to clipboard
+		case "y":
 			blocks, err := code.Parse(m.Slides[m.Page])
 			if err != nil {
-				// We couldn't parse the code block on the screen
-				m.VirtualText = "\n" + err.Error()
 				return m, nil
 			}
-			for _, block := range blocks {
-				err := code.Copy(block)
-				if err != nil {
-					m.VirtualText = "\n" + err.Error()
-					return m, nil
-				}
-			}
-			if len(blocks) > 1 {
-				m.VirtualText = "\n" + "copied code blocks to clipboard"
-			} else {
-				m.VirtualText = "\n" + "copied code block to clipboard"
+			for _, b := range blocks {
+				clipboard.WriteAll(b.Code)
 			}
 			return m, nil
 		case "ctrl+c", "q":
