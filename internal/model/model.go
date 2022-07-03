@@ -5,14 +5,16 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
-	"github.com/maaslalani/slides/internal/file"
-	"github.com/maaslalani/slides/internal/navigation"
-	"github.com/maaslalani/slides/internal/process"
 	"io"
 	"io/ioutil"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/atotto/clipboard"
+	"github.com/maaslalani/slides/internal/file"
+	"github.com/maaslalani/slides/internal/navigation"
+	"github.com/maaslalani/slides/internal/process"
 
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
@@ -100,6 +102,7 @@ func (m *Model) Load() error {
 	return nil
 }
 
+// Update updates the presentation model.
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -111,7 +114,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		keyPress := msg.String()
 
 		if m.Search.Active {
-
 			switch msg.Type {
 			case tea.KeyEnter:
 				// execute current buffer
@@ -157,6 +159,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				outs = append(outs, res.Out)
 			}
 			m.VirtualText = strings.Join(outs, "\n")
+		case "y":
+			blocks, err := code.Parse(m.Slides[m.Page])
+			if err != nil {
+				return m, nil
+			}
+			for _, b := range blocks {
+				_ = clipboard.WriteAll(b.Code)
+			}
+			return m, nil
 		case "ctrl+c", "q":
 			return m, tea.Quit
 		default:
