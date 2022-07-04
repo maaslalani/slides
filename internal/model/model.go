@@ -33,6 +33,8 @@ const (
 	delimiter = "\n---\n"
 )
 
+// Model represents the model of this presentation, which contains all the
+// state related to the current slides.
 type Model struct {
 	Slides   []string
 	Page     int
@@ -53,6 +55,8 @@ type fileWatchMsg struct{}
 
 var fileInfo os.FileInfo
 
+// Init initializes the model and begins watching the slides file for changes
+// if it exists.
 func (m Model) Init() tea.Cmd {
 	if m.FileName == "" {
 		return nil
@@ -67,6 +71,7 @@ func fileWatchCmd() tea.Cmd {
 	})
 }
 
+// Load loads all of the content and metadata for the presentation.
 func (m *Model) Load() error {
 	var content string
 	var err error
@@ -194,6 +199,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+// View renders the current slide in the presentation and the status bar which
+// contains the author, date, and pagination information.
 func (m Model) View() string {
 	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(m.viewport.Width))
 	slide := m.Slides[m.Page]
@@ -284,10 +291,12 @@ func readStdin() (string, error) {
 	return b.String(), nil
 }
 
+// CurrentPage returns the current page the presentation is on.
 func (m *Model) CurrentPage() int {
 	return m.Page
 }
 
+// SetPage sets which page the presentation should render.
 func (m *Model) SetPage(page int) {
 	if m.Page == page {
 		return
@@ -297,6 +306,7 @@ func (m *Model) SetPage(page int) {
 	m.Page = page
 }
 
+// Pages returns all the slides in the presentation.
 func (m *Model) Pages() []string {
 	return m.Slides
 }

@@ -9,18 +9,19 @@ import (
 	"github.com/maaslalani/slides/internal/model"
 )
 
+// Server is the server for hosting this presentation.
 type Server struct {
-	host  string
-	port  int
-	srv   *ssh.Server
+	host         string
+	port         int
+	srv          *ssh.Server
 	presentation model.Model
 }
 
 // NewServer creates a new server.
 func NewServer(keyPath, host string, port int, presentation model.Model) (*Server, error) {
 	s := &Server{
-		host:  host,
-		port:  port,
+		host:         host,
+		port:         port,
 		presentation: presentation,
 	}
 	srv, err := wish.NewServer(

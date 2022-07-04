@@ -22,6 +22,7 @@ type Block struct {
 	Raw     string
 }
 
+// String implements the Stringer interface.
 func (b Block) String() string {
 	return fmt.Sprintf("===\n%s\n%s\n%s\n===", b.Raw, b.Command, b.Input)
 }

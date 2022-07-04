@@ -4,12 +4,13 @@ package code
 // Placeholders <file>, <name> and <path> can be used.
 type cmds [][]string
 
-// ----
-
+// Language represents a programming language with it Extension and Commands to
+// execute its programs.
 type Language struct {
+	// Extension represents the file extension used by this language.
 	Extension string
-	// Commands  [][]string // placeholders: <name> file name (without extension),
-	// <file> file name, <path> path without file name
+	// Commands  [][]string // placeholders: <name> file name (without
+	// extension), <file> file name, <path> path without file name
 	Commands cmds
 }
 
@@ -26,6 +27,8 @@ const (
 	Rust       = "rust"
 )
 
+// Languages is a map of supported languages with their extensions and commands
+// to run to execute the program.
 var Languages = map[string]Language{
 	Bash: {
 		Extension: "sh",

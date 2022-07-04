@@ -16,7 +16,7 @@ var (
 	rootCmd = &coral.Command{
 		Use:   "slides <file.md>",
 		Short: "Terminal based presentation tool",
-		Args: coral.ArbitraryArgs,
+		Args:  coral.ArbitraryArgs,
 		RunE: func(cmd *coral.Command, args []string) error {
 			var err error
 			var fileName string

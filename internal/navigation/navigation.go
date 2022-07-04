@@ -87,7 +87,7 @@ func navigateNext(state State) int {
 
 func navigateSlide(buffer string, totalSlides int) int {
 	destinationSlide, _ := strconv.Atoi(buffer)
-	destinationSlide -= 1
+	destinationSlide--
 
 	if destinationSlide > totalSlides-1 {
 		return totalSlides - 1

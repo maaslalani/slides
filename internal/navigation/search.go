@@ -24,6 +24,7 @@ type Search struct {
 	SearchTextInput textinput.Model
 }
 
+// NewSearch creates and returns a new search model with the default settings.
 func NewSearch() Search {
 	ti := textinput.NewModel()
 	ti.Placeholder = "search"
@@ -33,18 +34,19 @@ func NewSearch() Search {
 	return Search{SearchTextInput: ti}
 }
 
+// Query returns the text input's value.
 func (s *Search) Query() string {
 	return s.SearchTextInput.Value()
 }
 
+// SetQuery sets the text input's value
 func (s *Search) SetQuery(query string) {
 	s.SearchTextInput.SetValue(query)
 }
 
-// Mark Search as
-// Done - Do not delete search buffer
-// This is useful if, for example, you want to jump to the next result
-// and you therefore still need the buffer
+// Done marks the search as done, but does not delete the search buffer. This
+// is useful if, for example, you want to jump to the next result and you
+// therefore still need the buffer.
 func (s *Search) Done() {
 	s.Active = false
 }

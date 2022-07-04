@@ -18,35 +18,41 @@ const (
 )
 
 var (
+	// Author is the style for the author text in the bottom-left corner of the
+	// presentation.
 	Author = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Left).MarginLeft(2)
-	Date   = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).Margin(0, 1)
-	Page   = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
-	Slide  = lipgloss.NewStyle().Padding(1)
+	// Date is the style for the date text in the bottom-left corner of the
+	// presentation.
+	Date = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).Margin(0, 1)
+	// Page is the style for the pagination progress information text in the
+	// bottom-right corner of the presentation.
+	Page = lipgloss.NewStyle().Foreground(salmon).Align(lipgloss.Right).MarginRight(3)
+	// Slide is the style for the slide.
+	Slide = lipgloss.NewStyle().Padding(1)
+	// Status is the style for the status bar at the bottom of the
+	// presentation.
 	Status = lipgloss.NewStyle().Padding(1)
+	// Search is the style for the search input at the bottom-left corner of
+	// the screen when searching is active.
 	Search = lipgloss.NewStyle().Faint(true).Align(lipgloss.Left).MarginLeft(2)
 )
 
 var (
+	// DefaultTheme is the default theme for the presentation.
 	//go:embed theme.json
 	DefaultTheme []byte
 )
 
+// JoinHorizontal joins two strings horizontally and fills the space in-between.
 func JoinHorizontal(left, right string, width int) string {
-	length := lipgloss.Width(left + right)
-	if width < length {
-		return left + " " + right
-	}
-	padding := strings.Repeat(" ", width-length)
-	return left + padding + right
+	w := width - lipgloss.Width(right)
+	return lipgloss.PlaceHorizontal(w, lipgloss.Left, left) + right
 }
 
+// JoinVertical joins two strings vertically and fills the space in-between.
 func JoinVertical(top, bottom string, height int) string {
-	h := lipgloss.Height(top) + lipgloss.Height(bottom)
-	if height < h {
-		return top + "\n" + bottom
-	}
-	fill := strings.Repeat("\n", height-h)
-	return top + fill + bottom
+	h := height - lipgloss.Height(bottom)
+	return lipgloss.PlaceVertical(h, lipgloss.Top, top) + bottom
 }
 
 // SelectTheme picks a glamour style config based

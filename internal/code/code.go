@@ -11,11 +11,13 @@ import (
 	"time"
 )
 
+// Block represents a code block.
 type Block struct {
 	Code     string
 	Language string
 }
 
+// Result represents the output for an executed code block.
 type Result struct {
 	Out           string
 	ExitCode      int
@@ -26,6 +28,9 @@ type Result struct {
 var re = regexp.MustCompile("(?s)(?:```|~~~)(\\w+)\n(.*?)\n(?:```|~~~)\\s?")
 
 var (
+	// ErrParse is the returned error when we cannot parse the code block (i.e.
+	// there is no code block on the current slide) or the code block is
+	// incorrectly written.
 	ErrParse = errors.New("Error: could not parse code block")
 )
 
