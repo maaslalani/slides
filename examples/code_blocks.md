@@ -6,6 +6,8 @@ Just press `ctrl+e` and the result of the code block will be displayed as virtua
 
 Currently supported languages:
 
+<!-- Use comments in your markdown! -->
+
 * `bash`
 * `elixir`
 * `go`
@@ -14,6 +16,7 @@ Currently supported languages:
 * `ruby`
 * `perl`
 * `rust`
+<!-- * `secret` -->
 
 ---
 
@@ -35,14 +38,22 @@ IO.puts "Hello, world!"
 
 ### Go
 
+Use `///` to hide verbose code but still allow the ability to execute it.
+
+If you press `y` to copy (yank) this code block it will return the full snippet.
+
+And, if you press `ctrl+e` it will run the program without error, even though
+what is being displayed is not a valid go program because we have commented out
+some boilerplate to focus on the important parts.
+
 ```go
-package main
-
+///package main
+///
 import "fmt"
-
-func main() {
-  fmt.Println("Hello, world!")
-}
+///
+///func main() {
+fmt.Println("Hello, world!")
+///}
 ```
 
 ---

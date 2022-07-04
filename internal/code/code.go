@@ -48,7 +48,7 @@ func Parse(markdown string) ([]Block, error) {
 		}
 		rv = append(rv, Block{
 			Language: match[1],
-			Code:     match[2],
+			Code:     RemoveComments(match[2]),
 		})
 
 	}
