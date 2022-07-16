@@ -204,6 +204,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m Model) View() string {
 	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(m.viewport.Width))
 	slide := m.Slides[m.Page]
+	slide = code.HideComments(slide)
 	slide, err := r.Render(slide)
 	slide += m.VirtualText
 	if err != nil {
