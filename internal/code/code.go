@@ -2,7 +2,6 @@ package code
 
 import (
 	"errors"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -78,7 +77,7 @@ func Execute(code Block) Result {
 	}
 
 	// Write the code block to a temporary file
-	f, err := ioutil.TempFile(os.TempDir(), "slides-*."+Languages[code.Language].Extension)
+	f, err := os.CreateTemp(os.TempDir(), "slides-*."+Languages[code.Language].Extension)
 	if err != nil {
 		return Result{
 			Out:      "Error: could not create file",
