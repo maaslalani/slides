@@ -16,6 +16,7 @@ Currently supported languages:
 * `ruby`
 * `perl`
 * `rust`
+* `java`
 <!-- * `secret` -->
 
 ---
@@ -103,5 +104,16 @@ print ("hello, world");
 ```rust
 fn main() {
     println!("Hello, world!");
+}
+```
+
+---
+
+### Java
+```java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
 }
 ```
