@@ -12,7 +12,7 @@ description: |
     
 license: MIT
 
-base: core20
+base: core22
 grade: stable 
 confinement: strict
 compression: lzo
@@ -34,14 +34,19 @@ apps:
       - bin/homeishome-launch     
     plugs:
       - home
+      - ssh-keys
+      - ssh-public-keys
+      - network
+      - network-bind
       
 parts:
   slides:
     source: https://github.com/maaslalani/slides
     source-type: git
     plugin: go
-    go-channel: latest/stable
-        
+    build-snaps:
+      - go
+      
     override-pull: |
       snapcraftctl pull
       snapcraftctl set-version "$(git describe --tags | sed 's/^v//' | cut -d "-" -f1)"    
