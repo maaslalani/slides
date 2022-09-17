@@ -122,10 +122,9 @@ func Execute(code Block) Result {
 		// execute and write output
 		cmd := exec.Command(command[0], command[1:]...)
 		out, err := cmd.Output()
+		output.Write(out)
 		if err != nil {
 			output.Write([]byte(err.Error()))
-		} else {
-			output.Write(out)
 		}
 
 		// update status code
