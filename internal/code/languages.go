@@ -4,6 +4,11 @@ package code
 // Placeholders <file>, <name> and <path> can be used.
 type cmds [][]string
 
+type reReplacement struct {
+	src  string
+	repl string
+}
+
 // Language represents a programming language with it Extension and Commands to
 // execute its programs.
 type Language struct {
@@ -11,7 +16,8 @@ type Language struct {
 	Extension string
 	// Commands  [][]string // placeholders: <name> file name (without
 	// extension), <file> file name, <path> path without file name
-	Commands cmds
+	Commands           cmds
+	OutputsReplacement reReplacement
 }
 
 // Supported Languages
@@ -25,7 +31,7 @@ const (
 	Python     = "python"
 	Ruby       = "ruby"
 	Rust       = "rust"
-    Java       = "java"
+	Java       = "java"
 )
 
 // Languages is a map of supported languages with their extensions and commands
@@ -34,6 +40,9 @@ var Languages = map[string]Language{
 	Bash: {
 		Extension: "sh",
 		Commands:  cmds{{"bash", "<file>"}},
+		OutputsReplacement: reReplacement{
+			src: `<file>: line [0-9]+: `,
+		},
 	},
 	Elixir: {
 		Extension: "exs",
@@ -42,6 +51,9 @@ var Languages = map[string]Language{
 	Go: {
 		Extension: "go",
 		Commands:  cmds{{"go", "run", "<file>"}},
+		OutputsReplacement: reReplacement{
+			src: `<file>:([0-9]+:){2} `,
+		},
 	},
 	Javascript: {
 		Extension: "js",

@@ -11,15 +11,14 @@ import (
 	"time"
 
 	"github.com/atotto/clipboard"
-	"github.com/maaslalani/slides/internal/file"
-	"github.com/maaslalani/slides/internal/navigation"
-	"github.com/maaslalani/slides/internal/process"
-
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
 	"github.com/maaslalani/slides/internal/code"
+	"github.com/maaslalani/slides/internal/file"
 	"github.com/maaslalani/slides/internal/meta"
+	"github.com/maaslalani/slides/internal/navigation"
+	"github.com/maaslalani/slides/internal/process"
 	"github.com/maaslalani/slides/styles"
 )
 
