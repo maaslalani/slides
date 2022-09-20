@@ -122,6 +122,10 @@ func Execute(code Block) Result {
 		// execute and write output
 		cmd := exec.Command(command[0], command[1:]...)
 		out, err := cmd.CombinedOutput()
+		if language.OutputsReplacement.src != "" {
+			r := regexp.MustCompile(repl.Replace(language.OutputsReplacement.src))
+			out = r.ReplaceAll(out, []byte(language.OutputsReplacement.repl))
+		}
 		output.Write(out)
 		if err != nil {
 			output.Write([]byte(err.Error()))
