@@ -25,6 +25,7 @@ func (b *Blocks) ExecuteAll(m Model) {
 		res := code.Execute(block)
 		m.SetVirtualText(res.Out)
 	}
+	b.nextIdx = uint(len(b.blocks))
 	b.checkDone()
 }
 
