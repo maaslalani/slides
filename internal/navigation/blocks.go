@@ -1,55 +1,59 @@
 package navigation
 
-type StateMachine struct {
-	states map[string]func(Model) Model
-	transitions map[string]map[string]string
+import (
+	"github.com/maaslalani/slides/internal/code"
+	"strconv"
+)
 
-	currentStateName string
+type Blocks struct {
+	blocks  []code.Block
+	nextIdx uint
+	done    bool
 }
 
-var IdentityEnterFunc = func(model Model) Model { return model }
+func NewBlocks(blocks []code.Block) *Blocks {
+	b := new(Blocks)
+	b.blocks = blocks
+	b.nextIdx = 0
+	b.checkDone()
 
-func NewStateMachine() *StateMachine {
-	sm := new(StateMachine)
-	return sm
+	return b
 }
 
-func (sm *StateMachine) SetState(name string, onEnter func(Model) Model) {
-	if sm.states == nil {
-		sm.states = map[string]func(Model)Model{}
-		sm.currentStateName = name
+func (b *Blocks) ExecuteAll(m Model) {
+	for _, block := range b.blocks {
+		res := code.Execute(block)
+		m.SetVirtualText(res.Out)
 	}
-	sm.states[name] = onEnter
+	b.checkDone()
 }
 
-func (sm *StateMachine) SetInitialState(name string) {
-	sm.SetState(name, IdentityEnterFunc)
-	sm.currentStateName = name
-}
-
-func (sm *StateMachine) SetTransition(startStateName string, action string, endStateName string) {
-	if sm.transitions[startStateName] == nil {
-		sm.transitions[startStateName] = map[string]string{}
-	}
-
-	sm.transitions[startStateName][action] = endStateName
-}
-
-func (sm *StateMachine) Transition(action string, m Model) Model {
-	transitions, exists := sm.transitions[sm.currentStateName]
-	if !exists {
-		return m
+func (b *Blocks) ExecuteNext(m Model) {
+	if b.done {
+		return
 	}
 
-	targetState, exists := transitions[action]
-	if !exists {
-		return m
-	}
+	res := code.Execute(b.blocks[b.nextIdx])
+	m.SetVirtualText(res.Out)
 
-	sm.currentStateName = targetState
-	return sm.states[sm.currentStateName](m)
+	b.nextIdx++
+	b.checkDone()
 }
 
-func (sm *StateMachine) CurrentStateName() string {
-	return sm.currentStateName
+func (b *Blocks) ExecuteIdx(idx uint, m Model) {
+	if idx >= uint(len(b.blocks)) {
+		m.SetVirtualText("no code block with index [" + strconv.Itoa(int(idx)) + "]")
+		return
+	}
+
+	b.nextIdx = idx
+	b.ExecuteNext(m)
+}
+
+func (b *Blocks) Done() bool {
+	return b.done
+}
+
+func (b *Blocks) checkDone() {
+	b.done = b.nextIdx >= uint(len(b.blocks))
 }

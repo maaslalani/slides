@@ -8,13 +8,6 @@ import (
 	"github.com/maaslalani/slides/styles"
 )
 
-// Model is an interface for models.model, so that cycle imports are avoided
-type Model interface {
-	CurrentPage() int
-	SetPage(page int)
-	Pages() []string
-}
-
 // Search represents the current search
 type Search struct {
 	// Active - Show search bar instead of author and date?
