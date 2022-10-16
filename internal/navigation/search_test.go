@@ -7,6 +7,7 @@ import (
 type mockModel struct {
 	slides []string
 	page   int
+	virtualText string
 }
 
 func (m *mockModel) CurrentPage() int {
@@ -19,6 +20,10 @@ func (m *mockModel) SetPage(page int) {
 
 func (m *mockModel) Pages() []string {
 	return m.slides
+}
+
+func (m *mockModel) SetVirtualText(text string) {
+	m.virtualText = text
 }
 
 func TestSearch(t *testing.T) {
