@@ -65,6 +65,10 @@ fmt.Println("Hello, world!")
 console.log("Hello, world!")
 ```
 
+```javascript
+console.log("Hello, universe!")
+```
+
 ---
 
 ### Lua
