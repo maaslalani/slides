@@ -25,7 +25,7 @@ const (
 	Python     = "python"
 	Ruby       = "ruby"
 	Rust       = "rust"
-    Java       = "java"
+	Java       = "java"
 )
 
 // Languages is a map of supported languages with their extensions and commands
