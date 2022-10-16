@@ -7,3 +7,25 @@ type Model interface {
 	Pages() []string
 	SetVirtualText(string)
 }
+
+type mockModel struct {
+	slides      []string
+	page        int
+	virtualText string
+}
+
+func (m *mockModel) CurrentPage() int {
+	return m.page
+}
+
+func (m *mockModel) SetPage(page int) {
+	m.page = page
+}
+
+func (m *mockModel) Pages() []string {
+	return m.slides
+}
+
+func (m *mockModel) SetVirtualText(text string) {
+	m.virtualText = text
+}
