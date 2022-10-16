@@ -281,6 +281,9 @@ func (m *Model) runCodeBlocks(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	}
 
 	m.blocks.ExecuteIdx(uint(idx), m)
+	if m.blocks.Done() {
+		m.blocks = nil
+	}
 	return m, nil
 }
 
