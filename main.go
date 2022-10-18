@@ -37,7 +37,7 @@ var (
 			}
 
 			p := tea.NewProgram(presentation, tea.WithAltScreen())
-			err = p.Start()
+			_, err = p.Run()
 			return err
 		},
 	}
