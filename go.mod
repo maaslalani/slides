@@ -12,7 +12,7 @@ require (
 	github.com/gliderlabs/ssh v0.3.5
 	github.com/muesli/coral v1.0.0
 	github.com/muesli/termenv v0.13.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	gopkg.in/yaml.v2 v2.4.0
 )
 
