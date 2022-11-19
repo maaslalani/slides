@@ -26,6 +26,7 @@ import (
 var (
 	//go:embed tutorial.md
 	slidesTutorial []byte
+	tabSpaces      = strings.Repeat(" ", 4)
 )
 
 const (
@@ -205,6 +206,7 @@ func (m Model) View() string {
 	slide := m.Slides[m.Page]
 	slide = code.HideComments(slide)
 	slide, err := r.Render(slide)
+	slide = strings.ReplaceAll(slide, "\t", tabSpaces)
 	slide += m.VirtualText
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
