@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -49,6 +51,8 @@ type Model struct {
 	// original slides, it will be displayed on a slide and reset on page change
 	VirtualText string
 	Search      navigation.Search
+
+	blocks *navigation.Blocks
 }
 
 type fileWatchMsg struct{}
@@ -103,6 +107,7 @@ func (m *Model) Load() error {
 	if m.Theme == nil {
 		m.Theme = styles.SelectTheme(metaData.Theme)
 	}
+	m.blocks = nil
 
 	return nil
 }
@@ -141,6 +146,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, cmd
 		}
 
+		if m.blocks != nil {
+			return m.runCodeBlocks(msg)
+		}
+
 		switch keyPress {
 		case "/":
 			// Begin search
@@ -155,15 +164,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			blocks, err := code.Parse(m.Slides[m.Page])
 			if err != nil {
 				// We couldn't parse the code block on the screen
-				m.VirtualText = "\n" + err.Error()
+				m.SetVirtualText("\n" + err.Error())
 				return m, nil
 			}
-			var outs []string
-			for _, block := range blocks {
-				res := code.Execute(block)
-				outs = append(outs, res.Out)
-			}
-			m.VirtualText = strings.Join(outs, "\n")
+			m.blocks = navigation.NewBlocks(blocks)
+			return m, nil
 		case "y":
 			blocks, err := code.Parse(m.Slides[m.Page])
 			if err != nil {
@@ -236,6 +241,52 @@ func (m *Model) paging() string {
 	default:
 		return m.Paging
 	}
+}
+
+func (m *Model) runCodeBlocks(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	switch msg.Type {
+	case tea.KeyEnter:
+		m.blocks.ExecuteNext(m)
+		if m.blocks.Done() {
+			m.blocks = nil
+		}
+		return m, nil
+	case tea.KeyCtrlC, tea.KeyEscape:
+		m.blocks = nil
+		return m, nil
+	}
+
+	keyPress := msg.String()
+	switch keyPress {
+	case "a":
+		m.blocks.ExecuteAll(m)
+		m.blocks = nil
+		return m, nil
+	case "n":
+		m.blocks.ExecuteNext(m)
+		if m.blocks.Done() {
+			m.blocks = nil
+		}
+		return m, nil
+	}
+
+	digits := regexp.MustCompile(`\d+`)
+	match := digits.FindString(keyPress)
+	if match == "" {
+		return m, nil
+	}
+
+	idx, err := strconv.Atoi(match)
+	if err != nil {
+		m.SetVirtualText("\n" + err.Error())
+		return m, nil
+	}
+
+	m.blocks.ExecuteIdx(uint(idx), m)
+	if m.blocks.Done() {
+		m.blocks = nil
+	}
+	return m, nil
 }
 
 func readFile(path string) (string, error) {
@@ -311,4 +362,9 @@ func (m *Model) SetPage(page int) {
 // Pages returns all the slides in the presentation.
 func (m *Model) Pages() []string {
 	return m.Slides
+}
+
+// SetVirtualText sets the virtual text for the presentation.
+func (m *Model) SetVirtualText(text string) {
+	m.VirtualText = text
 }

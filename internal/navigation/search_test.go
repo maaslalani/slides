@@ -4,23 +4,6 @@ import (
 	"testing"
 )
 
-type mockModel struct {
-	slides []string
-	page   int
-}
-
-func (m *mockModel) CurrentPage() int {
-	return m.page
-}
-
-func (m *mockModel) SetPage(page int) {
-	m.page = page
-}
-
-func (m *mockModel) Pages() []string {
-	return m.slides
-}
-
 func TestSearch(t *testing.T) {
 	data := []string{
 		"hi",
