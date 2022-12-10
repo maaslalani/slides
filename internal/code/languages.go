@@ -25,7 +25,8 @@ const (
 	Python     = "python"
 	Ruby       = "ruby"
 	Rust       = "rust"
-    Java       = "java"
+        Java       = "java"
+        Julia       = "julia"
 )
 
 // Languages is a map of supported languages with their extensions and commands
@@ -75,5 +76,9 @@ var Languages = map[string]Language{
 	Java: {
 		Extension: "java",
 		Commands:  cmds{{"java", "<file>"}},
+	},
+	Julia: {
+		Extension: "jl",
+		Commands:  cmds{{"julia", "<file>"}},
 	},
 }
