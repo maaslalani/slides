@@ -17,6 +17,7 @@ Currently supported languages:
 * `perl`
 * `rust`
 * `java`
+* `cpp`
 <!-- * `secret` -->
 
 ---
@@ -123,4 +124,14 @@ public class Main {
 ### Julia
 ```julia
 println("Hello, world!")
+```
+
+### C++
+```cpp
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, world!" << std::endl;
+    return 0;
+}
 ```

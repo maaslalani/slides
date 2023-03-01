@@ -27,6 +27,7 @@ const (
 	Rust       = "rust"
 	Java       = "java"
 	Julia      = "julia"
+	Cpp        = "cpp"
 )
 
 // Languages is a map of supported languages with their extensions and commands
@@ -80,5 +81,12 @@ var Languages = map[string]Language{
 	Julia: {
 		Extension: "jl",
 		Commands:  cmds{{"julia", "<file>"}},
+	},
+	Cpp: {
+		Extension: "cpp",
+		Commands: cmds{
+			{"g++", "-std=c++20", "-o", "<path>/<name>.run", "<file>"},
+			{"<path>/<name>.run"},
+		},
 	},
 }
