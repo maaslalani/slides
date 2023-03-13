@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/charmbracelet/ssh"
 	"github.com/charmbracelet/wish"
-	"github.com/gliderlabs/ssh"
 	"github.com/maaslalani/slides/internal/model"
 )
 
