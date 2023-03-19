@@ -18,6 +18,7 @@ Currently supported languages:
 * `rust`
 * `java`
 * `cpp`
+* `swift`
 <!-- * `secret` -->
 
 ---
@@ -134,4 +135,11 @@ int main() {
     std::cout << "Hello, world!" << std::endl;
     return 0;
 }
+```
+
+---
+
+### Swift
+```swift
+print("Hello, world!")
 ```

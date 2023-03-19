@@ -28,6 +28,7 @@ const (
 	Java       = "java"
 	Julia      = "julia"
 	Cpp        = "cpp"
+	Swift      = "swift"
 )
 
 // Languages is a map of supported languages with their extensions and commands
@@ -88,5 +89,9 @@ var Languages = map[string]Language{
 			{"g++", "-std=c++20", "-o", "<path>/<name>.run", "<file>"},
 			{"<path>/<name>.run"},
 		},
+	},
+	Swift: {
+		Extension: "swift",
+		Commands:  cmds{{"swift", "<file>"}},
 	},
 }
