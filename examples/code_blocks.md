@@ -127,6 +127,8 @@ public class Main {
 println("Hello, world!")
 ```
 
+---
+
 ### C++
 ```cpp
 #include <iostream>
