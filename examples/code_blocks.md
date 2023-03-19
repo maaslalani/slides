@@ -9,6 +9,7 @@ Currently supported languages:
 <!-- Use comments in your markdown! -->
 
 * `bash`
+* `zsh`
 * `elixir`
 * `go`
 * `javascript`
@@ -25,6 +26,14 @@ Currently supported languages:
 ### Bash
 
 ```bash
+ls
+```
+
+---
+
+### Zsh
+
+```zsh
 ls
 ```
 
