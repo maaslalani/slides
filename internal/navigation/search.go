@@ -26,7 +26,7 @@ type Search struct {
 
 // NewSearch creates and returns a new search model with the default settings.
 func NewSearch() Search {
-	ti := textinput.NewModel()
+	ti := textinput.New()
 	ti.Placeholder = "search"
 	ti.Prompt = "/"
 	ti.PromptStyle = styles.Search
