@@ -17,6 +17,7 @@ type Language struct {
 // Supported Languages
 const (
 	Bash       = "bash"
+	Zsh        = "zsh"
 	Elixir     = "elixir"
 	Go         = "go"
 	Javascript = "javascript"
@@ -37,6 +38,10 @@ var Languages = map[string]Language{
 	Bash: {
 		Extension: "sh",
 		Commands:  cmds{{"bash", "<file>"}},
+	},
+	Zsh: {
+		Extension: "zsh",
+		Commands:  cmds{{"zsh", "<file>"}},
 	},
 	Elixir: {
 		Extension: "exs",
