@@ -18,6 +18,7 @@ Currently supported languages:
 * `rust`
 * `java`
 * `cpp`
+* `swift`
 <!-- * `secret` -->
 
 ---
@@ -126,6 +127,8 @@ public class Main {
 println("Hello, world!")
 ```
 
+---
+
 ### C++
 ```cpp
 #include <iostream>
@@ -134,4 +137,11 @@ int main() {
     std::cout << "Hello, world!" << std::endl;
     return 0;
 }
+```
+
+---
+
+### Swift
+```swift
+print("Hello, world!")
 ```
