@@ -20,6 +20,7 @@ Currently supported languages:
 * `java`
 * `cpp`
 * `swift`
+* `dart`
 <!-- * `secret` -->
 
 ---
@@ -153,4 +154,13 @@ int main() {
 ### Swift
 ```swift
 print("Hello, world!")
+```
+
+---
+
+### Dart
+```dart
+void main() {
+  print("Hello, world!");
+}
 ```
