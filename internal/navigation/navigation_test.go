@@ -25,6 +25,7 @@ func TestNavigation(t *testing.T) {
 		{keys: "3G", target: 2},
 		{keys: "11G", target: 10},
 		{keys: "101G", target: 10},
+		{keys: "nnN", target: 1},
 	}
 
 	for _, tt := range tests {
