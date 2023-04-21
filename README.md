@@ -142,6 +142,7 @@ Go to the previous slide with any of the following key sequences:
 * <kbd>p</kbd>
 * <kbd>h</kbd>
 * <kbd>k</kbd>
+* <kbd>N</kbd>
 * <kbd>Page Up</kbd>
 * number + any of the above (go back n slides)
 
