@@ -57,7 +57,7 @@ func Navigate(state State, keyPress string) State {
 			Page:        navigateNext(state),
 			TotalSlides: state.TotalSlides,
 		}
-	case "up", "k", "left", "h", "p", "pgup":
+	case "up", "k", "left", "h", "p", "pgup", "N":
 		return State{
 			Page:        navigatePrevious(state),
 			TotalSlides: state.TotalSlides,
