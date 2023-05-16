@@ -10,6 +10,7 @@ Currently supported languages:
 
 * `bash`
 * `zsh`
+* `fish`
 * `elixir`
 * `go`
 * `javascript`
@@ -35,6 +36,14 @@ ls
 ### Zsh
 
 ```zsh
+ls
+```
+
+---
+
+### Fish
+
+```fish
 ls
 ```
 

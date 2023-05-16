@@ -18,6 +18,7 @@ type Language struct {
 const (
 	Bash       = "bash"
 	Zsh        = "zsh"
+	Fish       = "fish"
 	Elixir     = "elixir"
 	Go         = "go"
 	Javascript = "javascript"
@@ -42,6 +43,10 @@ var Languages = map[string]Language{
 	Zsh: {
 		Extension: "zsh",
 		Commands:  cmds{{"zsh", "<file>"}},
+	},
+	Fish: {
+		Extension: "fish",
+		Commands:  cmds{{"fish", "<file>"}},
 	},
 	Elixir: {
 		Extension: "exs",
