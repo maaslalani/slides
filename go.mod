@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/charmbracelet/bubbles v0.15.0
-	github.com/charmbracelet/bubbletea v0.24.0
+	github.com/charmbracelet/bubbletea v0.24.1
 	github.com/charmbracelet/glamour v0.6.0
 	github.com/charmbracelet/lipgloss v0.7.1
 	github.com/charmbracelet/ssh v0.0.0-20221117183211-483d43d97103
