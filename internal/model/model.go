@@ -86,6 +86,8 @@ func (m *Model) Load() error {
 		return err
 	}
 
+	content = strings.ReplaceAll(content, "\r", "")
+
 	content = strings.TrimPrefix(content, strings.TrimPrefix(delimiter, "\n"))
 	slides := strings.Split(content, delimiter)
 
