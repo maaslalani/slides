@@ -12,7 +12,7 @@ require (
 	github.com/charmbracelet/wish v1.1.1
 	github.com/muesli/coral v1.0.0
 	github.com/muesli/termenv v0.15.2-0.20230414210136-b57cbb11093e
-	github.com/stretchr/testify v1.8.3
+	github.com/stretchr/testify v1.8.4
 	gopkg.in/yaml.v2 v2.4.0
 )
 
