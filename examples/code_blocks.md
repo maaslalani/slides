@@ -22,6 +22,7 @@ Currently supported languages:
 * `cpp`
 * `swift`
 * `dart`
+* `v`
 <!-- * `secret` -->
 
 ---
@@ -172,4 +173,10 @@ print("Hello, world!")
 void main() {
   print("Hello, world!");
 }
+```
+
+### V
+
+```v
+println('Hello, world!')
 ```

@@ -32,6 +32,7 @@ const (
 	Cpp        = "cpp"
 	Swift      = "swift"
 	Dart       = "dart"
+	V          = "v"
 )
 
 // Languages is a map of supported languages with their extensions and commands
@@ -108,5 +109,9 @@ var Languages = map[string]Language{
 	Dart: {
 		Extension: "dart",
 		Commands:  cmds{{"dart", "<file>"}},
+	},
+	V: {
+		Extension: "v",
+		Commands:  cmds{{"v", "run", "<file>"}},
 	},
 }
