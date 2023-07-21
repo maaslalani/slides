@@ -19,6 +19,7 @@ const (
 	Bash       = "bash"
 	Zsh        = "zsh"
 	Fish       = "fish"
+	Powershell = "powershell"
 	Elixir     = "elixir"
 	Go         = "go"
 	Javascript = "javascript"
@@ -49,6 +50,10 @@ var Languages = map[string]Language{
 	Fish: {
 		Extension: "fish",
 		Commands:  cmds{{"fish", "<file>"}},
+	},
+	Powershell: {
+		Extension: "ps1",
+		Commands:  cmds{{"powershell", "-File", "<file>"}},
 	},
 	Elixir: {
 		Extension: "exs",
