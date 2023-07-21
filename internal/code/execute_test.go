@@ -63,6 +63,17 @@ func TestExecute(t *testing.T) {
 				},
 			},
 		)
+	} else if runtime.GOOS == "windows" {
+		tt = append(tt, TestCase{
+			block: code.Block{
+				Code:     `Write-Host "Hello, powershell!"`,
+				Language: "powershell",
+			},
+			expected: code.Result{
+				Out:      "Hello, powershell!\n",
+				ExitCode: 0,
+			},
+		})
 	}
 
 	for _, tc := range tt {
