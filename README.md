@@ -11,7 +11,7 @@ Slides in your terminal.
 [![Snapcraft](https://snapcraft.io/slides/badge.svg)](https://snapcraft.io/slides)
 [![AUR](https://img.shields.io/aur/version/slides?label=AUR)](https://aur.archlinux.org/packages/slides)
 
-<details>
+<details markdown="block">
 <summary>Instructions</summary>
 
 #### MacOS
