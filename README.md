@@ -272,6 +272,7 @@ own computer without needing to download `slides` and the presentation file.
 * [`lookatme`](https://github.com/d0c-s4vage/lookatme)
 * [`sli.dev`](https://sli.dev/)
 * [`sent`](https://tools.suckless.org/sent/)
+* [`presenterm`](https://github.com/mfontanini/presenterm)
 
 ### Development
 See the [development documentation](./docs/development)
