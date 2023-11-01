@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+	"github.com/kballard/go-shellquote"
 )
 
 // Block represents a pre-processable block which looks like the following: It
@@ -49,7 +50,7 @@ func Parse(markdown string) []Block {
 // Execute takes performs the execution of the block's command
 // by passing in the block's input as stdin and sets the block output
 func (b *Block) Execute() {
-	c := strings.Split(b.Command, " ")
+	c, _ := shellquote.Split(b.Command)
 	cmd := exec.Command(c[0], c[1:]...)
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
