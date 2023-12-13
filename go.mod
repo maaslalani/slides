@@ -7,7 +7,7 @@ toolchain go1.21.3
 require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/charmbracelet/bubbles v0.16.2-0.20231013123227-167e9067bc4e
-	github.com/charmbracelet/bubbletea v0.24.3-0.20231018105926-5536bca34e21
+	github.com/charmbracelet/bubbletea v0.25.0
 	github.com/charmbracelet/glamour v0.6.0
 	github.com/charmbracelet/lipgloss v0.9.1
 	github.com/charmbracelet/ssh v0.0.0-20230822194956-1a051f898e09
