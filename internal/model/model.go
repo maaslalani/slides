@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -47,8 +48,9 @@ type Model struct {
 	buffer   string
 	// VirtualText is used for additional information that is not part of the
 	// original slides, it will be displayed on a slide and reset on page change
-	VirtualText string
-	Search      navigation.Search
+	VirtualText             string
+	Search                  navigation.Search
+	ShowBulletsIndividually bool
 }
 
 type fileWatchMsg struct{}
@@ -71,6 +73,29 @@ func fileWatchCmd() tea.Cmd {
 	})
 }
 
+// Explode single slides with bullet lists into multiple slides.
+// This will affect only bullet lists with an asterisk at
+// the beginning of the line.
+func ItemizeBulletlist(in []string) []string {
+
+	var outs []string
+	// Only Asterisk at beginning of line matches.
+	re := regexp.MustCompile(`(?m)^\*`)
+	for _, j := range in {
+		if strings.Contains(j, "*") {
+			x := re.Split(j, -1)
+			y := x
+			for k := 1; k < len(y); k++ {
+				y[k] = y[k-1] + "*" + y[k]
+			}
+			outs = append(outs, y[:]...)
+		} else {
+			outs = append(outs, j)
+		}
+	}
+	return outs
+}
+
 // Load loads all of the content and metadata for the presentation.
 func (m *Model) Load() error {
 	var content string
@@ -90,6 +115,9 @@ func (m *Model) Load() error {
 
 	content = strings.TrimPrefix(content, strings.TrimPrefix(delimiter, "\n"))
 	slides := strings.Split(content, delimiter)
+	if m.ShowBulletsIndividually {
+		slides = ItemizeBulletlist(slides)
+	}
 
 	metaData, exists := meta.New().Parse(slides[0])
 	// If the user specifies a custom configuration options
