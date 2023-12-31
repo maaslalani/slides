@@ -80,13 +80,16 @@ func ItemizeBulletlist(in []string) []string {
 
 	var outs []string
 	// Only Asterisk at beginning of line matches.
-	re := regexp.MustCompile(`(?m)^\*`)
+	// There are three spaces optionally allowed.
+	// There must be at least three asterisks, but can be
+	// more.
+	re := regexp.MustCompile(`(?m)^ ? ? ?\*\*\**`)
 	for _, j := range in {
-		if strings.Contains(j, "*") {
+		if strings.Contains(j, "***") {
 			x := re.Split(j, -1)
 			y := x
 			for k := 1; k < len(y); k++ {
-				y[k] = y[k-1] + "*" + y[k]
+				y[k] = y[k-1] + y[k]
 			}
 			outs = append(outs, y[:]...)
 		} else {
