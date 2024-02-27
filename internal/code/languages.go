@@ -23,6 +23,7 @@ const (
 	Go         = "go"
 	Javascript = "javascript"
 	Lua        = "lua"
+	OCaml      = "ocaml"
 	Perl       = "perl"
 	Python     = "python"
 	Ruby       = "ruby"
@@ -69,6 +70,10 @@ var Languages = map[string]Language{
 	Ruby: {
 		Extension: "rb",
 		Commands:  cmds{{"ruby", "<file>"}},
+	},
+	OCaml: {
+		Extension: "ml",
+		Commands:  cmds{{"ocaml", "<file>"}},
 	},
 	Python: {
 		Extension: "py",
