@@ -35,6 +35,16 @@ digraph {
   A -> B
 }
 ~~~
+
+---
+
+# Argument with quotes
+
+~~~perl -ne 'print "$1 $1\n";'
+a
+b
+c
+~~~
 `
 
 	got := Parse(md)
@@ -54,6 +64,10 @@ digraph {
 		Command: "graph-easy --as=boxart",
 		Input:   "digraph {\n  A -> B\n}",
 		Raw:     "~~~graph-easy --as=boxart\ndigraph {\n  A -> B\n}\n~~~",
+	}, {
+		Command: "perl -ne 'print \"$1 $1\\n\";'",
+		Input:   "a\nb\nc",
+		Raw:     "~~~perl -ne 'print \"$1 $1\\n\";'\na\nb\nc\n~~~",
 	}}
 
 	if !reflect.DeepEqual(got, want) {
