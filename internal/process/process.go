@@ -3,6 +3,7 @@ package process
 import (
 	"fmt"
 	"io"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -51,6 +52,7 @@ func Parse(markdown string) []Block {
 func (b *Block) Execute() {
 	c := strings.Split(b.Command, " ")
 	cmd := exec.Command(c[0], c[1:]...)
+	cmd.Stderr = os.Stderr;
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		return
