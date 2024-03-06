@@ -1,54 +1,19 @@
 package code_test
 
 import (
+	"runtime"
 	"testing"
 
 	"github.com/maaslalani/slides/internal/code"
 )
 
-func TestExecute(t *testing.T) {
-	tt := []struct {
-		block    code.Block
-		expected code.Result
-	}{
-		{
-			block: code.Block{
-				Code: `
-package main
-
-import "fmt"
-
-func main() {
-  fmt.Print("Hello, go!")
+type TestCase struct {
+	block    code.Block
+	expected code.Result
 }
-        `,
-				Language: "go",
-			},
-			expected: code.Result{
-				Out:      "Hello, go!",
-				ExitCode: 0,
-			},
-		},
-		{
-			block: code.Block{
-				Code:     `echo "Hello, bash!"`,
-				Language: "bash",
-			},
-			expected: code.Result{
-				Out:      "Hello, bash!\n",
-				ExitCode: 0,
-			},
-		},
-		{
-			block: code.Block{
-				Code:     `Invalid Code`,
-				Language: "bash",
-			},
-			expected: code.Result{
-				Out:      "exit status 127",
-				ExitCode: 127,
-			},
-		},
+
+func TestExecute(t *testing.T) {
+	tt := []TestCase{
 		{
 			block: code.Block{
 				Code:     `Invalid Code`,
@@ -59,6 +24,56 @@ func main() {
 				ExitCode: code.ExitCodeInternalError,
 			},
 		},
+	}
+
+	if runtime.GOOS == "linux" {
+		tt = append(tt, TestCase{
+			block: code.Block{
+				Code: `
+	package main
+
+	import "fmt"
+
+	func main() {
+	  fmt.Print("Hello, go!")
+	}
+			`,
+				Language: "go",
+			},
+			expected: code.Result{
+				Out:      "Hello, go!",
+				ExitCode: 0,
+			}},
+			TestCase{block: code.Block{
+				Code:     `echo "Hello, bash!"`,
+				Language: "bash",
+			},
+				expected: code.Result{
+					Out:      "Hello, bash!\n",
+					ExitCode: 0,
+				}},
+			TestCase{
+				block: code.Block{
+					Code:     `Invalid Code`,
+					Language: "bash",
+				},
+				expected: code.Result{
+					Out:      "exit status 127",
+					ExitCode: 127,
+				},
+			},
+		)
+	} else if runtime.GOOS == "windows" {
+		tt = append(tt, TestCase{
+			block: code.Block{
+				Code:     `Write-Host "Hello, powershell!"`,
+				Language: "powershell",
+			},
+			expected: code.Result{
+				Out:      "Hello, powershell!\n",
+				ExitCode: 0,
+			},
+		})
 	}
 
 	for _, tc := range tt {

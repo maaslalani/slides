@@ -112,6 +112,19 @@ fmt.Println("Hello, world!")
 				},
 			},
 		},
+		{
+			markdown: `
+~~~powershell
+Write-Host "Hello, World!"
+~~~
+`,
+			expected: []code.Block{
+				{
+					Code:     `Write-Host "Hello, World!"`,
+					Language: "powershell",
+				},
+			},
+		},
 	}
 
 	for _, tc := range tt {
