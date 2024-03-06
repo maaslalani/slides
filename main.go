@@ -13,7 +13,8 @@ import (
 )
 
 var (
-	rootCmd = &coral.Command{
+	ShowBulletsIndividually = false
+	rootCmd                 = &coral.Command{
 		Use:   "slides <file.md>",
 		Short: "Terminal based presentation tool",
 		Args:  coral.ArbitraryArgs,
@@ -25,11 +26,13 @@ var (
 				fileName = args[0]
 			}
 
+			wantShowBulletsIndividually, _ := cmd.PersistentFlags().GetBool("ShowBulletsIndividually")
 			presentation := model.Model{
-				Page:     0,
-				Date:     time.Now().Format("2006-01-02"),
-				FileName: fileName,
-				Search:   navigation.NewSearch(),
+				Page:                    0,
+				Date:                    time.Now().Format("2006-01-02"),
+				FileName:                fileName,
+				Search:                  navigation.NewSearch(),
+				ShowBulletsIndividually: wantShowBulletsIndividually,
 			}
 			err = presentation.Load()
 			if err != nil {
@@ -44,6 +47,7 @@ var (
 )
 
 func init() {
+	rootCmd.PersistentFlags().Bool("ShowBulletsIndividually", false, "show bullet items individually")
 	rootCmd.AddCommand(
 		cmd.ServeCmd,
 	)
