@@ -8,11 +8,11 @@ import (
 )
 
 var (
-	socketFile string
+	socketPath string
 )
 
 // RemoteSocketCmd is the command for remote controlling a slides session
-// using UNIX socket that is being listened by the slides session.
+// using socket that is being listened by the slides session.
 var RemoteSocketCmd = &coral.Command{
 	Use:     "socket [flags] command [args]",
 	Aliases: []string{"remote"},
@@ -21,7 +21,7 @@ var RemoteSocketCmd = &coral.Command{
 	RunE: func(cmd *coral.Command, args []string) error {
 		k := os.Getenv("SLIDES_REMOTE_SOCKET")
 		if k != "" {
-			socketFile = k
+			socketPath = k
 		}
 		return nil
 	},
@@ -29,13 +29,13 @@ var RemoteSocketCmd = &coral.Command{
 
 func init() {
 	RemoteSocketCmd.PersistentFlags().StringVar(
-		&socketFile, "socketFile", remote.SocketRemoteListenerDefaultPath, "Socket File")
+		&socketPath, "socketFile", remote.SocketRemoteListenerDefaultPath, "Socket File")
 	RemoteSocketCmd.AddCommand(
 		&coral.Command{
 			Use:   "slide-next",
 			Short: "Go to the next slide",
 			RunE: func(cmd *coral.Command, args []string) error {
-				remote, err := remote.NewSocketRemote(socketFile)
+				remote, err := remote.NewSocketRemote(socketPath)
 				if err != nil {
 					return err
 				}
@@ -49,7 +49,7 @@ func init() {
 			Use:   "slide-prev",
 			Short: "Go to the previous slide",
 			RunE: func(cmd *coral.Command, args []string) error {
-				remote, err := remote.NewSocketRemote(socketFile)
+				remote, err := remote.NewSocketRemote(socketPath)
 				if err != nil {
 					return err
 				}
@@ -63,7 +63,7 @@ func init() {
 			Use:   "slide-first",
 			Short: "Go to the first slide",
 			RunE: func(cmd *coral.Command, args []string) error {
-				remote, err := remote.NewSocketRemote(socketFile)
+				remote, err := remote.NewSocketRemote(socketPath)
 				if err != nil {
 					return err
 				}
@@ -78,7 +78,7 @@ func init() {
 			Use:   "slide-last",
 			Short: "Go to the last slide",
 			RunE: func(cmd *coral.Command, args []string) error {
-				remote, err := remote.NewSocketRemote(socketFile)
+				remote, err := remote.NewSocketRemote(socketPath)
 				if err != nil {
 					return err
 				}
@@ -93,7 +93,7 @@ func init() {
 			Use:   "code-exec",
 			Short: "Execute Code blocks of current slide in session",
 			RunE: func(cmd *coral.Command, args []string) error {
-				remote, err := remote.NewSocketRemote(socketFile)
+				remote, err := remote.NewSocketRemote(socketPath)
 				if err != nil {
 					return err
 				}
@@ -108,7 +108,7 @@ func init() {
 			Use:   "code-copy",
 			Short: "Execute Code blocks of current slide in session",
 			RunE: func(cmd *coral.Command, args []string) error {
-				remote, err := remote.NewSocketRemote(socketFile)
+				remote, err := remote.NewSocketRemote(socketPath)
 				if err != nil {
 					return err
 				}
@@ -123,7 +123,7 @@ func init() {
 			Use:   "quit",
 			Short: "Quit the slides session",
 			RunE: func(cmd *coral.Command, args []string) error {
-				remote, err := remote.NewSocketRemote(socketFile)
+				remote, err := remote.NewSocketRemote(socketPath)
 				if err != nil {
 					return err
 				}

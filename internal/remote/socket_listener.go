@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-// Default UNIX Socket file to be used as Socket Remote Listener
-const SocketRemoteListenerDefaultPath string = "/tmp/slides.sock"
+// Default Socket path to be used as Socket Remote Listener
+const SocketRemoteListenerDefaultPath string = "unix:/tmp/slides.sock"
 
 // Sane maximum socket buffer lengths as per current usage
 const socketMaxReadBufLen int = 16
@@ -97,8 +97,12 @@ func writeSocketError(conn net.Conn, err error) {
 	conn.Write([]byte(fmt.Sprintf("ERR:%s", err)))
 }
 
-func NewSocketRemoteListener(socketFile string, relay *CommandRelay) (sock *SocketRemoteListener, err error) {
-	socket, err := net.Listen("unix", socketFile)
+func NewSocketRemoteListener(socketPath string, relay *CommandRelay) (sock *SocketRemoteListener, err error) {
+	socketType, socketAddr, err := parseSocketPath(socketPath)
+	if err != nil {
+		return nil, err
+	}
+	socket, err := net.Listen(socketType, socketAddr)
 	if err != nil {
 		return nil, err
 	}

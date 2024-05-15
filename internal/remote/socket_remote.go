@@ -6,13 +6,17 @@ import (
 )
 
 // SocketRemote is the client (remote controller) that
-// communicates with the SocketRemoteListener UNIX socket
+// communicates with the SocketRemoteListener socket
 type SocketRemote struct {
 	net.Conn
 }
 
-func NewSocketRemote(socketFile string) (remote *SocketRemote, err error) {
-	conn, err := net.Dial("unix", socketFile)
+func NewSocketRemote(socketPath string) (remote *SocketRemote, err error) {
+	socketType, socketAddr, err := parseSocketPath(socketPath)
+	if err != nil {
+		return nil, err
+	}
+	conn, err := net.Dial(socketType, socketAddr)
 	if err != nil {
 		return nil, err
 	}
