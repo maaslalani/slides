@@ -29,7 +29,7 @@ var RemoteSocketCmd = &coral.Command{
 
 func init() {
 	RemoteSocketCmd.PersistentFlags().StringVar(
-		&socketPath, "socketFile", remote.SocketRemoteListenerDefaultPath, "Socket File")
+		&socketPath, "socketPath", remote.SocketRemoteListenerDefaultPath, "Socket Path")
 	RemoteSocketCmd.AddCommand(
 		&coral.Command{
 			Use:   "slide-next",
