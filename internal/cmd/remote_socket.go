@@ -36,10 +36,10 @@ func init() {
 			Short: "Go to the next slide",
 			RunE: func(cmd *coral.Command, args []string) error {
 				remote, err := remote.NewSocketRemote(socketFile)
-				defer remote.Close()
 				if err != nil {
 					return err
 				}
+				defer remote.Close()
 				return remote.SlideNext()
 			},
 		},
@@ -50,10 +50,10 @@ func init() {
 			Short: "Go to the previous slide",
 			RunE: func(cmd *coral.Command, args []string) error {
 				remote, err := remote.NewSocketRemote(socketFile)
-				defer remote.Close()
 				if err != nil {
 					return err
 				}
+				defer remote.Close()
 				return remote.SlidePrevious()
 			},
 		},
@@ -64,10 +64,10 @@ func init() {
 			Short: "Go to the first slide",
 			RunE: func(cmd *coral.Command, args []string) error {
 				remote, err := remote.NewSocketRemote(socketFile)
-				defer remote.Close()
 				if err != nil {
 					return err
 				}
+				defer remote.Close()
 				return remote.SlideFirst()
 			},
 		},
@@ -79,10 +79,10 @@ func init() {
 			Short: "Go to the last slide",
 			RunE: func(cmd *coral.Command, args []string) error {
 				remote, err := remote.NewSocketRemote(socketFile)
-				defer remote.Close()
 				if err != nil {
 					return err
 				}
+				defer remote.Close()
 				return remote.SlideLast()
 			},
 		},
@@ -94,10 +94,10 @@ func init() {
 			Short: "Execute Code blocks of current slide in session",
 			RunE: func(cmd *coral.Command, args []string) error {
 				remote, err := remote.NewSocketRemote(socketFile)
-				defer remote.Close()
 				if err != nil {
 					return err
 				}
+				defer remote.Close()
 				return remote.CodeExec()
 			},
 		},
@@ -109,10 +109,10 @@ func init() {
 			Short: "Execute Code blocks of current slide in session",
 			RunE: func(cmd *coral.Command, args []string) error {
 				remote, err := remote.NewSocketRemote(socketFile)
-				defer remote.Close()
 				if err != nil {
 					return err
 				}
+				defer remote.Close()
 				return remote.CodeCopy()
 			},
 		},
@@ -124,10 +124,10 @@ func init() {
 			Short: "Quit the slides session",
 			RunE: func(cmd *coral.Command, args []string) error {
 				remote, err := remote.NewSocketRemote(socketFile)
-				defer remote.Close()
 				if err != nil {
 					return err
 				}
+				defer remote.Close()
 				return remote.Quit()
 			},
 		},
