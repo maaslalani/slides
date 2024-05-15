@@ -62,5 +62,8 @@ func (r *CommandRelay) CodeCopy() {
 }
 
 func (r *CommandRelay) Quit() {
-	r.Send(tea.Quit)
+	r.Send(tea.KeyMsg{
+		Type:  tea.KeyRunes,
+		Runes: []rune{'q'},
+	})
 }
