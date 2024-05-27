@@ -3,7 +3,7 @@
 Slides in your terminal.
 
 <p align="center">
-  <img src="./assets/slides.gif?raw=true" alt="Slides Presentation" />
+  <img src="./assets/slides.gif-1?raw=true" alt="Slides Presentation" />
 </p>
 
 ### Installation
