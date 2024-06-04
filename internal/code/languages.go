@@ -34,6 +34,7 @@ const (
 	Swift      = "swift"
 	Dart       = "dart"
 	V          = "v"
+  Scala      = "scala"
 )
 
 // Languages is a map of supported languages with their extensions and commands
@@ -119,4 +120,8 @@ var Languages = map[string]Language{
 		Extension: "v",
 		Commands:  cmds{{"v", "run", "<file>"}},
 	},
+  Scala: {
+    Extension: "sc",
+    Commands: cmds{{"scala-cli", "run", "<file>"}},
+  },
 }
