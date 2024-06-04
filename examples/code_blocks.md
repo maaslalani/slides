@@ -180,3 +180,15 @@ void main() {
 ```v
 println('Hello, world!')
 ```
+
+---
+
+### Scala
+
+```scala
+//> using dep com.lihaoyi::pprint:0.8.1
+
+object Main extends App {
+  println("Hello")
+}
+```
