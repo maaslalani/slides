@@ -14,6 +14,7 @@ Currently supported languages:
 * `elixir`
 * `go`
 * `javascript`
+* `kotlin`
 * `python`
 * `ruby`
 * `perl`
@@ -93,6 +94,14 @@ console.log("Hello, world!")
 
 ```lua
 print("Hello, World!")
+```
+
+---
+
+### Kotlin
+
+```kotlin
+println("Hello, World!")
 ```
 
 ---
