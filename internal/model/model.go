@@ -177,6 +177,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		case "ctrl+c", "q":
 			return m, tea.Quit
+		case "ctrl+z":
+			return m, tea.Suspend
 		default:
 			newState := navigation.Navigate(navigation.State{
 				Buffer:      m.buffer,
