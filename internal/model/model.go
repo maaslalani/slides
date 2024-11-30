@@ -18,6 +18,7 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/glamour"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/maaslalani/slides/internal/code"
 	"github.com/maaslalani/slides/internal/meta"
 	"github.com/maaslalani/slides/styles"
@@ -30,7 +31,8 @@ var (
 )
 
 const (
-	delimiter = "\n---\n"
+	delimiter    = "\n---\n"
+	colDelimiter = "\n-|-\n"
 )
 
 // Model represents the model of this presentation, which contains all the
@@ -204,15 +206,21 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 // View renders the current slide in the presentation and the status bar which
 // contains the author, date, and pagination information.
 func (m Model) View() string {
-	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(m.viewport.Width))
 	slide := m.Slides[m.Page]
-	slide = code.HideComments(slide)
-	slide, err := r.Render(slide)
-	slide = strings.ReplaceAll(slide, "\t", tabSpaces)
-	slide += m.VirtualText
-	if err != nil {
-		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
+	cols := strings.Split(slide, colDelimiter)
+
+	for i := 0; i < len(cols); i++ {
+		r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(m.viewport.Width/len(cols)))
+		cols[i] = code.HideComments(cols[i])
+		var err error
+		cols[i], err = r.Render(cols[i])
+		cols[i] = strings.ReplaceAll(cols[i], "\t", tabSpaces)
+		if err != nil {
+			cols[i] = "Error: Could not render markdown! (" + err.Error() + ")"
+		}
 	}
+	slide = lipgloss.JoinHorizontal(lipgloss.Top, cols...)
+	slide = lipgloss.JoinVertical(lipgloss.Center, slide, m.VirtualText)
 	slide = styles.Slide.Render(slide)
 
 	var left string
