@@ -36,6 +36,7 @@ const (
 	V          = "v"
 	Scala      = "scala"
 	Haskell    = "haskell"
+	Solidity   = "solidity"
 )
 
 // Languages is a map of supported languages with their extensions and commands
@@ -128,5 +129,9 @@ var Languages = map[string]Language{
 	Haskell: {
 		Extension: "hs",
 		Commands: cmds{{"runghc", "<file>"}},
+	},
+	Solidity: {
+		Extension: "sol",
+		Commands: cmds{{"solc", "<file>"}},
 	},
 }
