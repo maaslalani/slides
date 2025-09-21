@@ -115,6 +115,12 @@ Then, to present, run:
 slides presentation.md
 ```
 
+To render slides as plain text to standard output instead of the TUI, specify `stdout`:
+```
+slides --output stdout presentation.md
+```
+Each slide is written sequentially with `---` inserted as a separator.
+
 If given a file name, `slides` will automatically look for changes in the file and update the presentation live.
 
 `slides` also accepts input through `stdin`:

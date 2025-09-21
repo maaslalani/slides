@@ -201,15 +201,47 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+// RenderPage returns the rendered markdown for the requested page. If width is
+// greater than zero the markdown is wrapped to that width.
+func (m Model) RenderPage(page, width int) (string, error) {
+	if page < 0 || page >= len(m.Slides) {
+		return "", fmt.Errorf("invalid page index %d", page)
+	}
+
+	options := []glamour.TermRendererOption{}
+	if m.Theme != nil {
+		options = append(options, m.Theme)
+	}
+	wrapWidth := width
+	if wrapWidth <= 0 {
+		wrapWidth = 0
+	}
+	options = append(options, glamour.WithWordWrap(wrapWidth))
+
+	r, err := glamour.NewTermRenderer(options...)
+	if err != nil {
+		return "", err
+	}
+
+	slide := m.Slides[page]
+	slide = code.HideComments(slide)
+	slide, err = r.Render(slide)
+	slide = strings.ReplaceAll(slide, "\t", tabSpaces)
+	if err != nil {
+		return "", err
+	}
+
+	if page == m.Page {
+		slide += m.VirtualText
+	}
+
+	return slide, nil
+}
+
 // View renders the current slide in the presentation and the status bar which
 // contains the author, date, and pagination information.
 func (m Model) View() string {
-	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(m.viewport.Width))
-	slide := m.Slides[m.Page]
-	slide = code.HideComments(slide)
-	slide, err := r.Render(slide)
-	slide = strings.ReplaceAll(slide, "\t", tabSpaces)
-	slide += m.VirtualText
+	slide, err := m.RenderPage(m.Page, m.viewport.Width)
 	if err != nil {
 		slide = fmt.Sprintf("Error: Could not render markdown! (%v)", err)
 	}

@@ -2,6 +2,8 @@ package main
 
 import (
 	_ "embed"
+	"fmt"
+	"io"
 	"os"
 	"time"
 
@@ -36,11 +38,20 @@ var (
 				return err
 			}
 
-			p := tea.NewProgram(presentation, tea.WithAltScreen())
-			_, err = p.Run()
-			return err
+			switch outputMode {
+			case "", "tui":
+				p := tea.NewProgram(presentation, tea.WithAltScreen())
+				_, err = p.Run()
+				return err
+			case "stdout":
+				return runStdout(presentation, os.Stdout)
+			default:
+				return fmt.Errorf("unsupported output mode %q", outputMode)
+			}
 		},
 	}
+
+	outputMode string
 )
 
 func init() {
@@ -48,10 +59,29 @@ func init() {
 		cmd.ServeCmd,
 	)
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
+	rootCmd.Flags().StringVar(&outputMode, "output", "tui", "render output (tui or stdout)")
 }
 
 func main() {
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
+}
+
+func runStdout(presentation model.Model, w io.Writer) error {
+	for i := range presentation.Slides {
+		rendered, err := presentation.RenderPage(i, 0)
+		if err != nil {
+			return err
+		}
+		if i > 0 {
+			if _, err := fmt.Fprintln(w, "---"); err != nil {
+				return err
+			}
+		}
+		if _, err := fmt.Fprint(w, rendered); err != nil {
+			return err
+		}
+	}
+	return nil
 }
