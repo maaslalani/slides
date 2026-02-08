@@ -7,18 +7,36 @@ import (
 type mockModel struct {
 	slides []string
 	page   int
+	part   int
 }
 
 func (m *mockModel) CurrentPage() int {
 	return m.page
 }
 
+func (m *mockModel) CurrentPart() int {
+	return m.part
+}
+
 func (m *mockModel) SetPage(page int) {
 	m.page = page
+	m.part = 0
+}
+
+func (m *mockModel) SetPageAndPart(page int, part int) {
+	m.page = page
+	m.part = part
 }
 
 func (m *mockModel) Pages() []string {
 	return m.slides
+}
+
+func (m *mockModel) SlideParts(page int) []string {
+	if page < 0 || page >= len(m.slides) {
+		return nil
+	}
+	return []string{m.slides[page]}
 }
 
 func TestSearch(t *testing.T) {

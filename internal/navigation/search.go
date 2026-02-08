@@ -11,8 +11,11 @@ import (
 // Model is an interface for models.model, so that cycle imports are avoided
 type Model interface {
 	CurrentPage() int
+	CurrentPart() int
 	SetPage(page int)
+	SetPageAndPart(page int, part int)
 	Pages() []string
+	SlideParts(page int) []string
 }
 
 // Search represents the current search
@@ -72,10 +75,12 @@ func (s *Search) Execute(m Model) {
 		return
 	}
 	check := func(i int) bool {
-		content := m.Pages()[i]
-		if len(pattern.FindAllStringSubmatch(content, 1)) != 0 {
-			m.SetPage(i)
-			return true
+		parts := m.SlideParts(i)
+		for idx, part := range parts {
+			if len(pattern.FindAllStringSubmatch(part, 1)) != 0 {
+				m.SetPageAndPart(i, idx)
+				return true
+			}
 		}
 		return false
 	}

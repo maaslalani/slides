@@ -223,9 +223,15 @@ paging: Slide %d / %d
   view. Defaults to the OS current user's full name. Can be empty to hide the author.
 * `date`: A `string` that is used to format today's date in the `YYYY-MM-DD` format. If the date is not a valid
   format, the string will be displayed. Defaults to `YYYY-MM-DD`.
-* `paging`: A `string` that contains 0 or more `%d` directives. The first `%d`
-  will be replaced with the current slide number and the second `%d` will be
-  replaced with the total slides count. Defaults to `Slide %d / %d`.
+* `paging`: A `string` that contains 0 or more `%d` directives. The directives
+  are replaced in order: slide number, total slides, current part (if paused), total parts (if paused).
+  Examples:
+  - `Slide %d` (1 directive): current slide number
+  - `Slide %d / %d` (2 directives): current slide / total slides (default)
+  - `Slide %d / %d | Part %d` (3 directives): current slide / total slides | current part
+  - `Slide %d / %d (Part %d / %d)` (4 directives): current slide / total slides (current part / total parts)
+  
+  Defaults to `Slide %d / %d`.
   You will need to surround the paging value with quotes if it starts with `%`.
 
 #### Date format
