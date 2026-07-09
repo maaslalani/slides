@@ -85,7 +85,6 @@ func Execute(code Block) Result {
 		}
 	}
 
-	defer f.Close()
 	defer os.Remove(f.Name())
 
 	_, err = f.WriteString(code.Code)
@@ -95,6 +94,9 @@ func Execute(code Block) Result {
 			ExitCode: ExitCodeInternalError,
 		}
 	}
+
+	// Close the file now so platforms like Windows can access it.
+	f.Close()
 
 	var (
 		output   strings.Builder
