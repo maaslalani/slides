@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/atotto/clipboard"
+	"github.com/maaslalani/slides/internal/editor"
 	"github.com/maaslalani/slides/internal/file"
 	"github.com/maaslalani/slides/internal/navigation"
 	"github.com/maaslalani/slides/internal/process"
@@ -177,6 +178,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		case "ctrl+c", "q":
 			return m, tea.Quit
+		case "ctrl+o":
+			// Opens the current slide in an editor
+			return m, editor.OpenNewWindow(m.FileName, m.Slides[m.Page])
 		default:
 			newState := navigation.Navigate(navigation.State{
 				Buffer:      m.buffer,

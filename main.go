@@ -7,6 +7,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 	"github.com/maaslalani/slides/internal/cmd"
+	"github.com/maaslalani/slides/internal/editor"
 	"github.com/maaslalani/slides/internal/model"
 	"github.com/maaslalani/slides/internal/navigation"
 	"github.com/muesli/coral"
@@ -47,6 +48,7 @@ func init() {
 	rootCmd.AddCommand(
 		cmd.ServeCmd,
 	)
+	editor.InitEditorFlag(rootCmd)
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 }
 
