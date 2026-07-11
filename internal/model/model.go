@@ -20,6 +20,7 @@ import (
 	"github.com/charmbracelet/glamour"
 	"github.com/maaslalani/slides/internal/code"
 	"github.com/maaslalani/slides/internal/meta"
+	"github.com/maaslalani/slides/internal/syntax"
 	"github.com/maaslalani/slides/styles"
 )
 
@@ -207,6 +208,7 @@ func (m Model) View() tea.View {
 	r, _ := glamour.NewTermRenderer(m.Theme, glamour.WithWordWrap(m.viewport.Width()))
 	slide := m.Slides[m.Page]
 	slide = code.HideComments(slide)
+	slide = syntax.PreprocessNushellMarkdown(slide)
 	slide, err := r.Render(slide)
 	slide = strings.ReplaceAll(slide, "\t", tabSpaces)
 	slide += m.VirtualText

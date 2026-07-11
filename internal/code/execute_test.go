@@ -51,6 +51,26 @@ func main() {
 		},
 		{
 			block: code.Block{
+				Code:     `echo "Hello, nushell!"`,
+				Language: "nu",
+			},
+			expected: code.Result{
+				Out:      "Hello, nushell!\n",
+				ExitCode: 0,
+			},
+		},
+		{
+			block: code.Block{
+				Code:     `{message: "Hello, World!"} | get message`,
+				Language: "nu",
+			},
+			expected: code.Result{
+				Out:      "Hello, World!\n",
+				ExitCode: 0,
+			},
+		},
+		{
+			block: code.Block{
 				Code:     `Invalid Code`,
 				Language: "invalid",
 			},

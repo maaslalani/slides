@@ -23,6 +23,7 @@ Currently supported languages:
 * `swift`
 * `dart`
 * `v`
+* `nu`
 <!-- * `secret` -->
 
 ---
@@ -191,4 +192,23 @@ println('Hello, world!')
 object Main extends App {
   println("Hello")
 }
+```
+
+---
+
+## Nushell
+
+```nu
+# Basic string output
+echo "Hello from Nushell!"
+```
+
+```nu
+# Data manipulation with pipelines
+[1, 2, 3, 4, 5] | where $it > 2 | math sum
+```
+
+```nu
+# Working with records
+{name: "Alice", age: 30, city: "New York"} | get name
 ```
