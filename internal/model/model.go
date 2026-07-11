@@ -31,6 +31,7 @@ var (
 
 const (
 	delimiter = "\n---\n"
+	pauseDelimiter = "\n<!-- pause -->\n"
 )
 
 // Model represents the model of this presentation, which contains all the
@@ -90,6 +91,18 @@ func (m *Model) Load() error {
 
 	content = strings.TrimPrefix(content, strings.TrimPrefix(delimiter, "\n"))
 	slides := strings.Split(content, delimiter)
+	var pausedSlides []string
+
+	for _, slide := range slides {
+		pausedSlide := strings.Split(slide, pauseDelimiter)
+		var cumulativeSlide string
+		for _, part := range pausedSlide {
+			cumulativeSlide += "\n\n" + part
+			pausedSlides = append(pausedSlides, cumulativeSlide)
+		}
+	}
+
+	slides = pausedSlides
 
 	metaData, exists := meta.New().Parse(slides[0])
 	// If the user specifies a custom configuration options
