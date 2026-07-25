@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"charm.land/wish/v2"
 	"github.com/charmbracelet/ssh"
-	"github.com/charmbracelet/wish"
 	"github.com/maaslalani/slides/internal/model"
 )
 

@@ -3,11 +3,10 @@ package server
 import (
 	"fmt"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/wish/v2"
+	bm "charm.land/wish/v2/bubbletea"
 	"github.com/charmbracelet/ssh"
-	"github.com/charmbracelet/wish"
-	bm "github.com/charmbracelet/wish/bubbletea"
-	"github.com/muesli/termenv"
 )
 
 func slidesMiddleware(srv *Server) wish.Middleware {
@@ -25,7 +24,7 @@ func slidesMiddleware(srv *Server) wish.Middleware {
 			}
 			return nil
 		}
-		return newProg(srv.presentation, tea.WithInput(s), tea.WithOutput(s), tea.WithAltScreen())
+		return newProg(srv.presentation, bm.MakeOptions(s)...)
 	}
-	return bm.MiddlewareWithProgramHandler(teaHandler, termenv.ANSI256)
+	return bm.MiddlewareWithProgramHandler(teaHandler)
 }

@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 	"github.com/maaslalani/slides/internal/cmd"
 	"github.com/maaslalani/slides/internal/model"
 	"github.com/maaslalani/slides/internal/navigation"
@@ -39,7 +39,7 @@ var (
 				return err
 			}
 
-			p := tea.NewProgram(presentation, tea.WithAltScreen())
+			p := tea.NewProgram(presentation)
 			_, err = p.Run()
 			return err
 		},

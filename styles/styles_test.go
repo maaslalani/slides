@@ -5,6 +5,7 @@ import (
 
 	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/glamour/ansi"
+	glamourstyles "github.com/charmbracelet/glamour/styles"
 	"github.com/maaslalani/slides/styles"
 	"github.com/stretchr/testify/assert"
 )
@@ -16,11 +17,11 @@ func TestSelectTheme(t *testing.T) {
 		want    ansi.StyleConfig
 		wantErr bool
 	}{
-		{name: "Select dark theme", theme: "dark", want: glamour.DarkStyleConfig, wantErr: false},
-		{name: "Select light theme", theme: "light", want: glamour.LightStyleConfig, wantErr: false},
-		{name: "Select ascii theme", theme: "ascii", want: glamour.ASCIIStyleConfig, wantErr: false},
-		{name: "Select notty theme", theme: "notty", want: glamour.NoTTYStyleConfig, wantErr: false},
-		{name: "Select theme with error", theme: "notty", want: glamour.DarkStyleConfig, wantErr: true},
+		{name: "Select dark theme", theme: "dark", want: glamourstyles.DarkStyleConfig, wantErr: false},
+		{name: "Select light theme", theme: "light", want: glamourstyles.LightStyleConfig, wantErr: false},
+		{name: "Select ascii theme", theme: "ascii", want: glamourstyles.ASCIIStyleConfig, wantErr: false},
+		{name: "Select notty theme", theme: "notty", want: glamourstyles.NoTTYStyleConfig, wantErr: false},
+		{name: "Select theme with error", theme: "notty", want: glamourstyles.DarkStyleConfig, wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

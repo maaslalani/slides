@@ -9,11 +9,12 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/glamour"
-	"github.com/charmbracelet/lipgloss"
+	glamourstyles "github.com/charmbracelet/glamour/styles"
+	"charm.land/lipgloss/v2"
 	"github.com/muesli/termenv"
 )
 
-const (
+var (
 	salmon = lipgloss.Color("#E8B4BC")
 )
 
@@ -60,13 +61,13 @@ func JoinVertical(top, bottom string, height int) string {
 func SelectTheme(theme string) glamour.TermRendererOption {
 	switch theme {
 	case "ascii":
-		return glamour.WithStyles(glamour.ASCIIStyleConfig)
+		return glamour.WithStyles(glamourstyles.ASCIIStyleConfig)
 	case "light":
-		return glamour.WithStyles(glamour.LightStyleConfig)
+		return glamour.WithStyles(glamourstyles.LightStyleConfig)
 	case "dark":
-		return glamour.WithStyles(glamour.DarkStyleConfig)
+		return glamour.WithStyles(glamourstyles.DarkStyleConfig)
 	case "notty":
-		return glamour.WithStyles(glamour.NoTTYStyleConfig)
+		return glamour.WithStyles(glamourstyles.NoTTYStyleConfig)
 	default:
 		var themeReader io.Reader
 		var err error
@@ -97,11 +98,11 @@ func SelectTheme(theme string) glamour.TermRendererOption {
 
 func getDefaultTheme() glamour.TermRendererOption {
 	if termenv.EnvNoColor() {
-		return glamour.WithStyles(glamour.NoTTYStyleConfig)
+		return glamour.WithStyles(glamourstyles.NoTTYStyleConfig)
 	}
 
 	if !termenv.HasDarkBackground() {
-		return glamour.WithStyles(glamour.LightStyleConfig)
+		return glamour.WithStyles(glamourstyles.LightStyleConfig)
 	}
 
 	return glamour.WithStylesFromJSONBytes(DefaultTheme)

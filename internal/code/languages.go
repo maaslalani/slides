@@ -23,6 +23,7 @@ const (
 	Go         = "go"
 	Javascript = "javascript"
 	Lua        = "lua"
+	OCaml      = "ocaml"
 	Perl       = "perl"
 	Python     = "python"
 	Ruby       = "ruby"
@@ -33,6 +34,8 @@ const (
 	Swift      = "swift"
 	Dart       = "dart"
 	V          = "v"
+	Scala      = "scala"
+	Haskell    = "haskell"
 )
 
 // Languages is a map of supported languages with their extensions and commands
@@ -69,6 +72,10 @@ var Languages = map[string]Language{
 	Ruby: {
 		Extension: "rb",
 		Commands:  cmds{{"ruby", "<file>"}},
+	},
+	OCaml: {
+		Extension: "ml",
+		Commands:  cmds{{"ocaml", "<file>"}},
 	},
 	Python: {
 		Extension: "py",
@@ -113,5 +120,13 @@ var Languages = map[string]Language{
 	V: {
 		Extension: "v",
 		Commands:  cmds{{"v", "run", "<file>"}},
+	},
+	Scala: {
+		Extension: "sc",
+		Commands: cmds{{"scala-cli", "run", "<file>"}},
+	},
+	Haskell: {
+		Extension: "hs",
+		Commands: cmds{{"runghc", "<file>"}},
 	},
 }

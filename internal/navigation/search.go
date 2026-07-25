@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/charmbracelet/bubbles/textinput"
+	"charm.land/bubbles/v2/textinput"
 	"github.com/maaslalani/slides/styles"
 )
 
@@ -29,8 +29,12 @@ func NewSearch() Search {
 	ti := textinput.New()
 	ti.Placeholder = "search"
 	ti.Prompt = "/"
-	ti.PromptStyle = styles.Search
-	ti.TextStyle = styles.Search
+	s := ti.Styles()
+	s.Focused.Prompt = styles.Search
+	s.Focused.Text = styles.Search
+	s.Blurred.Prompt = styles.Search
+	s.Blurred.Text = styles.Search
+	ti.SetStyles(s)
 	return Search{SearchTextInput: ti}
 }
 
