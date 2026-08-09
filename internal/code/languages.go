@@ -22,6 +22,7 @@ const (
 	Elixir     = "elixir"
 	Go         = "go"
 	Javascript = "javascript"
+	TypeScript = "typescript"
 	Lua        = "lua"
 	OCaml      = "ocaml"
 	Perl       = "perl"
@@ -64,6 +65,10 @@ var Languages = map[string]Language{
 	Javascript: {
 		Extension: "js",
 		Commands:  cmds{{"node", "<file>"}},
+	},
+	TypeScript: {
+		Extension: "ts",
+		Commands:  cmds{{"ts-node", "<file>"}},
 	},
 	Lua: {
 		Extension: "lua",
@@ -123,10 +128,10 @@ var Languages = map[string]Language{
 	},
 	Scala: {
 		Extension: "sc",
-		Commands: cmds{{"scala-cli", "run", "<file>"}},
+		Commands:  cmds{{"scala-cli", "run", "<file>"}},
 	},
 	Haskell: {
 		Extension: "hs",
-		Commands: cmds{{"runghc", "<file>"}},
+		Commands:  cmds{{"runghc", "<file>"}},
 	},
 }
