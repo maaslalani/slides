@@ -192,3 +192,11 @@ object Main extends App {
   println("Hello")
 }
 ```
+
+---
+
+### Csharp
+
+```cs
+Console.WriteLine("Hello, world!");
+```
