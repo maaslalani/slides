@@ -265,6 +265,26 @@ to present with `slides` from a computer that doesn't have `slides` installed,
 but does have `ssh`. Or, let your viewers have access to the slides on their
 own computer without needing to download `slides` and the presentation file.
 
+### Export to PDF
+
+Export slides to a paginated PDF document:
+
+```
+slides pdf presentation.md
+```
+
+Specify a custom output path with the `-o` / `--output` flag:
+
+```
+slides pdf presentation.md -o output.pdf
+```
+
+Alternatively, pass the `--pdf` flag to the root command:
+
+```
+slides presentation.md --pdf output.pdf
+```
+
 ### Alternatives
 
 **Credits**: This project was heavily inspired by [`lookatme`](https://github.com/d0c-s4vage/lookatme).

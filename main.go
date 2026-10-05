@@ -9,15 +9,18 @@ import (
 	"github.com/maaslalani/slides/internal/cmd"
 	"github.com/maaslalani/slides/internal/model"
 	"github.com/maaslalani/slides/internal/navigation"
+	"github.com/maaslalani/slides/internal/pdf"
 	"github.com/muesli/coral"
 )
 
 var (
+	pdfOutput string
+
 	rootCmd = &coral.Command{
 		Use:   "slides <file.md>",
 		Short: "Terminal based presentation tool",
 		Args:  coral.ArbitraryArgs,
-		RunE: func(cmd *coral.Command, args []string) error {
+		RunE: func(c *coral.Command, args []string) error {
 			var err error
 			var fileName string
 
@@ -36,6 +39,18 @@ var (
 				return err
 			}
 
+			if pdfOutput != "" {
+				outFile := pdfOutput
+				if outFile == "default" {
+					if len(args) > 1 {
+						outFile = args[1]
+					} else {
+						outFile = cmd.DefaultPDFOutput(fileName)
+					}
+				}
+				return pdf.ExportFile(presentation, outFile)
+			}
+
 			p := tea.NewProgram(presentation)
 			_, err = p.Run()
 			return err
@@ -46,7 +61,10 @@ var (
 func init() {
 	rootCmd.AddCommand(
 		cmd.ServeCmd,
+		cmd.PDFCmd,
 	)
+	rootCmd.Flags().StringVarP(&pdfOutput, "pdf", "p", "", "Export presentation to PDF")
+	rootCmd.Flags().Lookup("pdf").NoOptDefVal = "default"
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 }
 
