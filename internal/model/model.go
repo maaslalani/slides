@@ -19,7 +19,6 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/charmbracelet/glamour"
 	"github.com/maaslalani/slides/internal/code"
-	"github.com/maaslalani/slides/internal/meta"
 	"github.com/maaslalani/slides/styles"
 )
 
@@ -86,17 +85,7 @@ func (m *Model) Load() error {
 		return err
 	}
 
-	content = strings.ReplaceAll(content, "\r", "")
-
-	content = strings.TrimPrefix(content, strings.TrimPrefix(delimiter, "\n"))
-	slides := strings.Split(content, delimiter)
-
-	metaData, exists := meta.New().Parse(slides[0])
-	// If the user specifies a custom configuration options
-	// skip the first "slide" since this is all configuration
-	if exists && len(slides) > 1 {
-		slides = slides[1:]
-	}
+	slides, metaData := Parse(content)
 
 	m.Slides = slides
 	m.Author = metaData.Author
