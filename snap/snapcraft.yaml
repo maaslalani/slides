@@ -12,33 +12,32 @@ description: |
     
 license: MIT
 
-base: core22
+base: core24
 grade: stable 
 confinement: strict
 compression: lzo
 
-architectures:
-  - build-on: amd64
-  - build-on: arm64
-  - build-on: armhf
-  - build-on: ppc64el
-  - build-on: s390x
-  
-assumes:
-  - command-chain
-  
+platforms:
+  amd64:
+    build-on: [amd64]
+    build-for: [amd64]
+  arm64:
+    build-on: [arm64]
+    build-for: [arm64]
+  s390x:
+    build-on: [s390x]
+    build-for: [s390x]
+
 apps:
   slides:
     command: bin/slides
-    command-chain: 
-      - bin/homeishome-launch     
     plugs:
       - home
       - ssh-keys
       - ssh-public-keys
       - network
       - network-bind
-      
+
 parts:
   slides:
     source: https://github.com/maaslalani/slides
@@ -48,10 +47,5 @@ parts:
       - go
       
     override-pull: |
-      snapcraftctl pull
-      snapcraftctl set-version "$(git describe --tags | sed 's/^v//' | cut -d "-" -f1)"    
-
-  homeishome-launch:
-    plugin: nil
-    stage-snaps:
-      - homeishome-launch     
+      craftctl default
+      craftctl set version="$(git describe --tags | sed 's/^v//' | cut -d "-" -f1)" 
