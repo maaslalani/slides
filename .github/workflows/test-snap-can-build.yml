@@ -1,25 +1,32 @@
-name: 🧪 Test snap can be built on x86_64
+name: 🧪 Snap Builds
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
   pull_request:
     branches: [ main ]
-    
+    paths:
+      - 'snap/**'
+      - '.github/workflows/test-snap-can-build.yml'
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
 
-      - uses: snapcore/action-build@v1
+      - uses: canonical/setup-lxd@v1
+
+      - name: Build snap
         id: build
+        env:
+          SNAPCRAFT_BUILD_INFO: 1
+        run: |
+          sudo snap install snapcraft --classic
+          snapcraft pack
+          echo "snap=$(ls *.snap)" >> "$GITHUB_OUTPUT"
 
-      - uses: diddlesnaps/snapcraft-review-action@v1
+      - uses: snapcrafters/ci/review-snap@main
         with:
           snap: ${{ steps.build.outputs.snap }}
-          isClassic: 'false'
-          # Plugs and Slots declarations to override default denial (requires store assertion to publish)
-#          plugs: ./plug-declaration.json
-#          slots: ./slot-declaration.json
+          is-classic: 'false'

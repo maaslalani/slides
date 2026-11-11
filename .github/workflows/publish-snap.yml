@@ -1,0 +1,56 @@
+name: 📦 Publish Snap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'snap/**'
+      - '.github/workflows/publish-snap.yml'
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: publish-snap
+  cancel-in-progress: false
+
+env:
+  CHANNEL: latest/stable
+
+jobs:
+  build-and-publish:
+    name: Build and publish (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: canonical/setup-lxd@v1
+
+      - name: Build snap
+        id: build
+        env:
+          SNAPCRAFT_BUILD_INFO: 1
+        run: |
+          sudo snap install snapcraft --classic
+          snapcraft pack
+          echo "snap=$(ls *.snap)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: slides-snap-${{ matrix.arch }}
+          path: ${{ steps.build.outputs.snap }}
+
+      - name: Upload to ${{ env.CHANNEL }}
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+          snap_file: ${{ steps.build.outputs.snap }}
+        run: snapcraft upload "$snap_file" --release="$CHANNEL"
